@@ -14,6 +14,7 @@ import { BilingualHeading } from '../../components/public-shell';
 import { requireSession } from '../../lib/authz';
 import { can } from '../../lib/authz';
 import { getDatabase } from '../../lib/db';
+import { isPaidEnabled } from '../../lib/payment-gateway';
 
 export const dynamic = 'force-dynamic';
 
@@ -91,13 +92,15 @@ export default async function AccountPage() {
         </p>
       ) : null}
 
-      <p className="notice">
-        Paid DPR and Pro tools live under{' '}
-        <Link href="/account/billing">Billing</Link>,{' '}
-        <Link href="/account/dpr">Guided DPR</Link> and{' '}
-        <Link href="/account/workspace">Workspace</Link>. Documents never claim
-        legal or bank approval.
-      </p>
+      {isPaidEnabled() ? (
+        <p className="notice">
+          Paid DPR and Pro tools live under{' '}
+          <Link href="/account/billing">Billing</Link>,{' '}
+          <Link href="/account/dpr">Guided DPR</Link> and{' '}
+          <Link href="/account/workspace">Workspace</Link>. Documents never
+          claim legal or bank approval.
+        </p>
+      ) : null}
 
       <AccountSettings
         telegramLinked={user?.telegramChatId != null}

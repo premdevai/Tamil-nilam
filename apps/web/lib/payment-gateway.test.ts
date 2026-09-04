@@ -36,6 +36,18 @@ describe('payment gateway safety', () => {
     ).toBe(false);
   });
 
+  it('keeps checkout closed unless a gateway is explicitly enabled', async () => {
+    await expect(
+      createPaymentGateway({}).createCheckout({
+        userId: 'user-1',
+        plan: 'dpr_once',
+        amountPaise: 149_900,
+        receipt: 'receipt-1',
+        notes: {},
+      }),
+    ).rejects.toThrow(/disabled/);
+  });
+
   it('refuses the live adapter without an explicit live unlock', () => {
     expect(() =>
       createPaymentGateway({

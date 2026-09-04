@@ -14,7 +14,7 @@ export const serverEnvSchema = z.object({
   TELEGRAM_LINK_SECRET: z.string().min(24).optional(),
   PAYMENT_GATEWAY_MODE: z
     .enum(['disabled', 'fake', 'razorpay'])
-    .default('fake'),
+    .default('disabled'),
   FAKE_PAYMENT_SECRET: z.string().min(16).optional(),
   RAZORPAY_KEY_ID: z.string().min(8).optional(),
   RAZORPAY_KEY_SECRET: z.string().min(16).optional(),

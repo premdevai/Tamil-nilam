@@ -1,6 +1,7 @@
 import { ProWorkspacePanel } from '../../../components/pro-workspace-panel';
 import { BilingualHeading } from '../../../components/public-shell';
 import { requireSession } from '../../../lib/authz';
+import { isPaidEnabled } from '../../../lib/payment-gateway';
 
 export const dynamic = 'force-dynamic';
 
@@ -14,11 +15,12 @@ export default async function WorkspacePage() {
         titleTa="வாடிக்கையாளர் இடங்கள் மற்றும் தொகுப்பு ஓட்டங்கள்"
       >
         <p className="lede">
-          Server-side authorization gates every write. Quotas are monthly and
-          plan-specific.
+          {isPaidEnabled()
+            ? 'Server-side authorization gates every write. Quotas are monthly and plan-specific.'
+            : 'Pro and consultant tools are not offered on this deployment.'}
         </p>
       </BilingualHeading>
-      <ProWorkspacePanel />
+      {isPaidEnabled() ? <ProWorkspacePanel /> : null}
     </section>
   );
 }

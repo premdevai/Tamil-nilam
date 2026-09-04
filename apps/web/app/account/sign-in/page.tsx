@@ -6,6 +6,9 @@ import { getSession } from '../../../lib/auth';
 
 export default async function SignInPage() {
   if ((await getSession())?.user !== undefined) redirect('/account');
+  const mailConfigured =
+    process.env.NODE_ENV !== 'production' ||
+    process.env.AUTH_SMTP_URL !== undefined;
 
   return (
     <section className="content-page account-page">
@@ -15,11 +18,12 @@ export default async function SignInPage() {
         titleTa="கடவுச்சொல் இல்லாமல் உள்நுழையுங்கள்"
       >
         <p className="lede">
-          We will email a one-time link that expires in 15 minutes. Public
-          matching and browsing remain available without an account.
+          {mailConfigured
+            ? 'We will email a one-time link that expires in 15 minutes. Public matching and browsing remain available without an account.'
+            : 'Magic-link email is not configured on this deployment. Public matching and browsing stay available without an account.'}
         </p>
       </BilingualHeading>
-      <SignInForm />
+      {mailConfigured ? <SignInForm /> : null}
     </section>
   );
 }

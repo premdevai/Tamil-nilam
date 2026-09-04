@@ -35,11 +35,18 @@ export interface PaymentGateway {
   verifyWebhook(rawBody: string, signature: string): boolean;
 }
 
+export function isPaidEnabled(
+  environment:
+    NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
+): boolean {
+  return (environment.PAYMENT_GATEWAY_MODE ?? 'disabled') !== 'disabled';
+}
+
 export function createPaymentGateway(
   environment:
     NodeJS.ProcessEnv | Record<string, string | undefined> = process.env,
 ): PaymentGateway {
-  const mode = environment.PAYMENT_GATEWAY_MODE ?? 'fake';
+  const mode = environment.PAYMENT_GATEWAY_MODE ?? 'disabled';
   if (mode === 'disabled') return new DisabledPaymentGateway();
   if (mode === 'fake') {
     return new FakePaymentGateway(

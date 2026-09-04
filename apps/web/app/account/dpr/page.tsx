@@ -4,6 +4,7 @@ import { DprWizard, type DprPrefill } from '../../../components/dpr-wizard';
 import { BilingualHeading } from '../../../components/public-shell';
 import { requireSession } from '../../../lib/authz';
 import { evaluateMatcherSurface } from '../../../lib/matcher-surfaces';
+import { isPaidEnabled } from '../../../lib/payment-gateway';
 import { loadOwnedProject } from '../../../lib/project-memory';
 
 export const dynamic = 'force-dynamic';
@@ -28,11 +29,12 @@ export default async function DprPage({
         titleTa="வழிகாட்டப்பட்ட நிதி உள்ளீடுகள்"
       >
         <p className="lede">
-          Cost and funding must balance. Generated files freeze the inputs and
-          ruleset, then expire after a signed download window.
+          {isPaidEnabled()
+            ? 'Cost and funding must balance. Generated files freeze the inputs and ruleset, then expire after a signed download window.'
+            : 'Paid DPR generation is not offered on this deployment.'}
         </p>
       </BilingualHeading>
-      <DprWizard initialProfile={initialProfile} />
+      {isPaidEnabled() ? <DprWizard initialProfile={initialProfile} /> : null}
     </section>
   );
 }

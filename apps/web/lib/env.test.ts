@@ -14,7 +14,7 @@ describe('web environment', () => {
       NODE_ENV: 'development',
       NILAM_HOME_MODE: 'rich',
       RAZORPAY_ALLOW_LIVE: 'false',
-      PAYMENT_GATEWAY_MODE: 'fake',
+      PAYMENT_GATEWAY_MODE: 'disabled',
     });
   });
 

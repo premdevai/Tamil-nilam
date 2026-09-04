@@ -17,7 +17,7 @@ describe('readiness endpoint', () => {
     }
     expect(body.checks.razorpayLiveLocked).toBe(true);
     expect(body.checks.paymentGateway).toBe(
-      process.env.PAYMENT_GATEWAY_MODE ?? 'fake',
+      process.env.PAYMENT_GATEWAY_MODE ?? 'disabled',
     );
   });
 });

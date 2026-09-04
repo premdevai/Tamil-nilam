@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 export async function GET() {
   const checks = {
     database: 'unavailable',
-    paymentGateway: process.env.PAYMENT_GATEWAY_MODE ?? 'fake',
+    paymentGateway: process.env.PAYMENT_GATEWAY_MODE ?? 'disabled',
     razorpayLiveLocked: process.env.RAZORPAY_ALLOW_LIVE !== 'true',
   };
   try {
