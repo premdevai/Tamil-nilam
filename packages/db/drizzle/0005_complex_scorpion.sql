@@ -1,0 +1,1 @@
+ALTER TABLE "saved_stacks" ALTER COLUMN "ruleset_version" SET DATA TYPE text;

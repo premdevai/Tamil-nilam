@@ -1,0 +1,9 @@
+.git
+.next
+.turbo
+coverage
+node_modules
+NILAM app full prototype review
+playwright-report
+services/dataops/.venv
+test-results

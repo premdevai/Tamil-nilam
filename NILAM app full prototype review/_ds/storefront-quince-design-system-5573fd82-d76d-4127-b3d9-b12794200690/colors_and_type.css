@@ -1,0 +1,279 @@
+/* =================================================================
+   Quince Design System — Colors & Type
+   Source: storefront-ui-kit/packages/ds-core + packages/web-ui/panda-config
+   ================================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: 'Grosa';
+  src: url('fonts/grosa-regular-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('fonts/grosa-medium-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('fonts/grosa-regular-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('fonts/grosa-medium-italic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IvyPresto Headline';
+  src: url('fonts/ivypresto-headline-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IvyPresto Text';
+  src: url('fonts/ivypresto-text-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Base color tokens (from ds-core/tokens/colors.ts) ---------- */
+  --color-cantaloupe-100: #FFA273;  /* primary brand */
+  --color-cantaloupe-90:  #FDAF88;  /* primary hover */
+  --color-cantaloupe-80:  #FFBE9D;  /* primary active / accent tag */
+
+  --color-darkgray:   #21201F;  /* primary text & secondary button bg */
+  --color-gray:       #606060;  /* secondary text */
+  --color-mediumgray: #717171;  /* tertiary text / placeholders */
+  --color-silvergray: #8F8F8F;  /* hover borders */
+  --color-lightgray:  #D9D9D9;  /* borders, dividers */
+  --color-offwhite:   #EEEEEC;  /* muted surface */
+  --color-paperwhite: #F7F7F5;  /* subtle surface */
+  --color-white:      #FFFFFF;
+
+  --color-blue:     #BFCAE8;
+  --color-navy:     #2D313F;
+  --color-petal:    #E5CDBD;
+  --color-umber:    #80351B;
+  --color-warmgrey: #D0D3BB;
+  --color-stone:    #DFDACE;
+
+  --color-red-100:   #AF3535;  /* error */
+  --color-red-20:    #FDD8D8;
+  --color-green-100: #2D822B;  /* success */
+  --color-green-20:  #D2F2D1;
+  --color-green-10:  #ECF9EB;
+
+  --color-white-trans-30: rgba(255, 255, 255, 0.3);
+  --color-white-trans-50: rgba(255, 255, 255, 0.5);
+  --color-white-trans-70: rgba(255, 255, 255, 0.7);
+  --color-darkgray-trans-50: rgba(33, 32, 31, 0.5);
+
+  /* ---------- Semantic foreground/background aliases ---------- */
+  --fg-1: var(--color-darkgray);       /* primary text */
+  --fg-2: var(--color-gray);            /* secondary text */
+  --fg-3: var(--color-mediumgray);      /* tertiary text, placeholders */
+  --fg-disabled: var(--color-mediumgray);
+  --fg-on-brand: var(--color-darkgray); /* text on cantaloupe */
+  --fg-on-dark:  var(--color-white);
+
+  --bg-page:    var(--color-white);
+  --bg-muted:   var(--color-paperwhite);
+  --bg-subtle:  var(--color-offwhite);
+  --bg-brand:   var(--color-cantaloupe-100);
+  --bg-brand-accent: var(--color-cantaloupe-80);
+  --bg-dark:    var(--color-darkgray);
+
+  --border-default: var(--color-lightgray);
+  --border-strong:  var(--color-darkgray);
+  --border-hover:   var(--color-silvergray);
+  --border-error:   var(--color-red-100);
+
+  --fg-error:   var(--color-red-100);
+  --fg-success: var(--color-green-100);
+  --bg-error:   var(--color-red-20);
+  --bg-success: var(--color-green-10);
+
+  /* ---------- Fonts ---------- */
+  --font-sans: 'Grosa', ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif;
+  --font-decorative: 'IvyPresto Headline', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+  /* ---------- Font sizes (web, in rem) ---------- */
+  --fs-56: 3.5rem;
+  --fs-48: 3rem;
+  --fs-40: 2.5rem;
+  --fs-32: 2rem;
+  --fs-28: 1.75rem;
+  --fs-26: 1.625rem;
+  --fs-24: 1.5rem;
+  --fs-22: 1.375rem;
+  --fs-20: 1.25rem;
+  --fs-18: 1.125rem;
+  --fs-17: 1.063rem;
+  --fs-16: 1rem;
+  --fs-14: 0.875rem;
+  --fs-12: 0.75rem;
+  --fs-10: 0.625rem;
+
+  /* ---------- Line heights (px values as unitless ratios via rem) ---------- */
+  --lh-62: 3.875rem;
+  --lh-54: 3.375rem;
+  --lh-46: 2.875rem;
+  --lh-40: 2.5rem;
+  --lh-36: 2.25rem;
+  --lh-34: 2.125rem;
+  --lh-32: 2rem;
+  --lh-30: 1.875rem;
+  --lh-28: 1.75rem;
+  --lh-26: 1.625rem;
+  --lh-24: 1.5rem;
+  --lh-22: 1.375rem;
+  --lh-20: 1.25rem;
+  --lh-18: 1.125rem;
+  --lh-16: 1rem;
+  --lh-12: 0.75rem;
+
+  /* ---------- Weights ---------- */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+
+  /* ---------- Letter spacing ---------- */
+  --ls-base: 0.05em; /* used on ALL uppercase styles */
+
+  /* ---------- Spacing (rem, 16px base) ---------- */
+  --space-2: 0.125rem;
+  --space-4: 0.25rem;
+  --space-6: 0.375rem;
+  --space-8: 0.5rem;
+  --space-10: 0.625rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+  --space-56: 3.5rem;
+  --space-64: 4rem;
+  --space-80: 5rem;
+  --space-100: 6.25rem;
+  --space-120: 7.5rem;
+
+  /* ---------- Radii ---------- */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 9999px;
+  --radius-outline: 0.5px; /* focus outlines */
+
+  /* ---------- Shadows ---------- */
+  --shadow-above:   0 -6px 16px 0 rgba(33, 32, 31, 0.10);
+  --shadow-below:    0 6px 16px 0 rgba(33, 32, 31, 0.10);
+  --shadow-tooltip: 0px 6px 12px 0px rgba(0,0,0,0.1), 0px 12px 24px 0px rgba(0,0,0,0.08);
+
+  /* ---------- Breakpoints (reference) ---------- */
+  --bp-sm: 360px;
+  --bp-md: 768px;
+  --bp-lg: 1200px;
+
+  /* ---------- Transitions ---------- */
+  --t-fast: 150ms ease-out;
+  --t-med:  200ms ease-in-out;
+  --t-slow: 300ms ease-in-out;
+}
+
+/* ---------- Base element styles ---------- */
+html, body {
+  color: var(--fg-1);
+  background: var(--bg-page);
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  line-height: var(--lh-20);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { scrollbar-width: thin; scrollbar-color: var(--color-silvergray) transparent; }
+
+/* =================================================================
+   Semantic type styles — the Quince type system is a matrix of
+   { rich | title | body | custom } × { 2xl..xs } × { caps | dec | default | bold }
+   Use these classes (or copy the same declarations).
+   ================================================================= */
+
+/* -------- Rich (largest; marketing / hero) -------- */
+.q-rich-2xl-caps { font-family: var(--font-sans); font-size: var(--fs-32); line-height: var(--lh-36); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-rich-2xl-dec  { font-family: var(--font-decorative); font-size: var(--fs-32); line-height: var(--lh-36); font-weight: var(--fw-light); }
+.q-rich-xl-caps  { font-family: var(--font-sans); font-size: var(--fs-28); line-height: var(--lh-32); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-rich-xl-dec   { font-family: var(--font-decorative); font-size: var(--fs-28); line-height: var(--lh-32); font-weight: var(--fw-light); }
+.q-rich-lg-caps  { font-family: var(--font-sans); font-size: var(--fs-26); line-height: var(--lh-30); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-rich-lg-dec   { font-family: var(--font-decorative); font-size: var(--fs-26); line-height: var(--lh-30); font-weight: var(--fw-light); }
+
+@media (min-width: 1200px) {
+  .q-rich-2xl-caps, .q-rich-2xl-dec { font-size: var(--fs-56); line-height: var(--lh-62); }
+  .q-rich-xl-caps,  .q-rich-xl-dec  { font-size: var(--fs-48); line-height: var(--lh-54); }
+  .q-rich-lg-caps,  .q-rich-lg-dec  { font-size: var(--fs-40); line-height: var(--lh-46); }
+}
+
+/* -------- Titles (page/section headings) -------- */
+.q-title-2xl-caps { font-family: var(--font-sans); font-size: var(--fs-24); line-height: var(--lh-30); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-title-2xl-dec  { font-family: var(--font-decorative); font-size: var(--fs-24); line-height: var(--lh-30); font-weight: var(--fw-light); }
+.q-title-xl-caps  { font-family: var(--font-sans); font-size: var(--fs-22); line-height: var(--lh-26); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-title-xl-dec   { font-family: var(--font-decorative); font-size: var(--fs-22); line-height: var(--lh-26); font-weight: var(--fw-light); }
+.q-title-lg-caps  { font-family: var(--font-sans); font-size: var(--fs-20); line-height: var(--lh-24); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-title-lg-dec   { font-family: var(--font-decorative); font-size: var(--fs-20); line-height: var(--lh-24); font-weight: var(--fw-light); }
+.q-title-md-caps  { font-family: var(--font-sans); font-size: var(--fs-18); line-height: var(--lh-22); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-title-md-dec   { font-family: var(--font-decorative); font-size: var(--fs-18); line-height: var(--lh-22); font-weight: var(--fw-light); }
+.q-title-sm-caps  { font-family: var(--font-sans); font-size: var(--fs-17); line-height: var(--lh-20); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+.q-title-sm-dec   { font-family: var(--font-decorative); font-size: var(--fs-17); line-height: var(--lh-20); font-weight: var(--fw-light); }
+
+@media (min-width: 1200px) {
+  .q-title-2xl-caps, .q-title-2xl-dec { font-size: var(--fs-32); line-height: var(--lh-40); }
+  .q-title-xl-caps,  .q-title-xl-dec  { font-size: var(--fs-28); line-height: var(--lh-34); }
+  .q-title-lg-caps,  .q-title-lg-dec  { font-size: var(--fs-24); line-height: var(--lh-28); }
+  .q-title-md-caps,  .q-title-md-dec  { font-size: var(--fs-20); line-height: var(--lh-24); }
+  .q-title-sm-caps,  .q-title-sm-dec  { font-size: var(--fs-18); line-height: var(--lh-22); }
+}
+
+/* -------- Body (paragraphs, labels, small text) -------- */
+.q-body-lg-default { font-family: var(--font-sans); font-size: var(--fs-16); line-height: var(--lh-22); font-weight: var(--fw-regular); }
+.q-body-lg-bold    { font-family: var(--font-sans); font-size: var(--fs-16); line-height: var(--lh-22); font-weight: var(--fw-medium); }
+.q-body-lg-caps    { font-family: var(--font-sans); font-size: var(--fs-16); line-height: var(--lh-22); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+
+.q-body-base-default { font-family: var(--font-sans); font-size: var(--fs-14); line-height: var(--lh-20); font-weight: var(--fw-regular); }
+.q-body-base-bold    { font-family: var(--font-sans); font-size: var(--fs-14); line-height: var(--lh-20); font-weight: var(--fw-medium); }
+.q-body-base-caps    { font-family: var(--font-sans); font-size: var(--fs-14); line-height: var(--lh-20); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+
+.q-body-sm-default { font-family: var(--font-sans); font-size: var(--fs-12); line-height: var(--lh-16); font-weight: var(--fw-regular); }
+.q-body-sm-bold    { font-family: var(--font-sans); font-size: var(--fs-12); line-height: var(--lh-16); font-weight: var(--fw-medium); }
+.q-body-sm-caps    { font-family: var(--font-sans); font-size: var(--fs-12); line-height: var(--lh-16); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+
+.q-body-xs-default { font-family: var(--font-sans); font-size: var(--fs-10); line-height: var(--lh-12); font-weight: var(--fw-regular); }
+.q-body-xs-bold    { font-family: var(--font-sans); font-size: var(--fs-10); line-height: var(--lh-12); font-weight: var(--fw-medium); }
+.q-body-xs-caps    { font-family: var(--font-sans); font-size: var(--fs-10); line-height: var(--lh-12); font-weight: var(--fw-medium); letter-spacing: var(--ls-base); text-transform: uppercase; }
+
+/* Element defaults — match the closest Panda semantic token */
+h1 { font-family: var(--font-decorative); font-weight: var(--fw-light); font-size: var(--fs-32); line-height: var(--lh-36); margin: 0; }
+h2 { font-family: var(--font-sans); font-weight: var(--fw-medium); font-size: var(--fs-22); line-height: var(--lh-26); letter-spacing: var(--ls-base); text-transform: uppercase; margin: 0; }
+h3 { font-family: var(--font-sans); font-weight: var(--fw-medium); font-size: var(--fs-18); line-height: var(--lh-22); letter-spacing: var(--ls-base); text-transform: uppercase; margin: 0; }
+h4 { font-family: var(--font-sans); font-weight: var(--fw-medium); font-size: var(--fs-14); line-height: var(--lh-20); letter-spacing: var(--ls-base); text-transform: uppercase; margin: 0; }
+p  { font-family: var(--font-sans); font-weight: var(--fw-regular); font-size: var(--fs-14); line-height: var(--lh-20); margin: 0; }
+small { font-size: var(--fs-12); line-height: var(--lh-16); color: var(--fg-2); }
+a  { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+a:hover { color: var(--fg-2); }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9em; background: var(--bg-subtle); padding: 0 4px; border-radius: var(--radius-xs); }

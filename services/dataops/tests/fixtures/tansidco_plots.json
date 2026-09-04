@@ -1,0 +1,9 @@
+[
+  {
+    "plot_id": "fixture-plot-001",
+    "estate_name": "Fixture estate — not a government fact",
+    "plot_number": "TEST-1",
+    "status": "unknown",
+    "area_cents": 100
+  }
+]

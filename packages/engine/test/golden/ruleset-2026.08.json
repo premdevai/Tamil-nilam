@@ -1,0 +1,263 @@
+[
+  {
+    "name": "NEEDS manufacturing project",
+    "asOf": "2026-08-21",
+    "overrides": {},
+    "expectedEligible": [
+      "cgtmse",
+      "needs",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 15
+  },
+  {
+    "name": "NEEDS reaches its cited cap",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "projectCostLakhs": 500,
+      "eligibleCapitalCostLakhs": 500,
+      "eligiblePlantMachineryLakhs": 300,
+      "requestedLoanLakhs": 300
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "needs",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 75
+  },
+  {
+    "name": "PMEGP general urban manufacturing",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "projectCostLakhs": 20,
+      "eligibleCapitalCostLakhs": 12,
+      "eligiblePlantMachineryLakhs": 12,
+      "requestedLoanLakhs": 10,
+      "firstGeneration": false,
+      "enterpriseSize": "micro"
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "pmegp",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 3
+  },
+  {
+    "name": "PMEGP special rural manufacturing",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "projectCostLakhs": 50,
+      "eligibleCapitalCostLakhs": 30,
+      "eligiblePlantMachineryLakhs": 30,
+      "requestedLoanLakhs": 20,
+      "firstGeneration": false,
+      "locationClass": "rural",
+      "specialCategory": "woman"
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "pmegp",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 17.5
+  },
+  {
+    "name": "PMEGP service ceiling",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "services",
+      "projectCostLakhs": 20,
+      "eligibleCapitalCostLakhs": 10,
+      "eligiblePlantMachineryLakhs": 10,
+      "requestedLoanLakhs": 10,
+      "firstGeneration": false,
+      "enterpriseSize": "micro"
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "pmegp",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 3
+  },
+  {
+    "name": "UYEGP and PMEGP trading profile",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "trading",
+      "projectCostLakhs": 15,
+      "eligibleCapitalCostLakhs": 10,
+      "eligiblePlantMachineryLakhs": 5,
+      "requestedLoanLakhs": 10,
+      "locationClass": "rural",
+      "specialCategory": "woman",
+      "enterpriseSize": "micro",
+      "educationLevel": "eighth",
+      "annualFamilyIncomeLakhs": 7
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "pmegp",
+      "uyegp",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 9
+  },
+  {
+    "name": "PMFME existing micro food unit",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "food-processing",
+      "projectCostLakhs": 25,
+      "eligibleCapitalCostLakhs": 20,
+      "eligiblePlantMachineryLakhs": 15,
+      "requestedLoanLakhs": 16,
+      "firstGeneration": false,
+      "enterpriseStage": "existing",
+      "enterpriseSize": "micro",
+      "repaidMudraTarun": true
+    },
+    "expectedEligible": [
+      "aif",
+      "cgtmse",
+      "mudra",
+      "pmfme",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 7
+  },
+  {
+    "name": "PMFME reaches its cited cap",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "food-processing",
+      "projectCostLakhs": 200,
+      "eligibleCapitalCostLakhs": 100,
+      "eligiblePlantMachineryLakhs": 80,
+      "requestedLoanLakhs": 100,
+      "firstGeneration": false,
+      "enterpriseStage": "existing",
+      "enterpriseSize": "micro"
+    },
+    "expectedEligible": [
+      "aif",
+      "cgtmse",
+      "pmfme",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 10
+  },
+  {
+    "name": "AIF access is not converted to cash",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "agri-infrastructure",
+      "projectCostLakhs": 300,
+      "eligibleCapitalCostLakhs": 100,
+      "eligiblePlantMachineryLakhs": 100,
+      "requestedLoanLakhs": 200,
+      "firstGeneration": false,
+      "enterpriseStage": "existing"
+    },
+    "expectedEligible": ["aif", "cgtmse", "zed-certification"],
+    "expectedTotalLakhs": 0
+  },
+  {
+    "name": "MUDRA Tarun access with PMEGP",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "services",
+      "projectCostLakhs": 10,
+      "eligibleCapitalCostLakhs": 5,
+      "eligiblePlantMachineryLakhs": 4,
+      "requestedLoanLakhs": 9,
+      "firstGeneration": false,
+      "enterpriseSize": "micro"
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "pmegp",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 1.5
+  },
+  {
+    "name": "MUDRA Tarun Plus requires repayment history",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "services",
+      "projectCostLakhs": 20,
+      "eligibleCapitalCostLakhs": 10,
+      "eligiblePlantMachineryLakhs": 8,
+      "requestedLoanLakhs": 15,
+      "firstGeneration": false,
+      "enterpriseSize": "micro",
+      "repaidMudraTarun": true
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "pmegp",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 3
+  },
+  {
+    "name": "NEEDS and PMEGP are exclusive capital subsidies",
+    "asOf": "2026-08-21",
+    "overrides": {
+      "sector": "manufacturing",
+      "projectCostLakhs": 20,
+      "eligibleCapitalCostLakhs": 12,
+      "eligiblePlantMachineryLakhs": 12,
+      "requestedLoanLakhs": 10,
+      "enterpriseSize": "micro"
+    },
+    "expectedEligible": [
+      "cgtmse",
+      "mudra",
+      "needs",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 3
+  },
+  {
+    "name": "PMFME disappears after verified temporary extension",
+    "asOf": "2026-10-01",
+    "overrides": {
+      "sector": "food-processing",
+      "projectCostLakhs": 25,
+      "eligibleCapitalCostLakhs": 20,
+      "eligiblePlantMachineryLakhs": 15,
+      "requestedLoanLakhs": 16,
+      "firstGeneration": false,
+      "enterpriseStage": "existing",
+      "enterpriseSize": "micro",
+      "repaidMudraTarun": true
+    },
+    "expectedEligible": [
+      "aif",
+      "cgtmse",
+      "mudra",
+      "tiic-general",
+      "zed-certification"
+    ],
+    "expectedTotalLakhs": 0
+  }
+]

@@ -1,0 +1,15 @@
+.next
+.turbo
+apps/web/next-env.d.ts
+coverage
+dist
+node_modules
+pnpm-lock.yaml
+NILAM app full prototype review
+nilam-prd.md
+nilam-tdd.md
+packages/engine/test/golden/**
+packages/db/drizzle/meta/**
+apps/web/data/estates/**
+apps/web/public/maplibre-gl-*.mjs
+**/*.snap

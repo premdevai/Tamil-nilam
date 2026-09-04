@@ -1,0 +1,41 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "nilam-dataops"
+version = "0.0.0"
+description = "Staging-only ingestion and verification tooling for NILAM"
+requires-python = ">=3.11"
+dependencies = [
+  "httpx",
+  "psycopg[binary]",
+  "pypdf",
+  "pydantic-settings",
+  "typer",
+]
+
+[project.optional-dependencies]
+dev = ["mypy", "pytest", "ruff"]
+
+[project.scripts]
+dataops = "nilam_dataops.cli:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/nilam_dataops"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+
+[tool.pytest.ini_options]
+addopts = "-q"
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

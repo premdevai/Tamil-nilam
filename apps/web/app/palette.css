@@ -1,0 +1,68 @@
+/* =================================================================
+   NILAM palette — "civic ledger"
+   =================================================================
+   Replaces the Quince storefront palette (cantaloupe #FFA273 on
+   paperwhite). That palette ships with a retail furniture design
+   system; on a government-evidence product the peach reads as
+   consumer-lifestyle rather than public record.
+
+   What changed and why:
+   - Action colour is a deep pine (#1D4E4A): institutional and calm,
+     distinct from the indigo every fintech uses, and dark enough to
+     carry white text at 8.6:1. Subsidy amounts are the loud thing on
+     these pages; the buttons should not compete with them.
+   - The warm note is kept but moved to burnt sienna (#B4623A) and
+     demoted to structure only — rules, eyebrow marks, the 2px hero
+     borders. Never a text colour at small sizes.
+   - Paper/ink base is inherited from the prototype unchanged in
+     feel, nudged warmer so the greys read as newsprint, not UI chrome.
+   - Semantic colours are darkened to clear WCAG AA on their own
+     tinted backgrounds, which the originals did not
+     (#2D822B on #ECF9EB was 3.9:1).
+
+   Contrast (foreground on its intended background):
+     ink        #1A1A18 on #FFFFFF  16.6:1  AAA
+     ink-2      #5B5B58 on #FFFFFF   6.9:1  AA
+     ink-3      #6E6E6B on #FFFFFF   5.2:1  AA
+     on-action  #FFFFFF on #1D4E4A   8.6:1  AAA
+     money      #1E6F3C on #E8F3EB   5.3:1  AA
+     alert      #A32C22 on #F9E4E1   6.0:1  AA
+     stale      #7A4E0B on #F6EBD6   6.1:1  AA
+   ================================================================= */
+
+:root {
+  /* ---- Action / brand ---- */
+  --action: #1d4e4a;
+  --action-hover: #16403c;
+  --action-quiet: #e3edeb;
+  --on-action: #ffffff;
+
+  /* ---- Structural accent (borders, marks — not text) ---- */
+  --accent: #b4623a;
+  --accent-soft: #f3e3da;
+  --accent-on-dark: #e0a075;
+
+  /* ---- Quince token overrides: ink & paper ---- */
+  --color-darkgray: #1a1a18;
+  --color-gray: #5b5b58;
+  --color-mediumgray: #6e6e6b;
+  --color-silvergray: #8c8c88;
+  --color-lightgray: #dcdbd5;
+  --color-offwhite: #eceae3;
+  --color-paperwhite: #f6f5f1;
+
+  /* ---- Quince token overrides: semantics ---- */
+  --color-green-100: #1e6f3c;
+  --color-green-20: #d3e9d9;
+  --color-green-10: #e8f3eb;
+  --color-red-100: #a32c22;
+  --color-red-20: #f9e4e1;
+  --color-umber: #7a4e0b;
+  --color-stone: #f6ebd6;
+  --color-petal: #e0cfc2;
+
+  /* ---- The old brand token, remapped so nothing renders peach ---- */
+  --color-cantaloupe-100: var(--action);
+  --color-cantaloupe-90: var(--action-hover);
+  --color-cantaloupe-80: var(--action-quiet);
+}

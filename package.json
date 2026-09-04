@@ -1,0 +1,42 @@
+{
+  "name": "nilam",
+  "private": true,
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "test:e2e": "playwright test",
+    "typecheck": "turbo run typecheck",
+    "db:generate": "pnpm --filter @nilam/db generate",
+    "db:migrate": "pnpm --filter @nilam/db migrate",
+    "db:seed": "pnpm --filter @nilam/db seed",
+    "env:check": "pnpm --filter @nilam/web env:check",
+    "budget": "node scripts/check-js-budget.mjs",
+    "backup": "./infrastructure/scripts/backup.sh",
+    "restore:drill": "./infrastructure/scripts/restore-drill.sh",
+    "smoke": "./infrastructure/scripts/smoke.sh"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@next/eslint-plugin-next": "^16.3.1",
+    "@playwright/test": "^1.62.1",
+    "@types/node": "^26.2.0",
+    "@vitest/coverage-v8": "^4.1.11",
+    "eslint": "^10.8.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "prettier": "^3.9.6",
+    "tsx": "^4.23.12",
+    "turbo": "^2.10.11",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.67.0",
+    "vitest": "^4.1.11"
+  },
+  "packageManager": "pnpm@11.22.0"
+}

@@ -1,0 +1,239 @@
+/* Base styles copied from the NILAM App design prototype's <helmet> block.
+   Kept byte-for-byte equivalent so the app renders exactly like the design. */
+
+body {
+  margin: 0;
+  background: #fff;
+  color: var(--color-darkgray);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--color-darkgray);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--color-gray);
+}
+
+input[type='range'] {
+  /* Browsers give range inputs a horizontal margin. With the design's
+     `width:100%` that overflows the column by ~2px, and because the pinned
+     inputs use `overflow-y:auto` the x axis computes to `auto` too — which
+     is where the stray horizontal scrollbar came from. */
+  margin: 0;
+  accent-color: var(--action);
+}
+
+select {
+  font-family: var(--font-sans);
+}
+
+/* Deliberate deviation from the prototype.
+   The Quince `h2`/`h3` element rules force uppercase + 0.05em tracking, and the
+   decorative `.q-*-dec` classes never reset it — so every section heading in the
+   prototype renders as a letter-spaced serif ALL-CAPS line. That is a defect in
+   the design file, not an intent: the same classes on a <div> render sentence
+   case two sections lower on the same page. Restored to sentence case. */
+h1.q-rich-2xl-dec,
+h2.q-rich-xl-dec,
+h2.q-rich-2xl-dec,
+h2.q-title-md-dec,
+h2.q-title-lg-dec,
+h2.q-body-base-bold,
+h3.q-title-md-dec {
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+/* The design tool renders `style-hover="…"` as a generated `:hover { … !important }`
+   rule. These classes are those rules, one per distinct hover in the prototype. */
+
+.qh-nav:hover {
+  color: var(--color-darkgray) !important;
+}
+
+.qh-chip:hover {
+  border-color: var(--color-silvergray) !important;
+}
+
+.qh-primary:hover {
+  background: var(--action-hover) !important;
+}
+
+.qh-secondary:hover {
+  background: var(--color-offwhite) !important;
+}
+
+.qh-row-offwhite:hover {
+  background: var(--color-offwhite) !important;
+}
+
+.qh-row-paper:hover,
+.qh-card-paper:hover {
+  background: var(--color-paperwhite) !important;
+}
+
+/* Chrome the phone layout drops rather than shrinks. */
+@media (max-width: 899px) {
+  .nilam-wide-only {
+    display: none;
+  }
+
+  /* The design's 64px single-row bar cannot hold six nav items on a phone:
+     without wrapping, the brand overlaps the nav and swallows its taps.
+     `!important` because these three properties are set inline by the port. */
+  .nilam-appbar {
+    height: auto !important;
+    padding: 8px 16px !important;
+    gap: 6px 16px !important;
+    flex-wrap: wrap;
+  }
+
+  .nilam-appnav {
+    /* `flex-basis` needs !important too: the port sets `flex:1` inline, which
+       expands to `flex-basis:0%` and would keep the nav on the brand's row. */
+    order: 3;
+    flex-basis: 100% !important;
+    gap: 22px !important;
+  }
+
+  .nilam-appnav > span {
+    padding: 10px 0 !important;
+  }
+}
+
+/* The sideways-scrolling nav and filter rows should not show a scrollbar. */
+nav::-webkit-scrollbar,
+[style*='scrollbar-width: none']::-webkit-scrollbar {
+  display: none;
+}
+
+/* =================================================================
+   Responsive layer for the ported views.
+   =================================================================
+   The design file targets a wide viewport only: its grids are hard
+   `repeat(3,1fr)` / `minmax(320px,420px) 1fr` and its sections carry 32–72px
+   of padding. Rather than rewrite the port, these classes collapse those
+   values below 900px. `!important` throughout because the port sets
+   grid-template-columns and padding inline — that is the whole reason these
+   are classes and not a rewrite.
+   ================================================================= */
+@media (max-width: 899px) {
+  /* Any multi-column grid becomes a single column. */
+  .nl-stack {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+
+  /* Same, but for the grids that draw their dividers with `gap:1px` over a
+     grey background — overriding the gap there turns hairlines into bands. */
+  .nl-stack-hairline {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Two-pane splits, which also carry a large gap. */
+  .nl-split {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Page-level section padding. */
+  .nl-pad-page {
+    padding: 24px 16px 36px !important;
+  }
+
+  /* A header row, which wants side padding but no vertical bulk. */
+  .nl-pad-row {
+    padding: 12px 16px 0 !important;
+  }
+
+  /* Band sections (trust, moat) that use extra vertical rhythm. */
+  .nl-pad-band {
+    padding: 32px 16px !important;
+  }
+
+  /* The results surface, which the design insets by 40px. */
+  .nl-pad-card {
+    padding: 20px 16px !important;
+  }
+
+  /* Actionable sidebars belong above the long read on a phone. */
+  .nl-first {
+    order: -1;
+  }
+
+  /* Changelog rows: date and kind share a line, the entry sits below. */
+  .nl-log-row {
+    grid-template-columns: auto auto !important;
+    gap: 4px 12px !important;
+  }
+
+  .nl-log-row > :last-child {
+    grid-column: 1 / -1;
+  }
+
+  /* Hero type at display size overflows a 412px screen. */
+  .nl-hero {
+    font-size: 34px !important;
+  }
+
+  .nl-total {
+    font-size: 44px !important;
+  }
+}
+
+/* A phone needs the computed total in view while the inputs are being
+   changed — the design's "recomputes live" promise is invisible otherwise. */
+.nl-sticky-total {
+  display: none;
+}
+
+@media (max-width: 899px) {
+  .nl-sticky-total {
+    /* Spanning every column makes the grid area full width, so `bottom:0`
+       pins the bar for the whole scroll of the inputs-and-results section
+       rather than only while its own row is on screen. */
+    position: sticky;
+    grid-column: 1 / -1;
+    z-index: 30;
+    bottom: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    border-top: 1px solid var(--color-darkgray);
+    background: var(--color-paperwhite);
+    padding: 10px 16px;
+  }
+}
+
+/* =================================================================
+   Matcher: inputs stay in view, the report keeps its length.
+   =================================================================
+   An earlier attempt gave the tool `height:100svh` with both columns as
+   scroll panes. The inputs did land in the first screen, but the results are
+   a report — stack, conflicts, near misses, application sequence, ranked land
+   — and a 700px scroller buried most of it behind no affordance, clipping
+   text at the boundary.
+
+   So only the inputs are pinned. The report flows down the page at its
+   natural length, and the figure it computes rides along in the sticky
+   column so flipping a toggle deep in the page still shows its effect.
+
+   64px is the app bar's designed height. Phones are left in normal flow with
+   the sticky total bar instead.
+   ================================================================= */
+@media (min-width: 900px) {
+  .nl-tool-aside {
+    position: sticky;
+    top: 64px;
+    max-height: calc(100svh - 88px);
+    /* `clip` on the cross axis: nothing here should ever scroll sideways. */
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+}

@@ -1,0 +1,150 @@
+name: nilam
+
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      web:
+        condition: service_healthy
+    environment:
+      NILAM_DOMAIN: ${NILAM_DOMAIN:-localhost}
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ./infrastructure/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+  web:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile
+      args:
+        APP_FILTER: '@nilam/web'
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nilam}:${POSTGRES_PASSWORD:-nilam-dev}@postgres:5432/${POSTGRES_DB:-nilam}
+      MEILI_HOST: http://meilisearch:7700
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-local-development-key}
+      NEXT_PUBLIC_SITE_URL: https://${NILAM_DOMAIN:-localhost}
+      NODE_ENV: production
+      PAYMENT_GATEWAY_MODE: ${PAYMENT_GATEWAY_MODE:-fake}
+      FAKE_PAYMENT_SECRET: ${FAKE_PAYMENT_SECRET:-nilam-safe-fake-payment-secret}
+      DOWNLOAD_SIGNING_SECRET: ${DOWNLOAD_SIGNING_SECRET:-nilam-local-download-signing-secret-change-me}
+      DOCUMENT_STORAGE_DIR: /data/documents
+      RAZORPAY_ALLOW_LIVE: ${RAZORPAY_ALLOW_LIVE:-false}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      meilisearch:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:3000/api/health').then(r=>{if(!r.ok)process.exit(1)})",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    volumes:
+      - document_data:/data/documents
+
+  worker:
+    build:
+      context: .
+      dockerfile: infrastructure/Dockerfile
+      args:
+        APP_FILTER: '@nilam/worker'
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nilam}:${POSTGRES_PASSWORD:-nilam-dev}@postgres:5432/${POSTGRES_DB:-nilam}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      WORKER_CONCURRENCY: ${WORKER_CONCURRENCY:-2}
+      DOCUMENT_STORAGE_DIR: /data/documents
+    volumes:
+      - document_data:/data/documents
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  postgres:
+    image: postgis/postgis:16-3.5-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nilam}
+      POSTGRES_USER: ${POSTGRES_USER:-nilam}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nilam-dev}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'pg_isready -U ${POSTGRES_USER:-nilam} -d ${POSTGRES_DB:-nilam}',
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    restart: unless-stopped
+    environment:
+      MEILI_ENV: production
+      MEILI_MASTER_KEY: ${MEILI_MASTER_KEY:-local-development-key}
+      MEILI_NO_ANALYTICS: 'true'
+    ports:
+      - '7700:7700'
+    volumes:
+      - meilisearch_data:/meili_data
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'wget',
+          '--quiet',
+          '--tries=1',
+          '--spider',
+          'http://127.0.0.1:7700/health',
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-nilam}:${POSTGRES_PASSWORD:-nilam-dev}@postgres:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:-local-umami-secret-change-me}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://localhost:3000/api/heartbeat').then(r=>{if(!r.ok)process.exit(1)})",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  caddy_config:
+  caddy_data:
+  document_data:
+  meilisearch_data:
+  postgres_data:

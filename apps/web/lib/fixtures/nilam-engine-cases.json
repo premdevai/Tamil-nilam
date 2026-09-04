@@ -1,0 +1,367 @@
+[
+  {
+    "name": "default",
+    "asOf": "2026-08-21",
+    "input": {
+      "sector": "food-processing",
+      "projectCostLakhs": 110,
+      "eligibleCapitalCostLakhs": 17.6,
+      "eligiblePlantMachineryLakhs": 17.6,
+      "requestedLoanLakhs": 71.5,
+      "district": "Thanjavur",
+      "locationClass": "rural",
+      "backwardBlock": true,
+      "firstGeneration": true,
+      "age": 30,
+      "specialCategory": "none",
+      "fpoWilling": false,
+      "entityKind": "proprietorship",
+      "enterpriseStage": "new",
+      "enterpriseSize": "micro",
+      "educationLevel": "twelfth",
+      "annualFamilyIncomeLakhs": 5,
+      "priorGovernmentCapitalSubsidy": false,
+      "repaidMudraTarun": false,
+      "udyamRegistered": false
+    },
+    "expected": {
+      "eligible": [
+        { "id": "aif", "name": "AIF", "totalLakhs": 0 },
+        { "id": "cgtmse", "name": "CGTMSE", "totalLakhs": 0 },
+        { "id": "needs", "name": "NEEDS", "totalLakhs": 4.4 },
+        { "id": "tiic-general", "name": "TIIC term loan", "totalLakhs": 0 }
+      ],
+      "totalLakhs": 4.4,
+      "nearMisses": [
+        {
+          "id": "pmegp",
+          "name": "Prime Minister's Employment Generation Programme",
+          "failedPredicateIds": ["project-cost"]
+        },
+        {
+          "id": "pmfme",
+          "name": "PM Formalisation of Micro Food Processing Enterprises",
+          "failedPredicateIds": ["existing"]
+        },
+        {
+          "id": "zed-certification",
+          "name": "MSME Sustainable (ZED) Certification",
+          "failedPredicateIds": ["udyam"]
+        },
+        {
+          "id": "mudra",
+          "name": "Pradhan Mantri MUDRA Yojana",
+          "failedPredicateIds": ["loan-limit", "tarun-plus-history"]
+        },
+        {
+          "id": "uyegp",
+          "name": "Unemployed Youth Employment Generation Programme",
+          "failedPredicateIds": ["activity", "project-cost"]
+        }
+      ],
+      "conflicts": [],
+      "sequence": [
+        "Obtain lender appraisal for the eligible infrastructure project",
+        "Register and tag the sanctioned loan under AIF",
+        "Submit the NEEDS application and project report",
+        "Obtain a NEEDS-tagged bank sanction",
+        "Submit the TIIC term-loan application and project report",
+        "Complete Udyam registration where required",
+        "Ask the member lender to seek CGTMSE cover"
+      ],
+      "ruleset": "2026.08"
+    }
+  },
+  {
+    "name": "first-generation-off",
+    "asOf": "2026-08-21",
+    "input": {
+      "sector": "food-processing",
+      "projectCostLakhs": 110,
+      "eligibleCapitalCostLakhs": 17.6,
+      "eligiblePlantMachineryLakhs": 17.6,
+      "requestedLoanLakhs": 71.5,
+      "district": "Thanjavur",
+      "locationClass": "rural",
+      "backwardBlock": true,
+      "firstGeneration": false,
+      "age": 30,
+      "specialCategory": "none",
+      "fpoWilling": false,
+      "entityKind": "proprietorship",
+      "enterpriseStage": "new",
+      "enterpriseSize": "micro",
+      "educationLevel": "twelfth",
+      "annualFamilyIncomeLakhs": 5,
+      "priorGovernmentCapitalSubsidy": false,
+      "repaidMudraTarun": false,
+      "udyamRegistered": false
+    },
+    "expected": {
+      "eligible": [
+        { "id": "aif", "name": "AIF", "totalLakhs": 0 },
+        { "id": "cgtmse", "name": "CGTMSE", "totalLakhs": 0 },
+        { "id": "tiic-general", "name": "TIIC term loan", "totalLakhs": 0 }
+      ],
+      "totalLakhs": 0,
+      "nearMisses": [
+        {
+          "id": "needs",
+          "name": "New Entrepreneur-cum-Enterprise Development Scheme",
+          "failedPredicateIds": ["first-generation"]
+        },
+        {
+          "id": "pmegp",
+          "name": "Prime Minister's Employment Generation Programme",
+          "failedPredicateIds": ["project-cost"]
+        },
+        {
+          "id": "pmfme",
+          "name": "PM Formalisation of Micro Food Processing Enterprises",
+          "failedPredicateIds": ["existing"]
+        },
+        {
+          "id": "zed-certification",
+          "name": "MSME Sustainable (ZED) Certification",
+          "failedPredicateIds": ["udyam"]
+        },
+        {
+          "id": "mudra",
+          "name": "Pradhan Mantri MUDRA Yojana",
+          "failedPredicateIds": ["loan-limit", "tarun-plus-history"]
+        },
+        {
+          "id": "uyegp",
+          "name": "Unemployed Youth Employment Generation Programme",
+          "failedPredicateIds": ["activity", "project-cost"]
+        }
+      ],
+      "conflicts": [],
+      "sequence": [
+        "Obtain lender appraisal for the eligible infrastructure project",
+        "Register and tag the sanctioned loan under AIF",
+        "Submit the TIIC term-loan application and project report",
+        "Complete Udyam registration where required",
+        "Ask the member lender to seek CGTMSE cover"
+      ],
+      "ruleset": "2026.08"
+    }
+  },
+  {
+    "name": "pmfme-existing",
+    "asOf": "2026-08-21",
+    "input": {
+      "sector": "food-processing",
+      "projectCostLakhs": 25,
+      "eligibleCapitalCostLakhs": 20,
+      "eligiblePlantMachineryLakhs": 15,
+      "requestedLoanLakhs": 16,
+      "district": "Thanjavur",
+      "locationClass": "rural",
+      "backwardBlock": true,
+      "firstGeneration": false,
+      "age": 30,
+      "specialCategory": "none",
+      "fpoWilling": false,
+      "entityKind": "proprietorship",
+      "enterpriseStage": "existing",
+      "enterpriseSize": "micro",
+      "educationLevel": "twelfth",
+      "annualFamilyIncomeLakhs": 5,
+      "priorGovernmentCapitalSubsidy": false,
+      "repaidMudraTarun": true,
+      "udyamRegistered": false
+    },
+    "expected": {
+      "eligible": [
+        { "id": "aif", "name": "AIF", "totalLakhs": 0 },
+        { "id": "cgtmse", "name": "CGTMSE", "totalLakhs": 0 },
+        { "id": "mudra", "name": "MUDRA", "totalLakhs": 0 },
+        { "id": "pmfme", "name": "PMFME", "totalLakhs": 7 },
+        { "id": "tiic-general", "name": "TIIC term loan", "totalLakhs": 0 }
+      ],
+      "totalLakhs": 7,
+      "nearMisses": [
+        {
+          "id": "needs",
+          "name": "New Entrepreneur-cum-Enterprise Development Scheme",
+          "failedPredicateIds": ["first-generation"]
+        },
+        {
+          "id": "pmegp",
+          "name": "Prime Minister's Employment Generation Programme",
+          "failedPredicateIds": ["new-unit"]
+        },
+        {
+          "id": "zed-certification",
+          "name": "MSME Sustainable (ZED) Certification",
+          "failedPredicateIds": ["udyam"]
+        },
+        {
+          "id": "uyegp",
+          "name": "Unemployed Youth Employment Generation Programme",
+          "failedPredicateIds": ["activity", "project-cost"]
+        }
+      ],
+      "conflicts": [],
+      "sequence": [
+        "Obtain lender appraisal for the eligible infrastructure project",
+        "Register and tag the sanctioned loan under AIF",
+        "Apply through a MUDRA member lending institution",
+        "Prepare the DPR and submit the PMFME application",
+        "Obtain credit sanction for the eligible project",
+        "Submit the TIIC term-loan application and project report",
+        "Complete Udyam registration where required",
+        "Ask the member lender to seek CGTMSE cover"
+      ],
+      "ruleset": "2026.08"
+    }
+  },
+  {
+    "name": "pmfme-after-deadline",
+    "asOf": "2026-10-01",
+    "input": {
+      "sector": "food-processing",
+      "projectCostLakhs": 25,
+      "eligibleCapitalCostLakhs": 20,
+      "eligiblePlantMachineryLakhs": 15,
+      "requestedLoanLakhs": 16,
+      "district": "Thanjavur",
+      "locationClass": "rural",
+      "backwardBlock": true,
+      "firstGeneration": false,
+      "age": 30,
+      "specialCategory": "none",
+      "fpoWilling": false,
+      "entityKind": "proprietorship",
+      "enterpriseStage": "existing",
+      "enterpriseSize": "micro",
+      "educationLevel": "twelfth",
+      "annualFamilyIncomeLakhs": 5,
+      "priorGovernmentCapitalSubsidy": false,
+      "repaidMudraTarun": true,
+      "udyamRegistered": false
+    },
+    "expected": {
+      "eligible": [
+        { "id": "aif", "name": "AIF", "totalLakhs": 0 },
+        { "id": "cgtmse", "name": "CGTMSE", "totalLakhs": 0 },
+        { "id": "mudra", "name": "MUDRA", "totalLakhs": 0 },
+        { "id": "tiic-general", "name": "TIIC term loan", "totalLakhs": 0 }
+      ],
+      "totalLakhs": 0,
+      "nearMisses": [
+        {
+          "id": "needs",
+          "name": "New Entrepreneur-cum-Enterprise Development Scheme",
+          "failedPredicateIds": ["first-generation"]
+        },
+        {
+          "id": "pmegp",
+          "name": "Prime Minister's Employment Generation Programme",
+          "failedPredicateIds": ["new-unit"]
+        },
+        {
+          "id": "pmfme",
+          "name": "PM Formalisation of Micro Food Processing Enterprises",
+          "failedPredicateIds": ["deadline-open"]
+        },
+        {
+          "id": "zed-certification",
+          "name": "MSME Sustainable (ZED) Certification",
+          "failedPredicateIds": ["udyam"]
+        },
+        {
+          "id": "uyegp",
+          "name": "Unemployed Youth Employment Generation Programme",
+          "failedPredicateIds": ["activity", "project-cost"]
+        }
+      ],
+      "conflicts": [],
+      "sequence": [
+        "Obtain lender appraisal for the eligible infrastructure project",
+        "Register and tag the sanctioned loan under AIF",
+        "Apply through a MUDRA member lending institution",
+        "Submit the TIIC term-loan application and project report",
+        "Complete Udyam registration where required",
+        "Ask the member lender to seek CGTMSE cover"
+      ],
+      "ruleset": "2026.08"
+    }
+  },
+  {
+    "name": "manufacturing",
+    "asOf": "2026-08-21",
+    "input": {
+      "sector": "manufacturing",
+      "projectCostLakhs": 110,
+      "eligibleCapitalCostLakhs": 17.6,
+      "eligiblePlantMachineryLakhs": 17.6,
+      "requestedLoanLakhs": 71.5,
+      "district": "Chennai",
+      "locationClass": "urban",
+      "backwardBlock": false,
+      "firstGeneration": true,
+      "age": 30,
+      "specialCategory": "none",
+      "fpoWilling": false,
+      "entityKind": "proprietorship",
+      "enterpriseStage": "new",
+      "enterpriseSize": "micro",
+      "educationLevel": "twelfth",
+      "annualFamilyIncomeLakhs": 5,
+      "priorGovernmentCapitalSubsidy": false,
+      "repaidMudraTarun": false,
+      "udyamRegistered": false
+    },
+    "expected": {
+      "eligible": [
+        { "id": "cgtmse", "name": "CGTMSE", "totalLakhs": 0 },
+        { "id": "needs", "name": "NEEDS", "totalLakhs": 4.4 },
+        { "id": "tiic-general", "name": "TIIC term loan", "totalLakhs": 0 }
+      ],
+      "totalLakhs": 4.4,
+      "nearMisses": [
+        {
+          "id": "aif",
+          "name": "Agriculture Infrastructure Fund",
+          "failedPredicateIds": ["activity"]
+        },
+        {
+          "id": "pmegp",
+          "name": "Prime Minister's Employment Generation Programme",
+          "failedPredicateIds": ["project-cost"]
+        },
+        {
+          "id": "zed-certification",
+          "name": "MSME Sustainable (ZED) Certification",
+          "failedPredicateIds": ["udyam"]
+        },
+        {
+          "id": "mudra",
+          "name": "Pradhan Mantri MUDRA Yojana",
+          "failedPredicateIds": ["loan-limit", "tarun-plus-history"]
+        },
+        {
+          "id": "pmfme",
+          "name": "PM Formalisation of Micro Food Processing Enterprises",
+          "failedPredicateIds": ["food", "existing"]
+        },
+        {
+          "id": "uyegp",
+          "name": "Unemployed Youth Employment Generation Programme",
+          "failedPredicateIds": ["activity", "project-cost"]
+        }
+      ],
+      "conflicts": [],
+      "sequence": [
+        "Submit the NEEDS application and project report",
+        "Obtain a NEEDS-tagged bank sanction",
+        "Submit the TIIC term-loan application and project report",
+        "Complete Udyam registration where required",
+        "Ask the member lender to seek CGTMSE cover"
+      ],
+      "ruleset": "2026.08"
+    }
+  }
+]

@@ -1,0 +1,50 @@
+/* Tailwind v4, deliberately WITHOUT preflight.
+ *
+ * Preflight resets margins, font sizes, heading weights, borders and form
+ * controls — every one of which the ported Quince design depends on. Importing
+ * theme + utilities only gives mapcn the utility classes it needs while leaving
+ * the design untouched. If a future component needs a reset, scope it, don't
+ * turn preflight back on.
+ */
+@layer theme, base, components, utilities;
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@source '../components';
+@source '../app';
+
+/* mapcn's chrome styles use shadcn's semantic colour tokens. We skipped the
+ * shadcn base theme (it ships a preflight-style reset), so map them onto the
+ * Quince palette here — which also keeps the map furniture on-brand. */
+@theme {
+  --color-background: var(--color-white);
+  --color-foreground: var(--color-darkgray);
+  --color-muted: var(--color-paperwhite);
+  --color-muted-foreground: var(--color-mediumgray);
+  --color-accent: var(--color-offwhite);
+  --color-popover: var(--color-white);
+  --color-border: var(--color-lightgray);
+  --color-ring: var(--color-darkgray);
+}
+/* ---break---
+ */
+@layer base {
+  .maplibregl-popup-content {
+    @apply bg-transparent! shadow-none! p-0! rounded-none!;
+  }
+  .maplibregl-popup-tip {
+    @apply hidden!;
+  }
+  .maplibregl-ctrl-attrib {
+    @apply bg-background! text-muted-foreground! border-border! rounded-md! border! shadow-sm!;
+  }
+  .maplibregl-ctrl-attrib a {
+    @apply text-muted-foreground!;
+  }
+  .maplibregl-ctrl-attrib a:hover {
+    @apply text-foreground!;
+  }
+  .maplibregl-ctrl-attrib-button {
+    @apply bg-transparent! dark:invert;
+  }
+}

@@ -1,0 +1,543 @@
+/* =================================================================
+   Quince Design System — Colors & Type
+   Vendored verbatim from the NILAM App design project
+   (_ds/storefront-quince-design-system-5573fd82.../colors_and_type.css).
+   Only the @font-face URLs are rewritten to /ds/fonts/.
+   Do not hand-edit: re-sync from the design project instead.
+   ================================================================= */
+
+/* ---------- Fonts ---------- */
+@font-face {
+  font-family: 'Grosa';
+  src: url('/ds/fonts/grosa-regular-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('/ds/fonts/grosa-medium-normal.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('/ds/fonts/grosa-regular-italic.woff2') format('woff2');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Grosa';
+  src: url('/ds/fonts/grosa-medium-italic.woff2') format('woff2');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IvyPresto Headline';
+  src: url('/ds/fonts/ivypresto-headline-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'IvyPresto Text';
+  src: url('/ds/fonts/ivypresto-text-light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ---------- Base color tokens (from ds-core/tokens/colors.ts) ---------- */
+  --color-cantaloupe-100: #ffa273; /* primary brand */
+  --color-cantaloupe-90: #fdaf88; /* primary hover */
+  --color-cantaloupe-80: #ffbe9d; /* primary active / accent tag */
+
+  --color-darkgray: #21201f; /* primary text & secondary button bg */
+  --color-gray: #606060; /* secondary text */
+  --color-mediumgray: #717171; /* tertiary text / placeholders */
+  --color-silvergray: #8f8f8f; /* hover borders */
+  --color-lightgray: #d9d9d9; /* borders, dividers */
+  --color-offwhite: #eeeeec; /* muted surface */
+  --color-paperwhite: #f7f7f5; /* subtle surface */
+  --color-white: #ffffff;
+
+  --color-blue: #bfcae8;
+  --color-navy: #2d313f;
+  --color-petal: #e5cdbd;
+  --color-umber: #80351b;
+  --color-warmgrey: #d0d3bb;
+  --color-stone: #dfdace;
+
+  --color-red-100: #af3535; /* error */
+  --color-red-20: #fdd8d8;
+  --color-green-100: #2d822b; /* success */
+  --color-green-20: #d2f2d1;
+  --color-green-10: #ecf9eb;
+
+  --color-white-trans-30: rgb(255 255 255 / 30%);
+  --color-white-trans-50: rgb(255 255 255 / 50%);
+  --color-white-trans-70: rgb(255 255 255 / 70%);
+  --color-darkgray-trans-50: rgb(33 32 31 / 50%);
+
+  /* ---------- Semantic foreground/background aliases ---------- */
+  --fg-1: var(--color-darkgray); /* primary text */
+  --fg-2: var(--color-gray); /* secondary text */
+  --fg-3: var(--color-mediumgray); /* tertiary text, placeholders */
+  --fg-disabled: var(--color-mediumgray);
+  --fg-on-brand: var(--color-darkgray); /* text on cantaloupe */
+  --fg-on-dark: var(--color-white);
+
+  --bg-page: var(--color-white);
+  --bg-muted: var(--color-paperwhite);
+  --bg-subtle: var(--color-offwhite);
+  --bg-brand: var(--color-cantaloupe-100);
+  --bg-brand-accent: var(--color-cantaloupe-80);
+  --bg-dark: var(--color-darkgray);
+
+  --border-default: var(--color-lightgray);
+  --border-strong: var(--color-darkgray);
+  --border-hover: var(--color-silvergray);
+  --border-error: var(--color-red-100);
+
+  --fg-error: var(--color-red-100);
+  --fg-success: var(--color-green-100);
+  --bg-error: var(--color-red-20);
+  --bg-success: var(--color-green-10);
+
+  /* ---------- Fonts ---------- */
+  --font-sans:
+    'Grosa', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-decorative:
+    'IvyPresto Headline', ui-serif, Georgia, Cambria, 'Times New Roman', Times,
+    serif;
+
+  /* ---------- Font sizes (web, in rem) ---------- */
+  --fs-56: 3.5rem;
+  --fs-48: 3rem;
+  --fs-40: 2.5rem;
+  --fs-32: 2rem;
+  --fs-28: 1.75rem;
+  --fs-26: 1.625rem;
+  --fs-24: 1.5rem;
+  --fs-22: 1.375rem;
+  --fs-20: 1.25rem;
+  --fs-18: 1.125rem;
+  --fs-17: 1.063rem;
+  --fs-16: 1rem;
+  --fs-14: 0.875rem;
+  --fs-12: 0.75rem;
+  --fs-10: 0.625rem;
+
+  /* ---------- Line heights ---------- */
+  --lh-62: 3.875rem;
+  --lh-54: 3.375rem;
+  --lh-46: 2.875rem;
+  --lh-40: 2.5rem;
+  --lh-36: 2.25rem;
+  --lh-34: 2.125rem;
+  --lh-32: 2rem;
+  --lh-30: 1.875rem;
+  --lh-28: 1.75rem;
+  --lh-26: 1.625rem;
+  --lh-24: 1.5rem;
+  --lh-22: 1.375rem;
+  --lh-20: 1.25rem;
+  --lh-18: 1.125rem;
+  --lh-16: 1rem;
+  --lh-12: 0.75rem;
+
+  /* ---------- Weights ---------- */
+  --fw-light: 300;
+  --fw-regular: 400;
+  --fw-medium: 500;
+
+  /* ---------- Letter spacing ---------- */
+  --ls-base: 0.05em; /* used on ALL uppercase styles */
+
+  /* ---------- Spacing (rem, 16px base) ---------- */
+  --space-2: 0.125rem;
+  --space-4: 0.25rem;
+  --space-6: 0.375rem;
+  --space-8: 0.5rem;
+  --space-10: 0.625rem;
+  --space-12: 0.75rem;
+  --space-16: 1rem;
+  --space-20: 1.25rem;
+  --space-24: 1.5rem;
+  --space-32: 2rem;
+  --space-40: 2.5rem;
+  --space-48: 3rem;
+  --space-56: 3.5rem;
+  --space-64: 4rem;
+  --space-80: 5rem;
+  --space-100: 6.25rem;
+  --space-120: 7.5rem;
+
+  /* ---------- Radii ---------- */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 9999px;
+  --radius-outline: 0.5px; /* focus outlines */
+
+  /* ---------- Shadows ---------- */
+  --shadow-above: 0 -6px 16px 0 rgb(33 32 31 / 10%);
+  --shadow-below: 0 6px 16px 0 rgb(33 32 31 / 10%);
+  --shadow-tooltip:
+    0 6px 12px 0 rgb(0 0 0 / 10%), 0 12px 24px 0 rgb(0 0 0 / 8%);
+
+  /* ---------- Breakpoints (reference) ---------- */
+  --bp-sm: 360px;
+  --bp-md: 768px;
+  --bp-lg: 1200px;
+
+  /* ---------- Transitions ---------- */
+  --t-fast: 150ms ease-out;
+  --t-med: 200ms ease-in-out;
+  --t-slow: 300ms ease-in-out;
+}
+
+/* ---------- Base element styles ---------- */
+html,
+body {
+  background: var(--bg-page);
+  color: var(--fg-1);
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-20);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-silvergray) transparent;
+}
+
+/* =================================================================
+   Semantic type styles — the Quince type system is a matrix of
+   { rich | title | body | custom } × { 2xl..xs } × { caps | dec | default | bold }
+   ================================================================= */
+
+/* -------- Rich (largest; marketing / hero) -------- */
+.q-rich-2xl-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-32);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-36);
+  text-transform: uppercase;
+}
+.q-rich-2xl-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-32);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-36);
+}
+.q-rich-xl-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-28);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-32);
+  text-transform: uppercase;
+}
+.q-rich-xl-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-28);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-32);
+}
+.q-rich-lg-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-26);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-30);
+  text-transform: uppercase;
+}
+.q-rich-lg-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-26);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-30);
+}
+
+@media (min-width: 1200px) {
+  .q-rich-2xl-caps,
+  .q-rich-2xl-dec {
+    font-size: var(--fs-56);
+    line-height: var(--lh-62);
+  }
+
+  .q-rich-xl-caps,
+  .q-rich-xl-dec {
+    font-size: var(--fs-48);
+    line-height: var(--lh-54);
+  }
+
+  .q-rich-lg-caps,
+  .q-rich-lg-dec {
+    font-size: var(--fs-40);
+    line-height: var(--lh-46);
+  }
+}
+
+/* -------- Titles (page/section headings) -------- */
+.q-title-2xl-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-24);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-30);
+  text-transform: uppercase;
+}
+.q-title-2xl-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-24);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-30);
+}
+.q-title-xl-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-22);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-26);
+  text-transform: uppercase;
+}
+.q-title-xl-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-22);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-26);
+}
+.q-title-lg-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-20);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-24);
+  text-transform: uppercase;
+}
+.q-title-lg-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-20);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-24);
+}
+.q-title-md-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-22);
+  text-transform: uppercase;
+}
+.q-title-md-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-22);
+}
+.q-title-sm-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-17);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-20);
+  text-transform: uppercase;
+}
+.q-title-sm-dec {
+  font-family: var(--font-decorative);
+  font-size: var(--fs-17);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-20);
+}
+
+@media (min-width: 1200px) {
+  .q-title-2xl-caps,
+  .q-title-2xl-dec {
+    font-size: var(--fs-32);
+    line-height: var(--lh-40);
+  }
+
+  .q-title-xl-caps,
+  .q-title-xl-dec {
+    font-size: var(--fs-28);
+    line-height: var(--lh-34);
+  }
+
+  .q-title-lg-caps,
+  .q-title-lg-dec {
+    font-size: var(--fs-24);
+    line-height: var(--lh-28);
+  }
+
+  .q-title-md-caps,
+  .q-title-md-dec {
+    font-size: var(--fs-20);
+    line-height: var(--lh-24);
+  }
+
+  .q-title-sm-caps,
+  .q-title-sm-dec {
+    font-size: var(--fs-18);
+    line-height: var(--lh-22);
+  }
+}
+
+/* -------- Body (paragraphs, labels, small text) -------- */
+.q-body-lg-default {
+  font-family: var(--font-sans);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-22);
+}
+.q-body-lg-bold {
+  font-family: var(--font-sans);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-22);
+}
+.q-body-lg-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-16);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-22);
+  text-transform: uppercase;
+}
+
+.q-body-base-default {
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-20);
+}
+.q-body-base-bold {
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-20);
+}
+.q-body-base-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-20);
+  text-transform: uppercase;
+}
+
+.q-body-sm-default {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-16);
+}
+.q-body-sm-bold {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-16);
+}
+.q-body-sm-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-12);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-16);
+  text-transform: uppercase;
+}
+
+.q-body-xs-default {
+  font-family: var(--font-sans);
+  font-size: var(--fs-10);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-12);
+}
+.q-body-xs-bold {
+  font-family: var(--font-sans);
+  font-size: var(--fs-10);
+  font-weight: var(--fw-medium);
+  line-height: var(--lh-12);
+}
+.q-body-xs-caps {
+  font-family: var(--font-sans);
+  font-size: var(--fs-10);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-12);
+  text-transform: uppercase;
+}
+
+/* Element defaults — match the closest Panda semantic token */
+h1 {
+  margin: 0;
+  font-family: var(--font-decorative);
+  font-size: var(--fs-32);
+  font-weight: var(--fw-light);
+  line-height: var(--lh-36);
+}
+h2 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-22);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-26);
+  text-transform: uppercase;
+}
+h3 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-18);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-22);
+  text-transform: uppercase;
+}
+h4 {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-medium);
+  letter-spacing: var(--ls-base);
+  line-height: var(--lh-20);
+  text-transform: uppercase;
+}
+p {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-14);
+  font-weight: var(--fw-regular);
+  line-height: var(--lh-20);
+}
+small {
+  color: var(--fg-2);
+  font-size: var(--fs-12);
+  line-height: var(--lh-16);
+}
+a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+a:hover {
+  color: var(--fg-2);
+}
+code {
+  background: var(--bg-subtle);
+  padding: 0 4px;
+  border-radius: var(--radius-xs);
+  font-family: ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  font-size: 0.9em;
+}

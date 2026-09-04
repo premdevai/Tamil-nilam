@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="_ds/storefront-quince-design-system-5573fd82-d76d-4127-b3d9-b12794200690/colors_and_type.css">
+  <script src="_ds/storefront-quince-design-system-5573fd82-d76d-4127-b3d9-b12794200690/_ds_bundle.js"></script>
+  <style>
+    body { margin: 0; background: #FFFFFF; color: var(--color-darkgray); -webkit-font-smoothing: antialiased; }
+    a { color: var(--color-darkgray); text-decoration: underline; text-underline-offset: 3px; }
+    a:hover { color: var(--color-gray); }
+    input[type="range"] { accent-color: #FFA273; }
+    select { font-family: var(--font-sans); }
+  </style>
+</helmet>
+<div style="min-height:100vh;display:flex;flex-direction:column;font-family:var(--font-sans)">
+
+  <!-- ══ Header ══ -->
+  <header data-screen-label="Header" style="position:sticky;top:0;z-index:50;background:#FFFFFF;border-bottom:1px solid var(--color-lightgray)">
+    <div style="max-width:1440px;margin:0 auto;padding:0 32px;height:64px;display:flex;align-items:center;gap:40px">
+      <div onClick="{{ goHome }}" style="display:flex;align-items:baseline;gap:10px;cursor:pointer">
+        <span class="q-title-xl-dec" style="letter-spacing:0.02em">NILAM</span>
+        <span class="q-body-sm-default" style="color:var(--color-silvergray)">நிலம்</span>
+      </div>
+      <nav style="display:flex;gap:28px;flex:1">
+        <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="6">
+          <span class="q-body-sm-caps" onClick="{{ n.go }}" style="{{ n.style }}" style-hover="color:var(--color-darkgray)">{{ n.label }}</span>
+        </sc-for>
+      </nav>
+      <div style="display:flex;align-items:center;gap:16px">
+        <span class="q-body-sm-default" style="color:var(--color-silvergray)">{{ freshnessNote }}</span>
+        <div style="display:flex;border:1px solid var(--color-lightgray);border-radius:9999px;overflow:hidden">
+          <span class="q-body-sm-caps" onClick="{{ setEn }}" style="{{ enStyle }}">EN</span>
+          <span class="q-body-sm-caps" onClick="{{ setTa }}" style="{{ taStyle }}">தமிழ்</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main style="flex:1">
+
+  <!-- ══════════ MATCHER (home / landing) ══════════ -->
+  <sc-if value="{{ isMatcher }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="Matcher">
+    <!-- Hero -->
+    <section style="max-width:1440px;margin:0 auto;padding:64px 32px 40px">
+      <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:16px">{{ t.eyebrow }}</div>
+      <h1 class="q-rich-2xl-dec" style="margin:0;font-size:56px;line-height:1.1;max-width:820px;text-wrap:pretty">{{ t.heroTitle }}</h1>
+      <p class="q-body-lg-default" style="color:var(--color-gray);max-width:640px;margin:20px 0 0">{{ t.heroSub }}</p>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:32px;margin-top:40px;max-width:960px">
+        <sc-for list="{{ howSteps }}" as="hs" hint-placeholder-count="3">
+          <div style="border-top:2px solid #FFA273;padding-top:14px">
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ hs.n }}</div>
+            <div class="q-body-base-bold" style="margin-top:8px">{{ hs.title }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:4px;text-wrap:pretty">{{ hs.text }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </section>
+
+    <!-- Matcher: inputs + results -->
+    <section style="max-width:1440px;margin:0 auto;padding:0 32px 72px;display:grid;grid-template-columns:minmax(320px,420px) 1fr;gap:56px;align-items:start">
+
+      <!-- Inputs -->
+      <div style="display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.sector }}</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ sectors }}" as="s" hint-placeholder-count="5">
+              <span class="q-body-sm-caps" onClick="{{ s.pick }}" style="{{ s.style }}" style-hover="border-color:var(--color-silvergray)">{{ s.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <span class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.projectSize }}</span>
+            <span class="q-title-lg-dec">{{ projectDisplay }}</span>
+          </div>
+          <input type="range" min="0" max="100" value="{{ sliderVal }}" onChange="{{ onSlider }}" style="width:100%">
+          <div style="display:flex;justify-content:space-between">
+            <span class="q-body-sm-default" style="color:var(--color-silvergray)">₹10L</span>
+            <span class="q-body-sm-default" style="color:var(--color-silvergray)">₹50Cr</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.district }}</div>
+          <select value="{{ district }}" onChange="{{ onDistrict }}" class="q-body-base-default" style="height:44px;border:1px solid var(--color-lightgray);border-radius:4px;padding:0 12px;background:#fff;color:var(--color-darkgray)">
+            <sc-for list="{{ districts }}" as="d" hint-placeholder-count="4">
+              <option value="{{ d.name }}">{{ d.name }}</option>
+            </sc-for>
+          </select>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.promoter }}</div>
+          <sc-for list="{{ toggles }}" as="tg" hint-placeholder-count="4">
+            <div onClick="{{ tg.flip }}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 0;border-bottom:1px solid var(--color-lightgray);cursor:pointer">
+              <div>
+                <div class="q-body-base-default">{{ tg.label }}</div>
+                <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ tg.sub }}</div>
+              </div>
+              <div style="{{ tg.trackStyle }}"><div style="{{ tg.knobStyle }}"></div></div>
+            </div>
+          </sc-for>
+        </div>
+        <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ t.liveNote }}</div>
+      </div>
+
+      <!-- Results -->
+      <div style="background:var(--color-paperwhite);padding:40px;display:flex;flex-direction:column;gap:32px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.totalSupport }}</div>
+            <div class="q-rich-2xl-dec" style="font-size:64px;line-height:1.05;margin-top:8px">{{ totalDisplay }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:8px">{{ t.disclaimer }} · <a href="#changelog" onClick="{{ goChangelog }}">ruleset {{ rulesetVersion }}</a></div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:10px;max-width:460px;text-wrap:pretty">{{ t.totalSimple }}</div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:center">
+            <button onClick="{{ onShare }}" class="q-body-sm-caps" style="height:44px;padding:0 28px;border-radius:9999px;border:none;background:#FFA273;color:var(--color-darkgray);cursor:pointer" style-hover="background:#F5905E">{{ shareLabel }}</button>
+            <button onClick="{{ goPlaybooks }}" class="q-body-sm-caps" style="height:44px;padding:0 24px;border-radius:9999px;border:1px solid var(--color-darkgray);background:transparent;color:var(--color-darkgray);cursor:pointer" style-hover="background:var(--color-offwhite)">{{ t.openPlaybook }}</button>
+          </div>
+        </div>
+
+        <!-- Eligible schemes -->
+        <div>
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);padding-bottom:12px;border-bottom:1px solid var(--color-darkgray)">{{ t.yourStack }} · {{ eligibleCount }}</div>
+          <sc-for list="{{ schemeRows }}" as="r" hint-placeholder-count="4">
+            <div style="border-bottom:1px solid var(--color-lightgray)">
+              <div onClick="{{ r.toggle }}" style="display:grid;grid-template-columns:1fr auto auto;gap:16px;align-items:center;padding:16px 0;cursor:pointer">
+                <div>
+                  <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+                    <span class="q-body-base-bold">{{ r.name }}</span>
+                    <span class="q-body-sm-default" style="color:var(--color-silvergray)">{{ r.nameTa }}</span>
+                    <span class="q-body-sm-caps" style="{{ r.badgeStyle }}">{{ r.badge }}</span>
+                    <sc-if value="{{ r.deadline }}" hint-placeholder-val="{{ false }}">
+                      <span class="q-body-sm-caps" style="color:var(--color-red-100)">{{ r.deadline }}</span>
+                    </sc-if>
+                  </div>
+                  <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:4px">{{ r.note }}</div>
+                </div>
+                <span class="q-title-md-dec">{{ r.amount }}</span>
+                <span class="q-body-sm-default" style="color:var(--color-silvergray);width:16px;text-align:center">{{ r.chev }}</span>
+              </div>
+              <sc-if value="{{ r.expanded }}" hint-placeholder-val="{{ false }}">
+                <div style="padding:0 0 20px;display:grid;grid-template-columns:1fr 1fr;gap:24px">
+                  <div>
+                    <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.eligibilityTest }}</div>
+                    <sc-for list="{{ r.checks }}" as="c" hint-placeholder-count="3">
+                      <div style="display:flex;gap:10px;align-items:center;padding:4px 0">
+                        <span class="q-body-sm-bold" style="{{ c.markStyle }}">{{ c.mark }}</span>
+                        <span class="q-body-sm-default" style="{{ c.textStyle }}">{{ c.label }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                  <div style="display:flex;flex-direction:column;gap:10px">
+                    <div>
+                      <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.components }}</div>
+                      <sc-for list="{{ r.benefits }}" as="b" hint-placeholder-count="2">
+                        <div class="q-body-sm-default" style="padding:3px 0"><span class="q-body-sm-bold">{{ b.amount }}</span> — {{ b.note }}</div>
+                      </sc-for>
+                    </div>
+                    <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ r.citation }} · verified {{ r.verified }}</div>
+                    <a class="q-body-sm-caps" onClick="{{ r.openScheme }}" style="cursor:pointer;text-decoration:none;color:var(--color-darkgray)">{{ t.fullPage }} →</a>
+                  </div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- Conflicts -->
+        <sc-if value="{{ hasConflicts }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.conflicts }}</div>
+            <sc-for list="{{ conflicts }}" as="cf" hint-placeholder-count="1">
+              <div style="background:#FFFFFF;border:1px solid var(--color-lightgray);padding:16px 20px;margin-bottom:8px">
+                <div class="q-body-base-default">{{ cf.text }}</div>
+                <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:6px">{{ cf.confirm }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- Near misses -->
+        <sc-if value="{{ hasNearMisses }}" hint-placeholder-val="{{ false }}">
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.nearMisses }}</div>
+            <sc-for list="{{ nearMisses }}" as="nm" hint-placeholder-count="1">
+              <div class="q-body-sm-default" style="padding:8px 0;border-bottom:1px solid var(--color-lightgray)"><span class="q-body-sm-bold">{{ nm.name }}</span> — {{ nm.text }}</div>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <!-- Sequence + Land side by side -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.sequence }}</div>
+            <sc-for list="{{ sequence }}" as="st" hint-placeholder-count="4">
+              <div style="display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--color-lightgray)">
+                <span class="q-title-sm-dec" style="color:var(--color-silvergray);min-width:24px">{{ st.n }}</span>
+                <div>
+                  <div class="q-body-sm-bold">{{ st.title }}</div>
+                  <div class="q-body-sm-default" style="color:var(--color-gray)">{{ st.meta }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.landOptions }}</div>
+            <sc-for list="{{ landRanked }}" as="e" hint-placeholder-count="3">
+              <div onClick="{{ e.open }}" style="padding:12px 0;border-bottom:1px solid var(--color-lightgray);cursor:pointer" style-hover="background:var(--color-offwhite)">
+                <div style="display:flex;justify-content:space-between;gap:12px">
+                  <span class="q-body-sm-bold">{{ e.name }}</span>
+                  <span class="q-body-sm-default" style="color:var(--color-gray)">{{ e.rate }}</span>
+                </div>
+                <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:2px">{{ e.meta }}</div>
+              </div>
+            </sc-for>
+            <a class="q-body-sm-caps" onClick="{{ goLand }}" style="display:inline-block;margin-top:12px;cursor:pointer;text-decoration:none">{{ t.allEstates }} →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Glossary -->
+    <section style="border-top:1px solid var(--color-lightgray)">
+      <div style="max-width:1440px;margin:0 auto;padding:48px 32px">
+        <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:24px">{{ t.glossaryTitle }}</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px 48px">
+          <sc-for list="{{ glossary }}" as="g" hint-placeholder-count="8">
+            <div class="q-body-sm-default" style="color:var(--color-gray);text-wrap:pretty"><span class="q-body-sm-bold" style="color:var(--color-darkgray)">{{ g.term }}</span> — {{ g.def }}</div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- Marketing band -->
+    <sc-if value="{{ showMarketing }}" hint-placeholder-val="{{ true }}">
+      <section style="border-top:1px solid var(--color-lightgray);background:#FFFFFF">
+        <div style="max-width:1440px;margin:0 auto;padding:56px 32px;display:grid;grid-template-columns:repeat(3,1fr);gap:48px">
+          <sc-for list="{{ trust }}" as="tr" hint-placeholder-count="3">
+            <div>
+              <div class="q-body-sm-caps" style="margin-bottom:10px">{{ tr.title }}</div>
+              <div class="q-body-base-default" style="color:var(--color-gray);text-wrap:pretty">{{ tr.text }}</div>
+            </div>
+          </sc-for>
+        </div>
+      </section>
+      <section style="background:var(--color-darkgray);color:#FFFFFF">
+        <div style="max-width:1440px;margin:0 auto;padding:72px 32px">
+          <div class="q-body-sm-caps" style="color:#FFA273;margin-bottom:16px">{{ t.moatEyebrow }}</div>
+          <div class="q-title-2xl-dec" style="max-width:720px;font-size:34px;line-height:1.25;text-wrap:pretty">{{ t.moatTitle }}</div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:32px;margin-top:48px">
+            <sc-for list="{{ loopSteps }}" as="ls" hint-placeholder-count="4">
+              <div style="border-top:1px solid rgba(255,255,255,0.3);padding-top:16px">
+                <div class="q-body-sm-caps" style="color:rgba(255,255,255,0.6)">{{ ls.n }}</div>
+                <div class="q-body-base-bold" style="margin:8px 0 6px">{{ ls.title }}</div>
+                <div class="q-body-sm-default" style="color:rgba(255,255,255,0.65)">{{ ls.text }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ LAND EXPLORER ══════════ -->
+  <sc-if value="{{ isLand }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Land Explorer" style="max-width:1440px;margin:0 auto;padding:48px 32px 80px">
+    <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.navLand }}</div>
+    <h2 class="q-rich-xl-dec" style="margin:0 0 8px">{{ t.landTitle }}</h2>
+    <p class="q-body-base-default" style="color:var(--color-gray);margin:0 0 24px;max-width:560px">{{ t.landSub }}</p>
+    <div style="background:var(--color-paperwhite);padding:18px 22px;margin:0 0 28px;max-width:860px">
+      <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+      <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ t.landExplain }}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px">
+      <sc-for list="{{ agencyFilters }}" as="af" hint-placeholder-count="4">
+        <span class="q-body-sm-caps" onClick="{{ af.pick }}" style="{{ af.style }}" style-hover="border-color:var(--color-silvergray)">{{ af.label }}</span>
+      </sc-for>
+    </div>
+    <div style="display:grid;grid-template-columns:minmax(300px,380px) 1fr;gap:48px;align-items:start">
+      <div style="border-top:1px solid var(--color-darkgray)">
+        <sc-for list="{{ estateList }}" as="e" hint-placeholder-count="6">
+          <div onClick="{{ e.select }}" style="{{ e.style }}" style-hover="background:var(--color-paperwhite)">
+            <div style="display:flex;justify-content:space-between;gap:12px">
+              <span class="q-body-base-bold">{{ e.name }}</span>
+              <span class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ e.agency }}</span>
+            </div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:4px">{{ e.meta }}</div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--color-paperwhite);padding:36px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px;flex-wrap:wrap">
+          <div>
+            <div class="q-title-xl-dec">{{ selEstate.name }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:6px">{{ selEstate.sub }}</div>
+            <sc-if value="{{ selEstate.backwardBadge }}" hint-placeholder-val="{{ false }}">
+              <div class="q-body-sm-caps" style="display:inline-block;margin-top:10px;padding:4px 12px;border-radius:9999px;background:var(--color-stone);color:var(--color-umber)">{{ t.backwardBadge }}</div>
+            </sc-if>
+          </div>
+          <button onClick="{{ selEstate.prefill }}" class="q-body-sm-caps" style="height:44px;padding:0 24px;border-radius:9999px;border:none;background:#FFA273;color:var(--color-darkgray);cursor:pointer" style-hover="background:#F5905E">{{ t.runHere }}</button>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:28px 0;padding:20px 0;border-top:1px solid var(--color-lightgray);border-bottom:1px solid var(--color-lightgray)">
+          <sc-for list="{{ selEstate.stats }}" as="s" hint-placeholder-count="4">
+            <div>
+              <div class="q-title-lg-dec">{{ s.val }}</div>
+              <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-top:4px">{{ s.label }}</div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:36px">
+          <div>
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:10px">{{ t.plotMap }}</div>
+            <div style="display:grid;grid-template-columns:repeat(12,1fr);gap:3px">
+              <sc-for list="{{ selEstate.cells }}" as="c" hint-placeholder-count="48">
+                <div style="{{ c.style }}" title="{{ c.label }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;gap:16px;margin-top:12px;flex-wrap:wrap">
+              <sc-for list="{{ plotLegend }}" as="l" hint-placeholder-count="4">
+                <span class="q-body-sm-default" style="display:flex;align-items:center;gap:6px;color:var(--color-gray)"><span style="{{ l.dot }}"></span>{{ l.label }}</span>
+              </sc-for>
+            </div>
+            <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:10px">{{ selEstate.sync }}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:20px">
+            <div>
+              <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.infra }}</div>
+              <sc-for list="{{ selEstate.infra }}" as="i" hint-placeholder-count="4">
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--color-lightgray)">
+                  <span class="q-body-sm-default">{{ i.label }}</span>
+                  <span class="q-body-sm-bold" style="{{ i.style }}">{{ i.val }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div>
+              <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.distances }}</div>
+              <sc-for list="{{ selEstate.dist }}" as="d" hint-placeholder-count="3">
+                <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--color-lightgray)">
+                  <span class="q-body-sm-default">{{ d.label }}</span>
+                  <span class="q-body-sm-default" style="color:var(--color-gray)">{{ d.val }}</span>
+                </div>
+              </sc-for>
+            </div>
+            <div class="q-body-sm-default" style="color:var(--color-gray)">{{ selEstate.schemesLine }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ SCHEME ENCYCLOPEDIA ══════════ -->
+  <sc-if value="{{ isSchemes }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Schemes" style="max-width:1440px;margin:0 auto;padding:48px 32px 80px">
+    <sc-if value="{{ noSchemeSel }}" hint-placeholder-val="{{ true }}">
+      <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.navSchemes }}</div>
+      <h2 class="q-rich-xl-dec" style="margin:0 0 8px">{{ t.schemesTitle }}</h2>
+      <p class="q-body-base-default" style="color:var(--color-gray);margin:0 0 24px;max-width:560px">{{ t.schemesSub }}</p>
+      <div style="background:var(--color-paperwhite);padding:18px 22px;margin:0 0 32px;max-width:860px">
+        <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+        <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ t.schemesExplain }}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1px;background:var(--color-lightgray);border:1px solid var(--color-lightgray)">
+        <sc-for list="{{ schemeCards }}" as="sc" hint-placeholder-count="6">
+          <div onClick="{{ sc.open }}" style="background:#FFFFFF;padding:24px;cursor:pointer" style-hover="background:var(--color-paperwhite)">
+            <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start">
+              <span class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ sc.level }}</span>
+              <span class="q-body-sm-caps" style="{{ sc.freshStyle }}">{{ sc.fresh }}</span>
+            </div>
+            <div class="q-title-md-dec" style="margin:14px 0 4px">{{ sc.name }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ sc.nameTa }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:10px">{{ sc.line }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ schemeDetail }}" hint-placeholder-val="{{ false }}">
+      <a class="q-body-sm-caps" onClick="{{ closeScheme }}" style="cursor:pointer;text-decoration:none">← {{ t.schemesTitle }}</a>
+      <div style="display:grid;grid-template-columns:1fr minmax(280px,360px);gap:56px;margin-top:24px;align-items:start">
+        <div>
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+            <span class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ schemeDetail.level }}</span>
+            <span class="q-body-sm-caps" style="{{ schemeDetail.freshStyle }}">{{ schemeDetail.fresh }}</span>
+            <sc-if value="{{ schemeDetail.deadline }}" hint-placeholder-val="{{ false }}">
+              <span class="q-body-sm-caps" style="color:var(--color-red-100)">{{ schemeDetail.deadline }}</span>
+            </sc-if>
+          </div>
+          <h2 class="q-rich-xl-dec" style="margin:14px 0 2px">{{ schemeDetail.name }}</h2>
+          <div class="q-body-base-default" style="color:var(--color-silvergray)">{{ schemeDetail.nameTa }} · {{ schemeDetail.dept }}</div>
+          <div style="background:var(--color-paperwhite);padding:16px 20px;margin:16px 0 0;max-width:600px">
+            <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+            <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ schemeDetail.simple }}</div>
+          </div>
+          <p class="q-body-lg-default" style="color:var(--color-gray);max-width:600px;text-wrap:pretty">{{ schemeDetail.summary }}</p>
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin:32px 0 12px">{{ t.whatYouGet }}</div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-lightgray);border:1px solid var(--color-lightgray)">
+            <sc-for list="{{ schemeDetail.examples }}" as="ex" hint-placeholder-count="3">
+              <div style="background:var(--color-paperwhite);padding:20px">
+                <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ ex.size }}</div>
+                <div class="q-title-lg-dec" style="margin-top:8px">{{ ex.amount }}</div>
+              </div>
+            </sc-for>
+          </div>
+          <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:8px">{{ t.exampleNote }}</div>
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin:32px 0 12px">{{ t.howToApply }}</div>
+          <sc-for list="{{ schemeDetail.steps }}" as="ap" hint-placeholder-count="4">
+            <div style="display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--color-lightgray)">
+              <span class="q-title-sm-dec" style="color:var(--color-silvergray);min-width:24px">{{ ap.n }}</span>
+              <span class="q-body-base-default">{{ ap.text }}</span>
+            </div>
+          </sc-for>
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin:32px 0 12px">{{ t.goHistory }}</div>
+          <sc-for list="{{ schemeDetail.history }}" as="h" hint-placeholder-count="2">
+            <div style="display:flex;gap:20px;padding:10px 0;border-bottom:1px solid var(--color-lightgray)">
+              <span class="q-body-sm-default" style="color:var(--color-silvergray);min-width:90px">{{ h.date }}</span>
+              <div>
+                <div class="q-body-sm-bold">{{ h.go }}</div>
+                <div class="q-body-sm-default" style="color:var(--color-gray)">{{ h.note }}</div>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+        <div style="background:var(--color-paperwhite);padding:28px;display:flex;flex-direction:column;gap:20px">
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.doYouQualify }}</div>
+          <sc-for list="{{ schemeDetail.checks }}" as="c" hint-placeholder-count="3">
+            <div style="display:flex;gap:10px;align-items:center">
+              <span class="q-body-sm-bold" style="{{ c.markStyle }}">{{ c.mark }}</span>
+              <span class="q-body-sm-default" style="{{ c.textStyle }}">{{ c.label }}</span>
+            </div>
+          </sc-for>
+          <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ t.checkerNote }}</div>
+          <button onClick="{{ goHome }}" class="q-body-sm-caps" style="height:44px;border-radius:9999px;border:none;background:#FFA273;color:var(--color-darkgray);cursor:pointer" style-hover="background:#F5905E">{{ t.editInMatcher }}</button>
+          <div style="border-top:1px solid var(--color-lightgray);padding-top:16px">
+            <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:8px">{{ t.conflictsWith }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-gray)">{{ schemeDetail.conflictLine }}</div>
+          </div>
+          <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ schemeDetail.citation }} · verified {{ schemeDetail.verified }}</div>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ PLAYBOOKS ══════════ -->
+  <sc-if value="{{ isPlaybooks }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Playbooks" style="max-width:1440px;margin:0 auto;padding:48px 32px 80px">
+    <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.navPlaybooks }}</div>
+    <h2 class="q-rich-xl-dec" style="margin:0 0 8px">{{ t.pbTitle }}</h2>
+    <p class="q-body-base-default" style="color:var(--color-gray);margin:0 0 24px;max-width:560px">{{ t.pbSub }}</p>
+    <div style="background:var(--color-paperwhite);padding:18px 22px;margin:0 0 32px;max-width:860px">
+      <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+      <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ t.pbExplain }}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:36px">
+      <sc-for list="{{ pbTabs }}" as="pt" hint-placeholder-count="3">
+        <span class="q-body-sm-caps" onClick="{{ pt.pick }}" style="{{ pt.style }}" style-hover="border-color:var(--color-silvergray)">{{ pt.label }}</span>
+      </sc-for>
+    </div>
+    <div style="max-width:860px">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--color-darkgray);padding-bottom:12px">
+        <span class="q-title-lg-dec">{{ pbSel.title }}</span>
+        <span class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ pbSel.progress }}</span>
+      </div>
+      <sc-for list="{{ pbSel.steps }}" as="ps" hint-placeholder-count="6">
+        <div style="display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--color-lightgray)">
+          <div onClick="{{ ps.flip }}" style="{{ ps.boxStyle }}"><span class="q-body-sm-bold" style="color:#fff">{{ ps.mark }}</span></div>
+          <div style="flex:1">
+            <div style="display:flex;justify-content:space-between;gap:16px">
+              <span class="q-body-base-bold" style="{{ ps.titleStyle }}">{{ ps.title }}</span>
+              <span class="q-body-sm-caps" style="color:var(--color-mediumgray);white-space:nowrap">{{ ps.time }}</span>
+            </div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:4px">{{ ps.org }} · {{ ps.docs }}</div>
+            <sc-if value="{{ ps.warn }}" hint-placeholder-val="{{ false }}">
+              <div class="q-body-sm-default" style="color:var(--color-umber);margin-top:6px">⚠ {{ ps.warn }}</div>
+            </sc-if>
+          </div>
+        </div>
+      </sc-for>
+      <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:16px">{{ t.pbLocalNote }}</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ SAVED / ALERTS ══════════ -->
+  <sc-if value="{{ isSaved }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Saved stacks" style="max-width:1440px;margin:0 auto;padding:48px 32px 80px">
+    <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.navSaved }}</div>
+    <h2 class="q-rich-xl-dec" style="margin:0 0 8px">{{ t.savedTitle }}</h2>
+    <p class="q-body-base-default" style="color:var(--color-gray);margin:0 0 24px;max-width:560px">{{ t.savedSub }}</p>
+    <div style="background:var(--color-paperwhite);padding:18px 22px;margin:0 0 32px;max-width:860px">
+      <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+      <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ t.savedExplain }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr minmax(300px,400px);gap:56px;align-items:start">
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <sc-for list="{{ savedStacks }}" as="sv" hint-placeholder-count="2">
+          <div style="border:1px solid var(--color-lightgray);padding:24px">
+            <div style="display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap">
+              <div>
+                <div class="q-body-base-bold">{{ sv.title }}</div>
+                <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:4px">{{ sv.inputs }}</div>
+              </div>
+              <div style="text-align:right">
+                <div class="q-title-lg-dec">{{ sv.total }}</div>
+                <div class="q-body-sm-default" style="color:var(--color-silvergray)">{{ sv.version }}</div>
+              </div>
+            </div>
+            <sc-if value="{{ sv.delta }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-top:14px;background:var(--color-green-10);padding:10px 14px" class="q-body-sm-default"><span class="q-body-sm-bold" style="color:var(--color-green-100)">{{ sv.deltaBadge }}</span> {{ sv.delta }}</div>
+            </sc-if>
+          </div>
+        </sc-for>
+        <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-top:24px;border-bottom:1px solid var(--color-darkgray);padding-bottom:10px">{{ t.alerts }}</div>
+        <sc-for list="{{ alerts }}" as="al" hint-placeholder-count="3">
+          <div style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--color-lightgray)">
+            <span class="q-body-sm-caps" style="{{ al.badgeStyle }}">{{ al.badge }}</span>
+            <div style="flex:1">
+              <div class="q-body-sm-default">{{ al.text }}</div>
+              <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:2px">{{ al.date }}</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="background:var(--color-paperwhite);padding:28px">
+        <div class="q-body-sm-caps" style="color:var(--color-mediumgray)">{{ t.tgTitle }}</div>
+        <div class="q-title-md-dec" style="margin:12px 0 8px">@nilam_alerts_bot</div>
+        <div class="q-body-sm-default" style="color:var(--color-gray);text-wrap:pretty">{{ t.tgText }}</div>
+        <button class="q-body-sm-caps" style="margin-top:20px;height:44px;padding:0 28px;border-radius:9999px;border:none;background:#FFA273;color:var(--color-darkgray);cursor:pointer" style-hover="background:#F5905E">{{ t.tgCta }}</button>
+        <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:16px">{{ t.tgNote }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <!-- ══════════ CHANGELOG ══════════ -->
+  <sc-if value="{{ isChangelog }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Changelog" style="max-width:1440px;margin:0 auto;padding:48px 32px 80px">
+    <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-bottom:12px">{{ t.navChangelog }}</div>
+    <h2 class="q-rich-xl-dec" style="margin:0 0 8px">{{ t.clTitle }}</h2>
+    <p class="q-body-base-default" style="color:var(--color-gray);margin:0 0 24px;max-width:560px">{{ t.clSub }}</p>
+    <div style="background:var(--color-paperwhite);padding:18px 22px;margin:0 0 32px;max-width:860px">
+      <div class="q-body-sm-caps" style="color:var(--color-umber);margin-bottom:6px">{{ t.simpleWords }}</div>
+      <div class="q-body-base-default" style="color:var(--color-darkgray);text-wrap:pretty">{{ t.clExplain }}</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--color-lightgray);border:1px solid var(--color-lightgray);max-width:860px;margin-bottom:48px">
+      <sc-for list="{{ clStats }}" as="cs" hint-placeholder-count="3">
+        <div style="background:var(--color-paperwhite);padding:24px">
+          <div class="q-title-xl-dec">{{ cs.val }}</div>
+          <div class="q-body-sm-caps" style="color:var(--color-mediumgray);margin-top:6px">{{ cs.label }}</div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="max-width:860px;border-top:1px solid var(--color-darkgray)">
+      <sc-for list="{{ clEntries }}" as="ce" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:110px 110px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--color-lightgray)">
+          <span class="q-body-sm-default" style="color:var(--color-silvergray)">{{ ce.date }}</span>
+          <span class="q-body-sm-caps" style="{{ ce.kindStyle }}">{{ ce.kind }}</span>
+          <div>
+            <div class="q-body-sm-bold">{{ ce.entity }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:2px">{{ ce.note }}</div>
+            <div class="q-body-sm-default" style="color:var(--color-silvergray);margin-top:2px">{{ ce.actor }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  </main>
+
+  <!-- ══ Footer ══ -->
+  <footer style="border-top:1px solid var(--color-lightgray);background:var(--color-paperwhite)">
+    <div style="max-width:1440px;margin:0 auto;padding:40px 32px;display:flex;justify-content:space-between;gap:32px;flex-wrap:wrap">
+      <div>
+        <span class="q-title-md-dec">NILAM</span>
+        <span class="q-body-sm-default" style="color:var(--color-silvergray);margin-left:8px">நிலம்</span>
+        <div class="q-body-sm-default" style="color:var(--color-gray);margin-top:8px;max-width:480px;text-wrap:pretty">{{ t.footerDisclaimer }}</div>
+      </div>
+      <div class="q-body-sm-caps" style="color:var(--color-mediumgray);display:flex;gap:24px;align-items:flex-start">
+        <span onClick="{{ goChangelog }}" style="cursor:pointer">{{ t.navChangelog }}</span>
+        <span onClick="{{ goSchemes }}" style="cursor:pointer">{{ t.navSchemes }}</span>
+        <span>TAMIL NADU · {{ rulesetVersion }}</span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;defaultLang&quot;: { &quot;editor&quot;: &quot;enum&quot;, &quot;options&quot;: [&quot;en&quot;, &quot;ta&quot;], &quot;default&quot;: &quot;en&quot;, &quot;tsType&quot;: &quot;\&quot;en\&quot; | \&quot;ta\&quot;&quot;, &quot;section&quot;: &quot;Language&quot; },
+  &quot;staleDays&quot;: { &quot;editor&quot;: &quot;int&quot;, &quot;default&quot;: 90, &quot;min&quot;: 30, &quot;max&quot;: 365, &quot;unit&quot;: &quot;days&quot;, &quot;section&quot;: &quot;Trust&quot;, &quot;tsType&quot;: &quot;number&quot; },
+  &quot;showMarketing&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;section&quot;: &quot;Landing&quot;, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  state = {
+    view: 'matcher', lang: null,
+    sector: 'food', sliderVal: 62, district: 'Thanjavur',
+    firstGen: true, ageOk: true, special: false, backward: true, fpo: false,
+    expanded: { needs: true }, agencyFilter: 'All', estateSel: 'kattuvananjur',
+    schemeSel: null, pbSel: 'flagship', pbDone: {}, copied: false
+  };
+
+  componentDidMount() {
+    // restore stateful URL + playbook progress
+    try {
+      const h = new URLSearchParams((location.hash || '').replace(/^#\??/, ''));
+      const s = {};
+      if (h.get('sec')) s.sector = h.get('sec');
+      if (h.get('pc')) s.sliderVal = this.lakhsToSlider(+h.get('pc'));
+      if (h.get('d')) s.district = h.get('d');
+      if (h.get('fg')) s.firstGen = h.get('fg') === '1';
+      if (h.get('sp')) s.special = h.get('sp') === '1';
+      if (h.get('bb')) s.backward = h.get('bb') === '1';
+      if (h.get('fpo')) s.fpo = h.get('fpo') === '1';
+      const pb = JSON.parse(localStorage.getItem('nilam_pb_done') || 'null');
+      if (pb) s.pbDone = pb;
+      if (Object.keys(s).length) this.setState(s);
+    } catch (e) {}
+  }
+
+  lakhs() { return Math.round(10 * Math.pow(500, this.state.sliderVal / 100)); }
+  lakhsToSlider(l) { return Math.max(0, Math.min(100, Math.round(100 * Math.log(l / 10) / Math.log(500)))); }
+  fmt(l) {
+    if (l == null) return '—';
+    if (l < 100) return '₹' + (Math.round(l * 10) / 10) + 'L';
+    return '₹' + (Math.round(l / 10) / 10) + 'Cr';
+  }
+  daysSince(d) { return Math.round((Date.now() - new Date(d).getTime()) / 86400000); }
+  daysUntil(d) { return Math.round((new Date(d).getTime() - Date.now()) / 86400000); }
+  syncUrl() {
+    const i = this.state;
+    location.hash = 'sec=' + i.sector + '&pc=' + this.lakhs() + '&d=' + i.district +
+      '&fg=' + (i.firstGen ? 1 : 0) + '&sp=' + (i.special ? 1 : 0) + '&bb=' + (i.backward ? 1 : 0) + '&fpo=' + (i.fpo ? 1 : 0);
+  }
+  set(patch) { this.setState(patch, () => this.syncUrl()); }
+
+  schemes() {
+    const est = (P) => Math.min(0.65 * P, 300);
+    return [
+      { id: 'needs', name: 'NEEDS', nameTa: 'நீட்ஸ்', level: 'State', dept: 'TN MSME Dept', group: 'capital-state',
+        citation: 'G.O. (Ms) No.13, MSME (D2), 24.04.2018', verified: '2026-08-02', deadline: null,
+        line: '25% capital subsidy up to ₹75L + 3% interest subvention, for first-generation entrepreneurs.',
+        summary: 'The New Entrepreneur-cum-Enterprise Development Scheme backs first-generation founders with a capital subsidy, interest subvention and preferential government plot allotment.',
+        checks: [
+          { id: 'fg', label: 'First business in your family (first-generation)', test: i => i.firstGen },
+          { id: 'age', label: 'Age 21–45 · relaxed up to 55 for women / SC / ST / BC / MBC & others', test: i => i.ageOk },
+          { id: 'edu', label: 'Studied 12th / ITI / diploma / degree (any one)', test: () => true },
+          { id: 'size', label: 'Project cost ₹10L – ₹5Cr · trading shops not eligible', test: i => i.P >= 10 && i.P <= 500 }],
+        benefit: i => {
+          const cap = Math.min(i.P * 0.25, 75);
+          const sub = Math.round(est(i.P) * 0.03 * 5 * 10) / 10;
+          return [
+            { lakhs: cap, note: '25% capital subsidy on project cost, capped ₹75L' },
+            { lakhs: sub, note: '3% interest subvention on term loan, est. over tenure' },
+            { lakhs: null, note: 'You put in only 10% yourself (5% for special category); bank lends the rest' },
+            { lakhs: null, note: 'SC / ST / differently-abled: extra 10% capital subsidy on top' },
+            { lakhs: null, note: 'Preferential TANSIDCO / SIDCO plot allotment' }];
+        },
+        steps: ['Apply online at msmeonline.tn.gov.in with project profile', 'DIC scrutiny + EDP training (25 days, mandatory)', 'Bank tie-up: loan sanction with NEEDS tagging — ask explicitly', 'Subsidy released to bank as back-end fixed deposit'],
+        docs: 'Aadhaar, community & nativity certificates, project report, EDP certificate',
+        conflictLine: 'One state capital subsidy per project — cannot combine with TN Capital Subsidy or UYEGP. Confirm at DIC in writing.',
+        history: [
+          { go: 'G.O. (Ms) No.13, MSME (D2)', date: '24.04.2018', note: 'Scheme instituted; 25% subsidy, ₹75L cap' },
+          { go: 'G.O. (Ms) No.42, MSME (D2)', date: '11.02.2024', note: 'Special-category upper age relaxed to 55' },
+          { go: 'DIC circular', date: '19.08.2026', note: 'Subvention tenure computation clarified (ruleset v14)' }] },
+      { id: 'tncap', name: 'TN Capital Subsidy', nameTa: 'மூலதன மானியம்', level: 'State', dept: 'TN Industries Dept', group: 'capital-state',
+        citation: 'G.O. (Ms) No.55, Industries (MIF.1), 10.05.2021', verified: '2026-05-10', deadline: null,
+        line: '25% subsidy on eligible plant & machinery for manufacturing MSMEs — the fallback when NEEDS doesn\u2019t apply.',
+        summary: 'General capital subsidy for manufacturing MSMEs on eligible plant and machinery, with add-ons in backward blocks.',
+        checks: [
+          { id: 'mfg', label: 'Manufacturing sector (services excluded)', test: i => i.sector !== 'services' },
+          { id: 'size', label: 'Project cost ₹10L – ₹30Cr', test: i => i.P >= 10 && i.P <= 3000 }],
+        benefit: i => [{ lakhs: Math.min(Math.round(i.P * 0.25 * 0.6 * 10) / 10, 50), note: '25% of eligible P&M (est. 60% of project), capped — directional' }],
+        steps: ['File claim with DIC after commercial production begins', 'Chartered engineer P&M valuation', 'District committee approval and disbursal'],
+        docs: 'Udyam certificate, P&M invoices, CA certificate, production proof',
+        conflictLine: 'Mutually exclusive with NEEDS and UYEGP (state capital group).',
+        history: [{ go: 'G.O. (Ms) No.55, Industries (MIF.1)', date: '10.05.2021', note: 'Consolidated MSME capital subsidy norms' }] },
+      { id: 'uyegp', name: 'UYEGP', nameTa: 'உயெஜிப்', level: 'State', dept: 'TN MSME Dept', group: 'capital-state',
+        citation: 'G.O. (Ms) No.68, MSME (C1), 30.07.2019', verified: '2026-07-28', deadline: null,
+        line: '25% margin-money subsidy up to ₹2.5L for micro enterprises up to ₹10L.',
+        summary: 'Unemployed Youth Employment Generation Programme — margin money for micro units.',
+        checks: [
+          { id: 'size', label: 'Project cost up to ₹10L', test: i => i.P <= 10 },
+          { id: 'age', label: 'Age 18–45', test: i => i.ageOk }],
+        benefit: i => [{ lakhs: Math.min(i.P * 0.25, 2.5), note: '25% margin money subsidy, capped ₹2.5L' }],
+        steps: ['Apply via msmeonline.tn.gov.in', 'Task-force interview at DIC', 'Bank sanction + EDP training'],
+        docs: 'Aadhaar, education proof, project report',
+        conflictLine: 'Mutually exclusive with NEEDS and TN Capital Subsidy.',
+        history: [{ go: 'G.O. (Ms) No.68, MSME (C1)', date: '30.07.2019', note: 'Scheme guidelines' }] },
+      { id: 'pmegp', name: 'PMEGP', nameTa: 'பிஎம்இஜிபி', level: 'Central', dept: 'MSME / KVIC', group: 'capital-central',
+        citation: 'KVIC Guidelines 2022 (rev.)', verified: '2026-08-10', deadline: null,
+        line: 'Margin-money subsidy 15–35% for new micro enterprises up to ₹50L (manufacturing).',
+        summary: 'Prime Minister\u2019s Employment Generation Programme — credit-linked margin money for new units.',
+        checks: [
+          { id: 'size', label: 'Project cost up to ₹50L (manufacturing)', test: i => i.P <= 50 },
+          { id: 'new', label: 'New unit (no prior govt subsidy)', test: () => true }],
+        benefit: i => { const r = (i.special || i.backward) ? 0.35 : 0.15; return [{ lakhs: Math.round(Math.min(i.P, 50) * r * 10) / 10, note: (r * 100) + '% margin money (rural/special rate applied per your profile)' }]; },
+        steps: ['Apply on kviconline.gov.in', 'District task-force approval', 'Bank sanction; margin money locked 3 years'],
+        docs: 'Aadhaar, project report, caste/rural certificates as applicable',
+        conflictLine: 'One central capital subsidy — cannot combine with PMFME for the same unit.',
+        history: [{ go: 'KVIC Guidelines (rev.)', date: '01.04.2022', note: 'Rates revised: 15/25/35%' }] },
+      { id: 'pmfme', name: 'PMFME', nameTa: 'பிஎம்எஃப்எம்இ', level: 'Central', dept: 'MoFPI', group: 'capital-central',
+        citation: 'MoFPI Scheme Guidelines 2020, F.No. J-11/1/2020-FME', verified: '2026-08-15', deadline: '2026-09-30',
+        line: '35% credit-linked subsidy up to ₹10L for micro food processing — sunsets Sept 2026.',
+        summary: 'PM Formalisation of Micro Food Processing Enterprises — credit-linked capital subsidy for food units, plus branding and common-infrastructure support.',
+        checks: [
+          { id: 'food', label: 'Food processing sector', test: i => i.sector === 'food' },
+          { id: 'size', label: 'Any project size (subsidy capped ₹10L)', test: () => true }],
+        benefit: i => [{ lakhs: Math.min(i.P * 0.35, 10), note: '35% credit-linked capital subsidy, capped ₹10L' }],
+        steps: ['Apply on pmfme.mofpi.gov.in with DPR', 'District resource person assists application', 'Bank sanction; subsidy back-ended'],
+        docs: 'FSSAI license, project DPR, bank statement',
+        conflictLine: 'One central capital subsidy — kept over PMEGP when larger. Scheme sunsets 30.09.2026.',
+        history: [
+          { go: 'F.No. J-11/1/2020-FME', date: '29.06.2020', note: 'Scheme launch, 2020–25 window' },
+          { go: 'MoFPI extension order', date: '15.03.2025', note: 'Extended to 30.09.2026 — final sunset' }] },
+      { id: 'aif', name: 'Agriculture Infrastructure Fund', nameTa: 'வேளாண் உள்கட்டமைப்பு நிதி', level: 'Central', dept: 'DAC&FW', group: 'financing',
+        citation: 'AIF Operational Guidelines, Cabinet approval 08.07.2020', verified: '2026-08-05', deadline: null,
+        line: '3% interest subvention on loans up to ₹2Cr for post-harvest and processing infrastructure.',
+        summary: 'Financing facility for agri infrastructure — interest subvention plus CGTMSE guarantee fee borne by the scheme, stackable with capital subsidies.',
+        checks: [
+          { id: 'sec', label: 'Agri / food processing infrastructure', test: i => i.sector === 'food' || i.sector === 'agri' },
+          { id: 'size', label: 'Project cost ₹25L or above', test: i => i.P >= 25 }],
+        benefit: i => { const loan = Math.min(0.65 * i.P, 200); return [
+          { lakhs: Math.round(loan * 0.03 * 7 * 0.5 * 10) / 10, note: '3% interest subvention on ₹' + Math.round(loan) + 'L loan, 7 yrs (est.)' },
+          { lakhs: null, note: 'CGTMSE guarantee fee borne by the scheme' }]; },
+        steps: ['Register on agriinfra.dac.gov.in', 'Bank sanctions loan, then tags it AIF — banks won\u2019t volunteer this, ask explicitly', 'Subvention credited quarterly'],
+        docs: 'DPR, land/lease documents, bank sanction letter',
+        conflictLine: 'Stacks with NEEDS / PMFME — financing benefit, not a capital subsidy.',
+        history: [{ go: 'Cabinet approval', date: '08.07.2020', note: '₹1L Cr facility, extended to FY2032-33' }] },
+      { id: 'standup', name: 'Stand-Up India', nameTa: 'ஸ்டாண்ட்-அப் இந்தியா', level: 'Central', dept: 'DFS / SIDBI', group: 'financing',
+        citation: 'DFS Guidelines 05.04.2016 (extended 2025)', verified: '2026-06-20', deadline: null,
+        line: 'Composite loans ₹10L–₹1Cr for SC/ST and women entrepreneurs — greenfield units.',
+        summary: 'Bank loans between ₹10L and ₹1Cr to at least one SC/ST and one woman borrower per branch for greenfield enterprises.',
+        checks: [
+          { id: 'sp', label: 'Woman / SC / ST promoter', test: i => i.special },
+          { id: 'size', label: 'Project ₹10L – ₹1.3Cr (75% composite loan)', test: i => i.P >= 10 && i.P <= 133 }],
+        benefit: () => [{ lakhs: null, note: 'Composite loan up to 75% of project — access, not a subsidy' }],
+        steps: ['Apply via standupmitra.in or branch', 'Margin 25% (can include state subsidy)', 'RuPay debit card issued against working capital'],
+        docs: 'Caste certificate / proof, project report',
+        conflictLine: 'Financing — stacks with capital subsidies.',
+        history: [{ go: 'DFS Guidelines', date: '05.04.2016', note: 'Launched; extended to 2025+' }] },
+      { id: 'mudra', name: 'MUDRA (Tarun)', nameTa: 'முத்ரா', level: 'Central', dept: 'DFS / MUDRA Ltd', group: 'financing',
+        citation: 'PMMY Guidelines 08.04.2015', verified: '2026-07-01', deadline: null,
+        line: 'Collateral-free loans up to ₹10L (Tarun tier) for micro units.',
+        summary: 'Pradhan Mantri Mudra Yojana — Shishu / Kishore / Tarun loan tiers for micro enterprises.',
+        checks: [{ id: 'size', label: 'Project cost up to ₹10L', test: i => i.P <= 10 }],
+        benefit: () => [{ lakhs: null, note: 'Collateral-free loan up to ₹10L — access' }],
+        steps: ['Apply at any bank / NBFC / MFI or udyamimitra.in'],
+        docs: 'ID, business plan, quotations',
+        conflictLine: 'Financing — stacks freely.',
+        history: [{ go: 'PMMY Guidelines', date: '08.04.2015', note: 'Launch' }] },
+      { id: 'cgtmse', name: 'CGTMSE', nameTa: 'சிஜிடிஎம்எஸ்இ', level: 'Central', dept: 'MSME / SIDBI', group: 'access',
+        citation: 'CGTMSE Circular 245/2023', verified: '2026-08-01', deadline: null,
+        line: 'Collateral-free credit guarantee on loans up to ₹5Cr.',
+        summary: 'Credit Guarantee Fund Trust — banks lend without collateral; guarantee fee applies (waived under AIF).',
+        checks: [{ id: 'size', label: 'Loan requirement up to ₹5Cr', test: i => i.P <= 770 }],
+        benefit: () => [{ lakhs: null, note: 'Collateral-free guarantee up to ₹5Cr — access' }],
+        steps: ['Bank applies on your behalf at sanction — request CGTMSE cover explicitly'],
+        docs: 'Handled by lender',
+        conflictLine: 'Stacks with everything; fee waived when loan is AIF-tagged.',
+        history: [{ go: 'Circular 245', date: '01.04.2023', note: 'Ceiling raised to ₹5Cr' }] },
+      { id: 'stampduty', name: 'Stamp Duty Concession', nameTa: 'முத்திரைத் தீர்வை சலுகை', level: 'State', dept: 'TN Registration Dept', group: 'incentive',
+        citation: 'G.O. (Ms) No.29, CT&R (J1), 18.03.2022', verified: '2026-04-12', deadline: null,
+        line: '50% stamp duty exemption on industrial land purchase in backward blocks.',
+        summary: 'Concession on stamp duty for MSME land registration in notified backward blocks.',
+        checks: [{ id: 'bb', label: 'Unit located in a notified backward block', test: i => i.backward }],
+        benefit: i => { const land = Math.min(0.12 * i.P, 100); return [{ lakhs: Math.round(land * 0.07 * 0.5 * 10) / 10, note: '50% of ~7% stamp duty on est. land cost ' + this.fmt(land) + ' (directional)' }]; },
+        steps: ['Claim at sub-registrar with DIC eligibility certificate at time of registration'],
+        docs: 'DIC certificate, sale deed draft',
+        conflictLine: 'Stacks with everything.',
+        history: [{ go: 'G.O. (Ms) No.29, CT&R (J1)', date: '18.03.2022', note: 'Concession notified for backward blocks' }] },
+      { id: 'mofpi', name: 'MoFPI CFC Grant', nameTa: 'பொது வசதி மைய மானியம்', level: 'Central', dept: 'MoFPI', group: 'access',
+        citation: 'MoFPI CFC Guidelines 2021', verified: '2026-06-05', deadline: null,
+        line: '35% grant for common facility centres via FPO / SPV route.',
+        summary: 'Cluster-level grant for common processing infrastructure, routed through an FPO or SPV.',
+        checks: [{ id: 'fpo', label: 'Willing to route via FPO / SPV', test: i => i.fpo }, { id: 'sec', label: 'Food processing sector', test: i => i.sector === 'food' }],
+        benefit: () => [{ lakhs: null, note: '35% grant at cluster level — via FPO/SPV, not individual' }],
+        steps: ['Form / join an FPO', 'Cluster DPR to MoFPI via state nodal agency'],
+        docs: 'FPO registration, cluster DPR',
+        conflictLine: 'Cluster-level; does not conflict with unit-level subsidies.',
+        history: [{ go: 'CFC Guidelines', date: '2021', note: 'Grant norms' }] },
+      { id: 'tiic', name: 'TIIC Term Loan', nameTa: 'டிஐஐசி கடன்', level: 'State', dept: 'TIIC', group: 'financing',
+        citation: 'TIIC MSME loan schedule 2026', verified: '2026-08-18', deadline: null,
+        line: 'State term loans with NEEDS-linked interest concessions.',
+        summary: 'Tamil Nadu Industrial Investment Corporation term loans; concessional rates when NEEDS-tagged.',
+        checks: [{ id: 'size', label: 'Project cost ₹10L or above', test: i => i.P >= 10 }],
+        benefit: () => [{ lakhs: null, note: 'Term loan up to 65–75% of project — access' }],
+        steps: ['Apply at TIIC branch with project report'],
+        docs: 'Project report, land documents, KYC',
+        conflictLine: 'Financing — stacks with subsidies.',
+        history: [{ go: 'Loan schedule', date: '2026', note: 'Current rate card' }] }
+    ];
+  }
+
+  estates() {
+    return [
+      { id: 'kattuvananjur', name: 'Kattuvananjur Industrial Estate', agency: 'TANSIDCO', district: 'Thanjavur', backward: true, rate: '₹385/sq.ft', verified: '2026-08-14', sync: 'GIS plot layer synced 7 days ago',
+        plots: { vacant: 11, allotted: 33, litigation: 2, reserved: 2 }, acres: 64,
+        infra: [['Tar road access', true], ['EB substation on-site', true], ['Water supply (CWSSB)', true], ['Common ETP', false]],
+        dist: [['NH-83 (Trichy–Thanjavur)', '4 km'], ['Thanjavur Junction', '9 km'], ['Regulated mandi', '6 km']], unlocked: 7 },
+      { id: 'kappalur', name: 'Kappalur Industrial Estate', agency: 'TANSIDCO', district: 'Madurai', backward: false, rate: '₹610/sq.ft', verified: '2026-08-14', sync: 'Vacancy table synced 7 days ago',
+        plots: { vacant: 6, allotted: 74, litigation: 4, reserved: 4 }, acres: 210,
+        infra: [['Tar road access', true], ['EB substation on-site', true], ['Water supply', true], ['Common ETP', true]],
+        dist: [['NH-44', '3 km'], ['Madurai Junction', '12 km'], ['Airport', '14 km']], unlocked: 5 },
+      { id: 'perundurai', name: 'SIPCOT Perundurai', agency: 'SIPCOT', district: 'Erode', backward: true, rate: '₹520/sq.ft', verified: '2026-08-07', sync: 'Park polygon synced 14 days ago',
+        plots: { vacant: 18, allotted: 92, litigation: 3, reserved: 7 }, acres: 1180,
+        infra: [['4-lane internal roads', true], ['110kV substation', true], ['Water (Bhavani scheme)', true], ['Common ETP', true]],
+        dist: [['NH-544 (Salem–Kochi)', '2 km'], ['Erode Junction', '18 km'], ['Textile cluster', 'on-site']], unlocked: 6 },
+      { id: 'ranipet', name: 'SIPCOT Ranipet', agency: 'SIPCOT', district: 'Ranipet', backward: false, rate: '₹740/sq.ft', verified: '2026-08-07', sync: 'Park polygon synced 14 days ago',
+        plots: { vacant: 4, allotted: 128, litigation: 6, reserved: 5 }, acres: 940,
+        infra: [['4-lane internal roads', true], ['Substation', true], ['Water supply', true], ['Common ETP (leather)', true]],
+        dist: [['NH-48 (Chennai–Bengaluru)', '5 km'], ['Walajah Road Jn', '7 km'], ['Chennai Port', '110 km']], unlocked: 4 },
+      { id: 'kurichi', name: 'Kurichi Industrial Estate', agency: 'TANSIDCO', district: 'Coimbatore', backward: false, rate: '₹890/sq.ft', verified: '2026-07-30', sync: 'Vacancy table synced 22 days ago',
+        plots: { vacant: 3, allotted: 96, litigation: 2, reserved: 3 }, acres: 154,
+        infra: [['Tar road access', true], ['EB substation', true], ['Water supply', true], ['Common ETP', false]],
+        dist: [['NH-181', '4 km'], ['Coimbatore Jn', '8 km'], ['Airport', '16 km']], unlocked: 4 },
+      { id: 'tirumudivakkam', name: "SIDCO Women's Industrial Park", agency: 'SIDCO', district: 'Chennai', backward: false, rate: '₹1,150/sq.ft', verified: '2026-08-11', sync: 'Vacancy table synced 10 days ago',
+        plots: { vacant: 9, allotted: 41, litigation: 1, reserved: 6 }, acres: 88,
+        infra: [['Tar road access', true], ['EB substation', true], ['Water supply', true], ['Creche + common facilities', true]],
+        dist: [['Outer Ring Road', '3 km'], ['Tambaram', '9 km'], ['Chennai Port', '32 km']], unlocked: 6 },
+      { id: 'hosur', name: 'SIPCOT Hosur (Ph. II)', agency: 'SIPCOT', district: 'Krishnagiri', backward: true, rate: '₹680/sq.ft', verified: '2026-08-07', sync: 'Park polygon synced 14 days ago',
+        plots: { vacant: 12, allotted: 156, litigation: 4, reserved: 8 }, acres: 2100,
+        infra: [['4-lane internal roads', true], ['230kV substation', true], ['Water supply', true], ['Common ETP', true]],
+        dist: [['NH-44', '4 km'], ['Bengaluru', '45 km'], ['Hosur aerodrome', '6 km']], unlocked: 6 },
+      { id: 'gangaikondan', name: 'SIPCOT Gangaikondan', agency: 'SIPCOT', district: 'Tirunelveli', backward: true, rate: '₹410/sq.ft', verified: '2026-08-07', sync: 'Park polygon synced 14 days ago',
+        plots: { vacant: 22, allotted: 61, litigation: 2, reserved: 9 }, acres: 1670,
+        infra: [['4-lane internal roads', true], ['Substation', true], ['Water supply', true], ['Common ETP', false]],
+        dist: [['NH-44', '1 km'], ['Tirunelveli Jn', '14 km'], ['Thoothukudi Port', '48 km']], unlocked: 7 }
+    ];
+  }
+
+  playbooks() {
+    return {
+      flagship: { title: 'Flagship SME — NEEDS + AIF + plot', steps: [
+        { title: 'Udyam registration', org: 'udyamregistration.gov.in', docs: 'Aadhaar, PAN', time: '1 day' },
+        { title: 'NEEDS application + EDP training', org: 'DIC / msmeonline.tn.gov.in', docs: 'Project report, certificates', time: '4–6 weeks', warn: 'Apply BEFORE plot allotment — NEEDS unlocks preferential allotment.' },
+        { title: 'Plot application', org: 'TANSIDCO / SIPCOT portal', docs: 'NEEDS provisional letter, EMD', time: '3–8 weeks' },
+        { title: 'Term loan sanction', org: 'Bank / TIIC', docs: 'DPR, collateral or CGTMSE', time: '4–8 weeks', warn: 'Get NEEDS tagging in the sanction letter itself.' },
+        { title: 'AIF tagging of the loan', org: 'agriinfra.dac.gov.in + bank', docs: 'Sanction letter, DPR', time: '2–3 weeks', warn: 'Banks won\u2019t volunteer AIF tagging — ask explicitly.' },
+        { title: 'Stamp duty concession at registration', org: 'Sub-registrar', docs: 'DIC certificate', time: '1 day' },
+        { title: 'Subsidy claims after production', org: 'DIC', docs: 'Production proof, CA certificate', time: '8–12 weeks' }] },
+      microfood: { title: 'Micro food unit — PMFME + Mudra', steps: [
+        { title: 'FSSAI registration', org: 'foscos.fssai.gov.in', docs: 'ID, premises proof', time: '1 week' },
+        { title: 'PMFME application with DPR', org: 'pmfme.mofpi.gov.in', docs: 'DPR (template provided)', time: '3–5 weeks', warn: 'Scheme sunsets 30.09.2026 — file before the window closes.' },
+        { title: 'Mudra loan (Tarun)', org: 'Any bank / udyamimitra.in', docs: 'Business plan, quotations', time: '2–4 weeks' },
+        { title: 'Udyam registration', org: 'udyamregistration.gov.in', docs: 'Aadhaar, PAN', time: '1 day' },
+        { title: 'Subsidy back-ending', org: 'Lending bank', docs: 'Automatic on sanction', time: '—' }] },
+      womenlaunch: { title: 'Women / SC-ST launch — Stand-Up India + SIDCO park', steps: [
+        { title: 'Stand-Up India application', org: 'standupmitra.in', docs: 'Caste/gender proof, project report', time: '3–6 weeks' },
+        { title: "Plot at SIDCO Women's Industrial Park", org: 'SIDCO', docs: 'Application + EMD', time: '4–8 weeks' },
+        { title: 'NEEDS application (35% special rate)', org: 'DIC', docs: 'Project report, EDP', time: '4–6 weeks', warn: 'Special-category rate: confirm the 35% band applies at your DIC.' },
+        { title: 'Loan sanction with CGTMSE cover', org: 'Bank', docs: 'Ask for CGTMSE explicitly', time: '4–8 weeks' },
+        { title: 'Subsidy claims after production', org: 'DIC', docs: 'Production proof', time: '8–12 weeks' }] }
+    };
+  }
+
+  evaluate() {
+    const i = { sector: this.state.sector, P: this.lakhs(), firstGen: this.state.firstGen, ageOk: this.state.ageOk, special: this.state.special, backward: this.state.backward, fpo: this.state.fpo };
+    const all = this.schemes();
+    const eligible = [], near = [];
+    all.forEach(s => {
+      const res = s.checks.map(c => ({ label: c.label, pass: !!c.test(i) }));
+      const fails = res.filter(r => !r.pass);
+      if (fails.length === 0) {
+        const bens = s.benefit(i);
+        eligible.push({ s, checks: res, bens, total: bens.reduce((a, b) => a + (b.lakhs || 0), 0) });
+      } else if (fails.length === 1) {
+        near.push({ s, fail: fails[0].label });
+      }
+    });
+    const conflicts = [];
+    ['capital-state', 'capital-central'].forEach(g => {
+      const group = eligible.filter(e => e.s.group === g);
+      if (group.length > 1) {
+        group.sort((a, b) => b.total - a.total);
+        const win = group[0];
+        group.slice(1).forEach(l => {
+          l.dropped = true;
+          conflicts.push({ win: win.s.name, lose: l.s.name, winAmt: win.total, loseAmt: l.total, level: g === 'capital-state' ? 'state' : 'central' });
+        });
+      }
+    });
+    const winners = eligible.filter(e => !e.dropped);
+    return { winners, near, conflicts, total: winners.reduce((a, w) => a + w.total, 0), input: i };
+  }
+
+  simpleFor(id) {
+    const lang = this.state.lang || this.props.defaultLang || 'en';
+    const en = {
+      needs: 'Starting your family\u2019s first business? The TN government pays 25% of your project cost as free money (up to \u20b975 lakh \u2014 never repaid) and cuts your loan interest by 3%. You put in only 10% yourself.',
+      tncap: 'If you make products (not services), the government pays back 25% of what you spend on machines.',
+      uyegp: 'For small businesses up to \u20b910 lakh: the government pays 25% of the cost (up to \u20b92.5 lakh) as free money.',
+      pmegp: 'Central government pays 15\u201335% of your new business cost as free money \u2014 the higher rate if you are from a village or are a woman / SC / ST.',
+      pmfme: 'Making food products \u2014 pickles, snacks, flour, oil? The government pays 35% of your cost (up to \u20b910 lakh) as free money. Last date to apply: 30 Sep 2026.',
+      aif: 'Building storage or food/agri processing? The government pays 3% of your loan interest for you \u2014 your loan becomes much cheaper.',
+      standup: 'Women and SC/ST founders: banks must give you a loan of \u20b910 lakh \u2013 \u20b91 crore for a new business. No connections needed.',
+      mudra: 'A loan up to \u20b910 lakh from any bank \u2014 without pledging any property.',
+      cgtmse: 'Bank asking for property as security? This lets you borrow up to \u20b95 crore without it \u2014 the government stands guarantee for you.',
+      stampduty: 'Buying industrial land in a backward block? You pay only half the land registration tax.',
+      mofpi: 'Team up with other producers as a group (FPO) and the government pays 35% of a shared factory.',
+      tiic: 'The TN government\u2019s own lender gives business loans \u2014 at lower interest if you have NEEDS.'
+    };
+    const ta = {
+      needs: 'குடும்பத்தின் முதல் தொழிலா? திட்டச் செலவில் 25% (அதிகபட்சம் ₹75 லட்சம்) அரசு இலவசமாகத் தரும் — திருப்பிச் செலுத்த வேண்டாம். கடன் வட்டியில் 3% குறைவு. நீங்கள் போடுவது 10% மட்டுமே.',
+      tncap: 'பொருட்கள் தயாரித்தால், இயந்திரச் செலவில் 25% அரசு திருப்பித் தரும்.',
+      uyegp: '₹10 லட்சம் வரையிலான சிறு தொழிலுக்கு: செலவில் 25% (அதிகபட்சம் ₹2.5 லட்சம்) இலவசம்.',
+      pmegp: 'புதிய தொழிலுக்கு மத்திய அரசு 15–35% இலவசமாகத் தரும் — கிராமம் / பெண் / SC / ST எனில் அதிக விகிதம்.',
+      pmfme: 'ஊறுகாய், தின்பண்டம், மாவு, எண்ணெய் போன்ற உணவு தயாரிப்பா? செலவில் 35% (அதிகபட்சம் ₹10 லட்சம்) இலவசம். கடைசி நாள்: 30 செப் 2026.',
+      aif: 'சேமிப்புக் கிடங்கு / உணவு-வேளாண் கட்டமைப்பா? உங்கள் கடன் வட்டியில் 3% அரசே செலுத்தும் — கடன் மலிவாகும்.',
+      standup: 'பெண்கள் & SC/ST: புதிய தொழிலுக்கு ₹10 லட்சம் – ₹1 கோடி கடன் வங்கிகள் தர வேண்டும். சிபாரிசு தேவையில்லை.',
+      mudra: 'எந்தச் சொத்தும் அடமானம் இல்லாமல் ₹10 லட்சம் வரை கடன் — எந்த வங்கியிலும்.',
+      cgtmse: 'வங்கி சொத்து கேட்கிறதா? அரசு உத்தரவாதத்துடன் ₹5 கோடி வரை அடமானம் இல்லாமல் கடன்.',
+      stampduty: 'பின்தங்கிய வட்டத்தில் தொழில் நிலம் வாங்கினால் பதிவு வரியில் பாதி மட்டும்.',
+      mofpi: 'மற்ற உற்பத்தியாளர்களுடன் குழுவாக (FPO) சேர்ந்தால் பொது தொழிற்சாலைக்கு 35% அரசு மானியம்.',
+      tiic: 'தமிழ்நாடு அரசின் சொந்தக் கடன் நிறுவனம் — NEEDS இருந்தால் குறைந்த வட்டி.'
+    };
+    return (lang === 'ta' ? ta : en)[id];
+  }
+
+  dict() {
+    const en = {
+      navMatcher: 'Matcher', navLand: 'Land Explorer', navSchemes: 'Schemes', navPlaybooks: 'Playbooks', navSaved: 'Saved', navChangelog: 'Changelog',
+      eyebrow: 'GOVERNMENT LAND + SCHEME INTELLIGENCE · TAMIL NADU',
+      heroTitle: 'Every plot, every scheme, one computed answer.',
+      heroSub: 'Which subsidies your business unlocks, which government plot to take, and exactly how to apply — verified at Government Order level, computed in under 90 seconds. No signup.',
+      sector: 'Sector', projectSize: 'Project size', district: 'District', promoter: 'Promoter profile',
+      liveNote: 'Every change recomputes live — flip “first-generation” off and watch NEEDS leave the stack.',
+      totalSupport: 'Total computed support', disclaimer: 'Directional pre-DPR estimate — never a sanction assurance',
+      share: 'Share result', shareCopied: 'Link copied ✓', openPlaybook: 'Open playbook',
+      yourStack: 'Your scheme stack', eligibilityTest: 'Eligibility — your inputs', components: 'Benefit components',
+      conflicts: 'Conflicts resolved', nearMisses: 'Near misses', sequence: 'Application sequence', landOptions: 'Ranked land options',
+      allEstates: 'All estates', fullPage: 'Full scheme page',
+      landTitle: 'Government industrial land, plot by plot.', landSub: 'Every TANSIDCO, SIPCOT and SIDCO estate in Tamil Nadu — rates, vacancy, infrastructure and the schemes each location unlocks.',
+      backwardBadge: 'Backward block — unlocks extra subsidy', runHere: 'Run matcher here',
+      plotMap: 'Plot status (source GIS)', infra: 'Infrastructure', distances: 'Distance to',
+      schemesTitle: 'Scheme encyclopedia', schemesSub: 'Every scheme in the rule engine — what you get, who qualifies, what conflicts, how to apply. Every number carries its G.O.',
+      whatYouGet: 'What you get — computed', exampleNote: 'Computed with your current promoter profile; edit in the Matcher.',
+      howToApply: 'How to apply', goHistory: 'G.O. history', doYouQualify: 'Do you qualify?', checkerNote: 'Tested live against your Matcher inputs.',
+      editInMatcher: 'Edit inputs in Matcher', conflictsWith: 'Conflicts',
+      pbTitle: 'Playbooks', pbSub: 'Ordered application sequences — which office, which documents, realistic timelines, and the failure modes nobody tells you about.',
+      pbLocalNote: 'Progress saves on this device. Connect Telegram to sync.',
+      savedTitle: 'Saved stacks & alerts', savedSub: 'When a Government Order moves, your numbers move — and you hear about it first.',
+      alerts: 'Alerts', tgTitle: 'Get alerts on Telegram', tgText: 'Save stacks, get G.O.-change notifications, deadline countdowns and vacancy alerts for watched estates. Free, no email, no password.',
+      tgCta: 'Connect Telegram', tgNote: 'Magic-link via /start — no password, ever.',
+      clTitle: 'Public changelog', clSub: 'Every rule change, verification and estate sync — the audit trail behind every number we show.',
+      moatEyebrow: 'WHY TRUST THESE NUMBERS',
+      moatTitle: 'Lists rot. This is a verification loop: scrapers watch every portal, humans approve every rule change, and staleness is shown — never hidden.',
+      footerDisclaimer: 'All figures are directional pre-DPR estimates computed from cited Government Orders — never a sanction assurance. Where G.O. fine print is ambiguous, confirm at your DIC in writing.',
+      simpleWords: 'In simple words',
+      totalSimple: 'Subsidy = money the government gives you that you never pay back. Loan benefits make borrowing cheaper. This total counts both, for the details you chose on the left.',
+      glossaryTitle: 'Words you\u2019ll see here — explained simply',
+      landExplain: 'The government owns ready-made industrial plots all over Tamil Nadu and sells them at fixed prices — often cheaper than private land, with roads, power and water already in place. TANSIDCO, SIPCOT and SIDCO are simply the three government agencies that sell these plots. In the plot map, green = an empty plot you can apply for today.',
+      schemesExplain: 'A “scheme” is a government programme that gives your business money or help. Some give free money you never repay (a subsidy); some make loans cheaper or easier to get. Tap any card to see what you would get and exactly how to apply.',
+      pbExplain: 'A playbook is a simple to-do list for getting government money: which office to visit, what papers to carry, in what order, and how long each step really takes. Tick steps as you finish them — your progress is saved on this device.',
+      savedExplain: 'A “stack” is a result you saved from the Matcher — your business details plus all the government money it qualifies for. Government rules change often. When a change affects your saved stack, we tell you here (and on Telegram if you connect it).',
+      clExplain: 'Every number we show comes from an official Government Order (G.O.) — the document where a rule is written. This page lists every change we make, when, and who checked it — so you can see nothing is made up.'
+    };
+    const ta = Object.assign({}, en, {
+      navMatcher: 'பொருத்தி', navLand: 'நில வரைபடம்', navSchemes: 'திட்டங்கள்', navPlaybooks: 'வழிகாட்டிகள்', navSaved: 'சேமிப்பு', navChangelog: 'மாற்றப் பதிவு',
+      eyebrow: 'அரசு நிலம் + திட்ட நுண்ணறிவு · தமிழ்நாடு',
+      heroTitle: 'ஒவ்வொரு மனை, ஒவ்வொரு திட்டம் — ஒரே கணக்கிடப்பட்ட பதில்.',
+      heroSub: 'உங்கள் தொழிலுக்கு எந்த மானியங்கள், எந்த அரசு மனை, எப்படி விண்ணப்பிப்பது — அரசாணை அளவில் சரிபார்க்கப்பட்டு, 90 வினாடிக்குள். பதிவு தேவையில்லை.',
+      sector: 'துறை', projectSize: 'திட்ட மதிப்பு', district: 'மாவட்டம்', promoter: 'தொழில்முனைவோர் விவரம்',
+      liveNote: 'ஒவ்வொரு மாற்றமும் உடனே கணக்கிடப்படும் — “முதல் தலைமுறை” அணைத்தால் NEEDS விலகுவதைப் பாருங்கள்.',
+      totalSupport: 'மொத்த கணக்கிடப்பட்ட ஆதரவு', disclaimer: 'திசைகாட்டும் மதிப்பீடு — ஒப்புதல் உறுதி அல்ல',
+      share: 'முடிவைப் பகிர்', shareCopied: 'இணைப்பு நகலெடுக்கப்பட்டது ✓', openPlaybook: 'வழிகாட்டி திற',
+      yourStack: 'உங்கள் திட்ட அடுக்கு', eligibilityTest: 'தகுதி — உங்கள் உள்ளீடுகள்', components: 'பயன் கூறுகள்',
+      conflicts: 'முரண்கள் தீர்க்கப்பட்டன', nearMisses: 'சற்றே தவறியவை', sequence: 'விண்ணப்ப வரிசை', landOptions: 'தரவரிசை நில விருப்பங்கள்',
+      allEstates: 'அனைத்து தோட்டங்கள்', fullPage: 'முழு திட்டப் பக்கம்',
+      landTitle: 'அரசு தொழில் நிலம், மனை வாரியாக.', landSub: 'தமிழ்நாட்டின் அனைத்து TANSIDCO, SIPCOT, SIDCO தோட்டங்கள் — விலை, காலியிடம், உள்கட்டமைப்பு, திறக்கும் திட்டங்கள்.',
+      backwardBadge: 'பின்தங்கிய வட்டம் — கூடுதல் மானியம்', runHere: 'இங்கு பொருத்து',
+      plotMap: 'மனை நிலை (மூல GIS)', infra: 'உள்கட்டமைப்பு', distances: 'தூரம்',
+      schemesTitle: 'திட்ட களஞ்சியம்', schemesSub: 'விதி இயந்திரத்தில் உள்ள ஒவ்வொரு திட்டமும் — என்ன கிடைக்கும், யார் தகுதி, என்ன முரண், எப்படி விண்ணப்பிப்பது.',
+      whatYouGet: 'என்ன கிடைக்கும் — கணக்கிடப்பட்டது', exampleNote: 'உங்கள் தற்போதைய விவரத்துடன் கணக்கிடப்பட்டது.',
+      howToApply: 'விண்ணப்பிக்கும் முறை', goHistory: 'அரசாணை வரலாறு', doYouQualify: 'நீங்கள் தகுதியா?', checkerNote: 'உங்கள் பொருத்தி உள்ளீடுகளுடன் நேரலையில் சோதிக்கப்பட்டது.',
+      editInMatcher: 'பொருத்தியில் திருத்து', conflictsWith: 'முரண்கள்',
+      pbTitle: 'வழிகாட்டிகள்', pbSub: 'வரிசைப்படுத்தப்பட்ட விண்ணப்ப வழிமுறைகள் — எந்த அலுவலகம், என்ன ஆவணங்கள், நடைமுறை காலவரம்பு.',
+      pbLocalNote: 'முன்னேற்றம் இந்த சாதனத்தில் சேமிக்கப்படும். ஒத்திசைக்க Telegram இணைக்கவும்.',
+      savedTitle: 'சேமித்த அடுக்குகள் & எச்சரிக்கைகள்', savedSub: 'அரசாணை மாறினால், உங்கள் எண்களும் மாறும் — முதலில் உங்களுக்குத் தெரியும்.',
+      alerts: 'எச்சரிக்கைகள்', tgTitle: 'Telegram-இல் எச்சரிக்கை', tgText: 'அடுக்குகளைச் சேமிக்க, அரசாணை மாற்றம், காலக்கெடு, காலியிட எச்சரிக்கைகள் பெற. இலவசம், மின்னஞ்சல் இல்லை, கடவுச்சொல் இல்லை.',
+      tgCta: 'Telegram இணை', tgNote: '/start வழியாக மேஜிக்-லிங்க் — கடவுச்சொல் எப்போதும் இல்லை.',
+      clTitle: 'பொது மாற்றப் பதிவு', clSub: 'ஒவ்வொரு விதி மாற்றமும், சரிபார்ப்பும் — நாங்கள் காட்டும் ஒவ்வொரு எண்ணுக்கும் பின்னுள்ள தணிக்கைத் தடம்.',
+      moatEyebrow: 'இந்த எண்களை ஏன் நம்பலாம்',
+      moatTitle: 'பட்டியல்கள் பழசாகும். இது ஒரு சரிபார்ப்புச் சுழற்சி: ஒவ்வொரு போர்ட்டலையும் கண்காணிப்பு, ஒவ்வொரு விதி மாற்றத்திற்கும் மனித ஒப்புதல், பழமை மறைக்கப்படாமல் காட்டப்படும்.',
+      footerDisclaimer: 'அனைத்து எண்களும் அரசாணைகளில் இருந்து கணக்கிடப்பட்ட திசைகாட்டும் மதிப்பீடுகள் — ஒப்புதல் உறுதி அல்ல. ஐயம் இருந்தால் DIC-இல் எழுத்துப்பூர்வமாக உறுதிப்படுத்தவும்.',
+      simpleWords: 'எளிய வார்த்தைகளில்',
+      totalSimple: 'மானியம் = அரசு தரும் இலவசப் பணம்; திருப்பிச் செலுத்த வேண்டாம். கடன் சலுகைகள் கடனை மலிவாக்கும். இடதுபுறம் தேர்ந்த விவரங்களுக்கு இரண்டும் சேர்த்த மொத்தம் இது.',
+      glossaryTitle: 'இங்கு காணும் வார்த்தைகள் — எளிய விளக்கம்',
+      landExplain: 'தமிழ்நாடு முழுவதும் அரசிடம் தயார்நிலை தொழில் மனைகள் உள்ளன — நிர்ணய விலையில், சாலை-மின்சாரம்-தண்ணீருடன். TANSIDCO, SIPCOT, SIDCO என்பவை அவற்றை விற்கும் மூன்று அரசு நிறுவனங்கள்தான். மனை வரைபடத்தில் பச்சை = இன்றே விண்ணப்பிக்கக்கூடிய காலி மனை.',
+      schemesExplain: '“திட்டம்” என்பது உங்கள் தொழிலுக்கு பணமோ உதவியோ தரும் அரசு நிகழ்ச்சி. சில இலவசப் பணம் (மானியம்) தரும்; சில கடனை மலிவாக்கும். எந்த அட்டையையும் தட்டினால் — என்ன கிடைக்கும், எப்படி விண்ணப்பிப்பது என்று தெரியும்.',
+      pbExplain: 'வழிகாட்டி என்பது எளிய செய்-பட்டியல்: எந்த அலுவலகம், என்ன ஆவணங்கள், எந்த வரிசையில், எவ்வளவு நேரம். முடித்த படிகளை டிக் செய்யுங்கள் — முன்னேற்றம் இந்த சாதனத்தில் சேமிக்கப்படும்.',
+      savedExplain: '“அடுக்கு” = பொருத்தியில் நீங்கள் சேமித்த முடிவு — உங்கள் தொழில் விவரம் + தகுதியான அரசு பணம். அரசு விதிகள் அடிக்கடி மாறும்; உங்கள் அடுக்கை பாதித்தால் இங்கு (Telegram இணைத்தால் அங்கும்) சொல்வோம்.',
+      clExplain: 'நாங்கள் காட்டும் ஒவ்வொரு எண்ணும் அதிகாரப்பூர்வ அரசாணையில் (G.O.) இருந்து வருகிறது. எந்த மாற்றம், எப்போது, யார் சரிபார்த்தார் — எல்லாம் இங்கே. எதுவும் கற்பனை இல்லை.'
+    });
+    return (this.state.lang || this.props.defaultLang || 'en') === 'ta' ? ta : en;
+  }
+
+  freshBadge(verified) {
+    const d = this.daysSince(verified);
+    const stale = d > (this.props.staleDays ?? 90);
+    return {
+      fresh: stale ? 'VERIFIED ' + d + 'D AGO' : 'VERIFIED ✓',
+      freshStyle: stale
+        ? 'padding:3px 10px;border-radius:9999px;background:var(--color-stone);color:var(--color-umber)'
+        : 'padding:3px 10px;border-radius:9999px;background:var(--color-green-10);color:var(--color-green-100)'
+    };
+  }
+
+  renderVals() {
+    const st = this.state, t = this.dict(), lang = st.lang || this.props.defaultLang || 'en';
+    const P = this.lakhs();
+    const ev = this.evaluate();
+    const chipOff = 'padding:9px 18px;border-radius:9999px;border:1px solid var(--color-lightgray);background:#fff;color:var(--color-gray);cursor:pointer;user-select:none';
+    const chipOn = 'padding:9px 18px;border-radius:9999px;border:1px solid #FFA273;background:#FFA273;color:var(--color-darkgray);cursor:pointer;user-select:none';
+
+    const navDefs = [['matcher', t.navMatcher], ['land', t.navLand], ['schemes', t.navSchemes], ['playbooks', t.navPlaybooks], ['saved', t.navSaved], ['changelog', t.navChangelog]];
+    const navItems = navDefs.map(([v, label]) => ({
+      label, go: () => this.setState({ view: v, schemeSel: null }),
+      style: 'cursor:pointer;padding:22px 0;border-bottom:2px solid ' + (st.view === v ? 'var(--color-darkgray)' : 'transparent') + ';color:' + (st.view === v ? 'var(--color-darkgray)' : 'var(--color-mediumgray)')
+    }));
+
+    const sectorDefs = [['food', 'Food processing', 'உணவு'], ['agri', 'Agri value-add', 'வேளாண்'], ['textiles', 'Textiles', 'ஜவுளி'], ['engineering', 'Engineering', 'பொறியியல்'], ['services', 'Services', 'சேவைகள்']];
+    const sectors = sectorDefs.map(([id, en, taL]) => ({
+      label: lang === 'ta' ? taL : en, pick: () => this.set({ sector: id }),
+      style: st.sector === id ? chipOn : chipOff
+    }));
+
+    const districts = ['Thanjavur', 'Madurai', 'Coimbatore', 'Erode', 'Ranipet', 'Chennai', 'Krishnagiri', 'Tirunelveli', 'Salem', 'Villupuram'].map(name => ({ name }));
+
+    const togDefs = [
+      ['firstGen', lang === 'ta' ? 'முதல் தலைமுறை தொழில்முனைவோர்' : 'First-generation entrepreneur', lang === 'ta' ? 'குடும்பத்தின் முதல் தொழில் · NEEDS திறக்கும்' : 'First business in your family · unlocks NEEDS'],
+      ['special', lang === 'ta' ? 'பெண் / SC / ST' : 'Woman / SC / ST promoter', lang === 'ta' ? 'சிறப்பு விகிதங்கள் + Stand-Up India' : 'Special rates + Stand-Up India'],
+      ['backward', lang === 'ta' ? 'பின்தங்கிய வட்டம் / கிராமப்புறம்' : 'Rural / backward block', lang === 'ta' ? 'கூடுதல் மானியம் + முத்திரைத் தீர்வை சலுகை' : 'Higher rates + stamp duty concession'],
+      ['fpo', lang === 'ta' ? 'FPO / SPV வழி செல்ல தயார்' : 'Willing to route via FPO', lang === 'ta' ? 'கிளஸ்டர் மானியங்கள் திறக்கும்' : 'Unlocks cluster-level grants']];
+    const toggles = togDefs.map(([key, label, sub]) => {
+      const on = st[key];
+      return { label, sub, flip: () => this.set({ [key]: !on }),
+        trackStyle: 'width:40px;height:22px;border-radius:9999px;flex:none;padding:2px;box-sizing:border-box;transition:background 150ms ease-out;background:' + (on ? '#FFA273' : 'var(--color-lightgray)'),
+        knobStyle: 'width:18px;height:18px;border-radius:50%;background:#fff;transition:transform 150ms ease-out;transform:translateX(' + (on ? '18px' : '0') + ')' };
+    });
+
+    const dropSet = {};
+    ev.conflicts.forEach(c => { dropSet[c.lose] = true; });
+    const mkChecks = (checks) => checks.map(c => ({
+      label: c.label, mark: c.pass ? '✓' : '✕',
+      markStyle: 'color:' + (c.pass ? 'var(--color-green-100)' : 'var(--color-red-100)'),
+      textStyle: c.pass ? '' : 'color:var(--color-silvergray)'
+    }));
+    const schemeRows = ev.winners.map(w => {
+      const fb = this.freshBadge(w.s.verified);
+      const dl = w.s.deadline ? this.daysUntil(w.s.deadline) : null;
+      return {
+        name: w.s.name, nameTa: w.s.nameTa,
+        badge: w.s.level.toUpperCase() + (w.s.group === 'financing' ? ' · FINANCING' : w.s.group === 'access' ? ' · ACCESS' : w.s.group === 'incentive' ? ' · INCENTIVE' : ' · CAPITAL'),
+        badgeStyle: 'padding:2px 10px;border-radius:9999px;border:1px solid var(--color-lightgray);color:var(--color-mediumgray)',
+        deadline: dl != null ? (dl >= 0 ? 'SUNSETS IN ' + dl + ' DAYS' : 'SUNSET PASSED') : null,
+        note: this.simpleFor(w.s.id) || w.s.line, amount: w.total > 0 ? this.fmt(w.total) : (lang === 'ta' ? 'அணுகல்' : 'Access'),
+        chev: st.expanded[w.s.id] ? '−' : '+', expanded: !!st.expanded[w.s.id],
+        toggle: () => this.setState(s => ({ expanded: Object.assign({}, s.expanded, { [w.s.id]: !s.expanded[w.s.id] }) })),
+        checks: mkChecks(w.checks),
+        benefits: w.bens.map(b => ({ amount: b.lakhs != null ? this.fmt(b.lakhs) : '—', note: b.note })),
+        citation: w.s.citation, verified: w.s.verified,
+        openScheme: () => this.setState({ view: 'schemes', schemeSel: w.s.id })
+      };
+    });
+
+    const conflicts = ev.conflicts.map(c => ({
+      text: (lang === 'ta' ? 'ஒரு ' + (c.level === 'state' ? 'மாநில' : 'மத்திய') + ' மூலதன மானியம் மட்டுமே — ' : 'One ' + c.level + ' capital subsidy per project — ') +
+        'kept ' + c.win + ' (' + this.fmt(c.winAmt) + ') over ' + c.lose + ' (' + this.fmt(c.loseAmt) + ').',
+      confirm: lang === 'ta' ? 'மாற்று: இரண்டாவது அலகு தனி நிறுவனமாக — DIC-இல் எழுத்துப்பூர்வமாக உறுதிப்படுத்தவும்.' : 'Alternative: run a second unit as a separate entity — confirm at DIC in writing.'
+    }));
+
+    const nearMisses = ev.near.map(n => ({
+      name: n.s.name,
+      text: (lang === 'ta' ? 'இதில் மட்டும் தவறுகிறது: ' : 'misses only on: ') + n.fail
+    }));
+
+    const winIds = {}; ev.winners.forEach(w => { winIds[w.s.id] = true; });
+    const seqAll = [
+      ['always', 'Udyam registration', 'udyamregistration.gov.in · 1 day'],
+      ['needs', 'NEEDS application + EDP training', 'DIC — before plot application, unlocks preferential allotment'],
+      ['uyegp', 'UYEGP application + task-force interview', 'DIC / msmeonline.tn.gov.in'],
+      ['always', 'Plot application', 'TANSIDCO / SIPCOT — cite NEEDS provisional letter if held'],
+      ['pmfme', 'PMFME application with DPR', 'pmfme.mofpi.gov.in — before 30.09.2026 sunset'],
+      ['pmegp', 'PMEGP application', 'kviconline.gov.in — district task force'],
+      ['always', 'Term loan sanction', 'Bank / TIIC — request CGTMSE cover explicitly'],
+      ['aif', 'AIF tagging of the loan', 'agriinfra.dac.gov.in — banks won\u2019t volunteer this, ask'],
+      ['stampduty', 'Stamp duty concession at registration', 'Sub-registrar with DIC certificate'],
+      ['always', 'Subsidy claims after production', 'DIC — production proof + CA certificate']];
+    let n = 0;
+    const sequence = seqAll.filter(s => s[0] === 'always' || winIds[s[0]]).map(s => { n += 1; return { n: String(n), title: s[1], meta: s[2] }; });
+
+    const estatesAll = this.estates();
+    const landRanked = estatesAll
+      .map(e => ({ e, score: (e.district === st.district ? 4 : 0) + (e.backward === st.backward ? 2 : 0) + Math.min(e.plots.vacant / 6, 2) }))
+      .sort((a, b) => b.score - a.score).slice(0, 3)
+      .map(({ e }) => ({
+        name: e.name, rate: e.rate,
+        meta: e.agency + ' · ' + e.district + ' · ' + e.plots.vacant + ' vacant' + (e.backward ? ' · backward block ✓' : ''),
+        open: () => this.setState({ view: 'land', estateSel: e.id })
+      }));
+
+    // ── Land view ──
+    const agencyNames = ['All', 'TANSIDCO', 'SIPCOT', 'SIDCO'];
+    const agencyFilters = agencyNames.map(a => ({ label: a, pick: () => this.setState({ agencyFilter: a }), style: st.agencyFilter === a ? chipOn : chipOff }));
+    const filtered = estatesAll.filter(e => st.agencyFilter === 'All' || e.agency === st.agencyFilter);
+    const estateList = filtered.map(e => ({
+      name: e.name, agency: e.agency,
+      meta: e.district + ' · ' + e.plots.vacant + ' vacant · ' + e.rate + ' · unlocks ' + e.unlocked + ' schemes',
+      select: () => this.setState({ estateSel: e.id }),
+      style: 'padding:16px 12px;border-bottom:1px solid var(--color-lightgray);cursor:pointer;background:' + (st.estateSel === e.id ? 'var(--color-paperwhite)' : 'transparent') + ';border-left:2px solid ' + (st.estateSel === e.id ? 'var(--color-darkgray)' : 'transparent')
+    }));
+    const sel = estatesAll.find(e => e.id === st.estateSel) || estatesAll[0];
+    const totalPlots = sel.plots.vacant + sel.plots.allotted + sel.plots.litigation + sel.plots.reserved;
+    const cellColors = { vacant: 'var(--color-green-100)', allotted: 'var(--color-lightgray)', litigation: 'var(--color-red-100)', reserved: 'var(--color-petal)' };
+    const cellArr = [];
+    Object.entries(sel.plots).forEach(([k, count]) => { for (let j = 0; j < count; j++) cellArr.push(k); });
+    // deterministic shuffle
+    for (let j = cellArr.length - 1; j > 0; j--) { const k = (j * 7919 + sel.id.length * 31) % (j + 1); [cellArr[j], cellArr[k]] = [cellArr[k], cellArr[j]]; }
+    const selEstate = {
+      name: sel.name, sub: sel.agency + ' · ' + sel.district + ' district · ' + sel.acres + ' acres · verified ' + sel.verified,
+      backwardBadge: sel.backward, sync: sel.sync,
+      prefill: () => this.set({ view: 'matcher', district: sel.district, backward: sel.backward }),
+      stats: [
+        { val: String(sel.plots.vacant), label: lang === 'ta' ? 'காலி மனைகள்' : 'Vacant plots' },
+        { val: sel.rate, label: lang === 'ta' ? 'வெளியிடப்பட்ட விலை' : 'Published rate' },
+        { val: String(totalPlots), label: lang === 'ta' ? 'மொத்த மனைகள்' : 'Total plots' },
+        { val: String(sel.unlocked), label: lang === 'ta' ? 'திறக்கும் திட்டங்கள்' : 'Schemes unlocked' }],
+      cells: cellArr.map(k => ({ style: 'aspect-ratio:1;background:' + cellColors[k] + ';opacity:' + (k === 'allotted' ? 1 : 0.85), label: k })),
+      infra: sel.infra.map(([label, ok]) => ({ label, val: ok ? '✓' : '—', style: 'color:' + (ok ? 'var(--color-green-100)' : 'var(--color-silvergray)') })),
+      dist: sel.dist.map(([label, val]) => ({ label, val })),
+      schemesLine: (lang === 'ta' ? 'இந்த இடம் திறக்கும் திட்டங்கள்: ' : 'This location unlocks: ') + (sel.backward ? 'PMEGP 35% rate, stamp duty concession, NEEDS priority allotment' + (sel.id === 'tirumudivakkam' ? ', women-only allotment' : '') : 'NEEDS priority allotment' + (sel.id === 'tirumudivakkam' ? ', women-only allotment, Stand-Up India synergy' : ' — standard rates (not a backward block)'))
+    };
+    const plotLegend = [['Vacant', 'vacant'], ['Allotted', 'allotted'], ['Litigation', 'litigation'], ['Reserved', 'reserved']].map(([label, k]) => ({ label, dot: 'width:10px;height:10px;display:inline-block;background:' + cellColors[k] }));
+
+    // ── Schemes view ──
+    const all = this.schemes();
+    const schemeCards = all.map(s => {
+      const fb = this.freshBadge(s.verified);
+      return { name: s.name, nameTa: s.nameTa, level: s.level.toUpperCase() + ' · ' + s.dept.toUpperCase(), line: this.simpleFor(s.id) || s.line, fresh: fb.fresh, freshStyle: fb.freshStyle, open: () => this.setState({ schemeSel: s.id }) };
+    });
+    let schemeDetail = null;
+    if (st.schemeSel) {
+      const s = all.find(x => x.id === st.schemeSel);
+      const fb = this.freshBadge(s.verified);
+      const iBase = ev.input;
+      const dl = s.deadline ? this.daysUntil(s.deadline) : null;
+      schemeDetail = {
+        name: s.name, nameTa: s.nameTa, level: s.level.toUpperCase(), dept: s.dept, summary: s.summary, simple: this.simpleFor(s.id),
+        fresh: fb.fresh, freshStyle: fb.freshStyle,
+        deadline: dl != null ? 'SUNSETS 30.09.2026 · ' + dl + ' DAYS LEFT' : null,
+        examples: [25, 100, 500].map(size => {
+          const bens = s.benefit(Object.assign({}, iBase, { P: size }));
+          const tot = bens.reduce((a, b) => a + (b.lakhs || 0), 0);
+          const ok = s.checks.every(c => c.test(Object.assign({}, iBase, { P: size })));
+          return { size: (lang === 'ta' ? 'திட்டம் ' : 'Project ') + this.fmt(size), amount: ok ? (tot > 0 ? this.fmt(tot) : 'Access') : (lang === 'ta' ? 'தகுதியில்லை' : 'Not eligible') };
+        }),
+        steps: s.steps.map((text, idx) => ({ n: String(idx + 1), text })),
+        history: s.history, checks: mkChecks(s.checks.map(c => ({ label: c.label, pass: !!c.test(iBase) }))),
+        conflictLine: s.conflictLine, citation: s.citation, verified: s.verified
+      };
+    }
+
+    // ── Playbooks ──
+    const pbs = this.playbooks();
+    const pbTabs = Object.entries(pbs).map(([id, p]) => ({ label: p.title.split(' — ')[0], pick: () => this.setState({ pbSel: id }), style: st.pbSel === id ? chipOn : chipOff }));
+    const pb = pbs[st.pbSel];
+    const doneMap = st.pbDone[st.pbSel] || {};
+    const doneCount = pb.steps.filter((_, idx) => doneMap[idx]).length;
+    const pbSel = {
+      title: pb.title,
+      progress: doneCount + ' / ' + pb.steps.length + (lang === 'ta' ? ' முடிந்தது' : ' done'),
+      steps: pb.steps.map((s, idx) => {
+        const done = !!doneMap[idx];
+        return {
+          title: s.title, org: s.org, docs: s.docs, time: s.time, warn: s.warn || null, mark: done ? '✓' : '',
+          titleStyle: done ? 'color:var(--color-silvergray);text-decoration:line-through' : '',
+          boxStyle: 'width:26px;height:26px;flex:none;border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;border:1px solid ' + (done ? 'var(--color-green-100)' : 'var(--color-lightgray)') + ';background:' + (done ? 'var(--color-green-100)' : '#fff'),
+          flip: () => this.setState(prev => {
+            const cur = Object.assign({}, prev.pbDone[prev.pbSel] || {});
+            cur[idx] = !cur[idx];
+            const pbDone = Object.assign({}, prev.pbDone, { [prev.pbSel]: cur });
+            try { localStorage.setItem('nilam_pb_done', JSON.stringify(pbDone)); } catch (e) {}
+            return { pbDone };
+          })
+        };
+      })
+    };
+
+    // ── Saved / alerts ──
+    const savedStacks = [
+      { title: '₹5Cr food unit · Thanjavur', inputs: 'Food processing · first-gen · backward block · saved 12 Aug 2026', total: '₹1.53Cr', version: 'ruleset v14', deltaBadge: 'v12 → v14', delta: '+₹4.5L — AIF subvention tenure computation corrected per DIC clarification.' },
+      { title: '₹40L textile unit · Erode', inputs: 'Textiles · woman promoter · SIPCOT Perundurai watch · saved 3 Aug 2026', total: '₹18.6L', version: 'ruleset v14', delta: null }];
+    const alerts = [
+      { badge: 'DEADLINE', badgeStyle: 'padding:3px 10px;border-radius:9999px;background:var(--color-red-20);color:var(--color-red-100);height:fit-content', text: 'PMFME sunsets 30.09.2026 — ' + this.daysUntil('2026-09-30') + ' days left. Your saved stack “₹5Cr food unit” includes ₹10L from PMFME.', date: 'Today' },
+      { badge: 'G.O. CHANGE', badgeStyle: 'padding:3px 10px;border-radius:9999px;background:var(--color-stone);color:var(--color-umber);height:fit-content', text: 'NEEDS subvention tenure clarified (ruleset v13 → v14). Your stack total moved +₹4.5L.', date: '19 Aug 2026' },
+      { badge: 'VACANCY', badgeStyle: 'padding:3px 10px;border-radius:9999px;background:var(--color-green-10);color:var(--color-green-100);height:fit-content', text: '2 new vacant plots at Kattuvananjur Industrial Estate (watched). Now 11 vacant.', date: '14 Aug 2026' }];
+
+    // ── Changelog ──
+    const kindStyles = {
+      RULE: 'color:var(--color-darkgray)', VERIFY: 'color:var(--color-green-100)', SYNC: 'color:var(--color-mediumgray)', CONFLICT: 'color:var(--color-umber)'
+    };
+    const clEntries = [
+      { date: '19 Aug 2026', kind: 'RULE', entity: 'NEEDS → rule_version v14', note: 'Interest subvention tenure computation clarified per DIC circular. Golden fixtures updated; 2 saved stacks notified.', actor: 'Approved: Prem · source: DIC Thanjavur (written)' },
+      { date: '18 Aug 2026', kind: 'VERIFY', entity: 'TIIC loan schedule 2026', note: 'Monthly sweep — rate card re-verified against tiic.org.', actor: 'Approved: Prem' },
+      { date: '15 Aug 2026', kind: 'VERIFY', entity: 'PMFME sunset date', note: 'MoFPI extension order re-checked: final sunset 30.09.2026 confirmed. Deadline alerts armed.', actor: 'Approved: Prem · source: MoFPI order (PDF hash 8f31…)' },
+      { date: '14 Aug 2026', kind: 'SYNC', entity: 'TANSIDCO GIS — 42 estates', note: 'Weekly plot-layer sync. Kattuvananjur: +2 vacant, 1 litigation resolved. 3 watchers notified.', actor: 'Scraper → staging → approved' },
+      { date: '11 Aug 2026', kind: 'CONFLICT', entity: 'conflict_pair: PMEGP × PMFME', note: 'Exclusivity confirmed in writing at DIC level — upgraded from “inferred” to “dic_written”.', actor: 'Approved: Prem · DIC Madurai letter' },
+      { date: '02 Aug 2026', kind: 'VERIFY', entity: 'NEEDS — G.O. (Ms) No.13', note: 'Quarterly re-verification of base G.O. text; no change.', actor: 'Approved: Prem' }];
+    const clStats = [
+      { val: '21 / 24', label: lang === 'ta' ? 'விதிகள் < 90 நாள்' : 'Rules verified < 90d' },
+      { val: 'v14', label: lang === 'ta' ? 'தற்போதைய விதித்தொகுப்பு' : 'Current ruleset' },
+      { val: '0', label: lang === 'ta' ? 'மேற்கோள் இல்லாத எண்கள்' : 'Uncited numbers (CI-enforced)' }];
+
+    const trust = [
+      { title: lang === 'ta' ? 'ஒவ்வொரு எண்ணுக்கும் அரசாணை' : 'Every number carries its G.O.', text: lang === 'ta' ? 'மேற்கோள் இல்லாத எண் வெளியிடப்படாது — CI-ஆல் கட்டாயப்படுத்தப்படுகிறது.' : 'No orphan facts, ever. A number without a Government Order citation and verified-on date cannot ship — our build fails.' },
+      { title: lang === 'ta' ? 'பழமை மறைக்கப்படாது' : 'Staleness is shown, not hidden', text: lang === 'ta' ? '90 நாளுக்கு மேல் சரிபார்க்கப்படாத விதி அம்பர் பேட்ஜ் அணியும். நேர்மையே எங்கள் அடையாளம்.' : 'A rule unverified for over 90 days wears an amber badge. Honesty is the brand — you always know how fresh an answer is.' },
+      { title: lang === 'ta' ? 'அரசாணை மாறினால் தெரியும்' : 'When a G.O. moves, you hear first', text: lang === 'ta' ? 'சேமித்த அடுக்கை பாதிக்கும் மாற்றங்கள் உடனே அறிவிக்கப்படும்.' : 'Scheme changes flow through human-verified rule updates — and every saved stack they touch gets notified.' }];
+    const loopSteps = [
+      { n: '01', title: lang === 'ta' ? 'கண்காணிப்பு' : 'Scraper watch', text: lang === 'ta' ? 'GIS, போர்ட்டல்கள், PIB தினமும்' : 'TANSIDCO GIS weekly, scheme portals weekly, PIB daily keyword watch.' },
+      { n: '02', title: lang === 'ta' ? 'மாற்ற வேறுபாடு' : 'Change diff', text: lang === 'ta' ? 'புலம்-அளவில் வேறுபாடுகள்' : 'Field-level diffs against production; G.O. PDFs hashed and summarized.' },
+      { n: '03', title: lang === 'ta' ? 'மனித சரிபார்ப்பு' : 'Human verification', text: lang === 'ta' ? 'ஒவ்வொரு விதி மாற்றமும் ஒப்புதல்' : 'Every rule change is human-approved. Nothing auto-publishes.' },
+      { n: '04', title: lang === 'ta' ? 'பதிப்பு வெளியீடு' : 'Versioned publish', text: lang === 'ta' ? 'விதித்தொகுப்பு பதிப்பு + அறிவிப்பு' : 'Ruleset version bumps, the changelog updates, affected saved stacks get notified.' }];
+
+    const howSteps = (lang === 'ta' ? [
+      ['01', 'உங்கள் யோசனையைச் சொல்லுங்கள்', 'என்ன தயாரிப்பு, தோராயச் செலவு, மாவட்டம் — இரண்டே நிமிடம். பதிவு இல்லை, ஆவணம் இல்லை.'],
+      ['02', 'உங்கள் பணத்தை உடனே பாருங்கள்', 'தகுதியான ஒவ்வொரு மானியமும் (இலவசப் பணம்) கடன் சலுகையும் — ஒவ்வொரு எண்ணுக்கும் பின்னுள்ள அரசு விதியுடன்.'],
+      ['03', 'படி படியாக விண்ணப்பியுங்கள்', 'வழிகாட்டியைத் திறங்கள்: எந்த அலுவலகம், என்ன ஆவணங்கள், எந்த வரிசையில் — முதல் முறையினருக்காக எழுதப்பட்டது.']
+    ] : [
+      ['01', 'Tell us about your idea', 'Pick what you make, roughly what it costs, and your district. Two minutes. No signup, no documents.'],
+      ['02', 'See your money instantly', 'We show every subsidy (free money) and loan benefit you qualify for — with the government rule behind each number.'],
+      ['03', 'Apply step by step', 'Open the playbook: which office, which papers, in what order — written for first-timers.']
+    ]).map(([n2, title, text]) => ({ n: n2, title, text }));
+    const glossary = (lang === 'ta' ? [
+      ['மானியம் (Subsidy)', 'அரசு தரும் இலவசப் பணம். திருப்பிச் செலுத்தத் தேவையில்லை.'],
+      ['கடன் (Loan)', 'வட்டியுடன் திருப்பிச் செலுத்த வேண்டிய பணம்.'],
+      ['வட்டி மானியம்', 'உங்கள் கடன் வட்டியில் ஒரு பகுதியை அரசே செலுத்தும்.'],
+      ['அரசாணை (G.O.)', 'ஒரு விதி எழுதப்பட்டுள்ள அதிகாரப்பூர்வ அரசு ஆவணம்.'],
+      ['DIC', 'மாவட்டத் தொழில் மையம் — தொழில் திட்டங்களுக்கான உங்கள் மாவட்ட அரசு அலுவலகம்.'],
+      ['திட்ட அறிக்கை (DPR)', 'உங்கள் தொழிலின் எழுத்துப்பூர்வ திட்டம்: என்ன, எவ்வளவு செலவு, எப்படி வருமானம்.'],
+      ['Udyam பதிவு', 'தொழிலை அதிகாரப்பூர்வமாக்கும் இலவச ஆன்லைன் பதிவு. பெரும்பாலான திட்டங்களுக்குத் தேவை.'],
+      ['பின்தங்கிய வட்டம்', 'அரசு விரைவாக வளர்க்க விரும்பும் பகுதி — அங்கு தொழிலுக்குக் கூடுதல் சலுகை.'],
+      ['சொந்தப் பங்கு (Margin)', 'மொத்தச் செலவில் நீங்களே போட வேண்டிய பகுதி.'],
+      ['முத்திரைத் தீர்வை', 'நிலத்தை உங்கள் பெயரில் பதியும்போது கட்டும் வரி.']
+    ] : [
+      ['Subsidy', 'Free money from the government. You never pay it back.'],
+      ['Loan', 'Money you borrow and pay back with interest.'],
+      ['Interest subvention', 'The government pays part of your loan interest for you.'],
+      ['G.O. (Government Order)', 'The official document where a government rule is written.'],
+      ['DIC', 'District Industries Centre — the government office in your district that handles business schemes.'],
+      ['Project report (DPR)', 'A written plan of your business: what you\u2019ll make, what it costs, how you\u2019ll earn.'],
+      ['Udyam', 'A free online registration that makes your business official. Needed for most schemes.'],
+      ['Backward block', 'An area the government wants to develop faster — businesses there get extra benefits.'],
+      ['Margin money', 'The share of the cost you must put in from your own pocket.'],
+      ['Stamp duty', 'The tax you pay when registering land in your name.']
+    ]).map(([term, def]) => ({ term, def }));
+    const langPillOn = 'padding:7px 14px;background:var(--color-darkgray);color:#fff;cursor:pointer';
+    const langPillOff = 'padding:7px 14px;background:transparent;color:var(--color-mediumgray);cursor:pointer';
+
+    return {
+      t, navItems, freshnessNote: '21/24 rules < 90d',
+      isMatcher: st.view === 'matcher', isLand: st.view === 'land', isSchemes: st.view === 'schemes',
+      isPlaybooks: st.view === 'playbooks', isSaved: st.view === 'saved', isChangelog: st.view === 'changelog',
+      goHome: () => this.setState({ view: 'matcher' }),
+      goLand: () => this.setState({ view: 'land' }),
+      goSchemes: () => this.setState({ view: 'schemes', schemeSel: null }),
+      goPlaybooks: () => this.setState({ view: 'playbooks' }),
+      goChangelog: () => this.setState({ view: 'changelog' }),
+      setEn: () => this.setState({ lang: 'en' }), setTa: () => this.setState({ lang: 'ta' }),
+      enStyle: lang === 'en' ? langPillOn : langPillOff, taStyle: lang === 'ta' ? langPillOn : langPillOff,
+      sectors, sliderVal: st.sliderVal,
+      onSlider: (e) => this.set({ sliderVal: +e.target.value }),
+      projectDisplay: this.fmt(P), district: st.district,
+      onDistrict: (e) => this.set({ district: e.target.value }),
+      districts, toggles,
+      totalDisplay: this.fmt(ev.total), rulesetVersion: 'v14',
+      onShare: () => { this.syncUrl(); try { navigator.clipboard.writeText(location.href); } catch (e) {} this.setState({ copied: true }); setTimeout(() => this.setState({ copied: false }), 1600); },
+      shareLabel: st.copied ? t.shareCopied : t.share,
+      eligibleCount: ev.winners.length + (lang === 'ta' ? ' திட்டங்கள்' : ' schemes'),
+      schemeRows, hasConflicts: conflicts.length > 0, conflicts,
+      hasNearMisses: nearMisses.length > 0, nearMisses, sequence, landRanked,
+      showMarketing: this.props.showMarketing ?? true, trust, loopSteps,
+      agencyFilters, estateList, selEstate, plotLegend,
+      schemeCards, schemeDetail, noSchemeSel: !st.schemeSel, howSteps, glossary,
+      closeScheme: () => this.setState({ schemeSel: null }),
+      pbTabs, pbSel,
+      savedStacks, alerts, clEntries, clStats
+    };
+  }
+}
+
+</script>
+</body>
+</html>
