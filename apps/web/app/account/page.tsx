@@ -145,7 +145,7 @@ export default async function AccountPage() {
           <ul className="history-list">
             {watches.map((watch) => (
               <li key={watch.estateId}>
-                <Link href={`/estates/${watch.slug}`}>{watch.name}</Link>
+                <strong>{watch.name}</strong>
                 <span>Vacancy alerts enabled</span>
               </li>
             ))}

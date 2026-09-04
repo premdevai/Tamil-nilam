@@ -121,7 +121,7 @@ test.describe('NILAM App — ported design', () => {
     ).toBeVisible();
   });
 
-  test('internal views render and trust links reach real surfaces', async ({
+  test('internal views render and Saved reaches its account surface', async ({
     page,
   }) => {
     await page.goto('/');
@@ -129,6 +129,7 @@ test.describe('NILAM App — ported design', () => {
       ['Land Explorer', 'Government industrial land, plot by plot.'],
       ['Schemes', 'Scheme encyclopedia'],
       ['Playbooks', 'Playbooks'],
+      ['Changelog', 'Public changelog'],
     ];
     for (const [nav, heading] of views) {
       await page
@@ -145,16 +146,6 @@ test.describe('NILAM App — ported design', () => {
     await expect(page).toHaveURL(/\/account(?:\/sign-in)?/u);
     await expect(
       page.getByRole('heading', { name: 'Sign in without a password' }),
-    ).toBeVisible();
-
-    await page.goto('/');
-    await page
-      .getByRole('button', { name: 'Changelog', exact: true })
-      .first()
-      .click();
-    await expect(page).toHaveURL(/\/changelog$/u);
-    await expect(
-      page.getByRole('heading', { name: 'Ruleset changelog' }),
     ).toBeVisible();
   });
 
@@ -266,21 +257,64 @@ test.describe('NILAM App — ported design', () => {
 
     // Cheapest published plot rate per acre across the state: Pidaneri,
     // Thoothukudi at ~₹19.1L/acre. Rental rows are excluded from the rate.
-    await page.getByRole('button', { name: 'Cheapest', exact: true }).click();
+    const sort = page.getByRole('combobox', { name: 'Sort estates' });
+    await sort.selectOption('cheapest');
     await expect(rows.first()).toContainText('Pidaneri');
 
     // Guindy tops it at ~₹123Cr/acre — central Chennai industrial land.
-    await page.getByRole('button', { name: 'Priciest', exact: true }).click();
+    await sort.selectOption('priciest');
     await expect(rows.first()).toContainText('Guindy');
 
     // Karaikudi has 121 vacant units, the most in the snapshot.
-    await page.getByRole('button', { name: 'Most vacant' }).click();
+    await sort.selectOption('vacancy');
     await expect(rows.first()).toContainText('Karaikudi');
 
     // The backward-block flag is the source's own, not inferred.
-    await page.getByRole('button', { name: 'Backward only' }).click();
+    const backward = page.getByRole('checkbox', { name: /Backward block/ });
+    if (!(await backward.isVisible())) {
+      await page.getByRole('button', { name: /^Filter by/ }).click();
+    }
+    await backward.check();
     await expect(page.getByText(/of 85 (?:estates )?·/)).toBeVisible();
     await expect(rows.first()).toContainText('BB');
+  });
+
+  test('acre/cent toggle converts published extents and per-acre rates', async ({
+    page,
+  }) => {
+    await page.goto('/');
+    await page
+      .getByRole('button', { name: 'Land Explorer', exact: true })
+      .first()
+      .click();
+    await page.getByLabel('Search estates').fill('mallur');
+    const rows = page.locator('button.qh-row-paper');
+    await expect(rows.first()).toContainText('Mallur');
+    await expect(rows.first()).toContainText('from ₹50.5L/ac');
+
+    const desktop = await page
+      .getByText('26.62 ac', { exact: true })
+      .isVisible();
+    if (desktop) {
+      await expect(page.getByText('From, per acre')).toBeVisible();
+      await expect(page.getByText('Plot 1 · 0.37 ac')).toBeVisible();
+    }
+
+    await page.getByRole('button', { name: 'Cent', exact: true }).click();
+    await expect(rows.first()).toContainText('from ₹50,514/cent');
+
+    if (desktop) {
+      await expect(page.getByText('2,662 cent', { exact: true })).toBeVisible();
+      await expect(page.getByText('From, per cent')).toBeVisible();
+      await expect(page.getByText('Plot 1 · 37 cent')).toBeVisible();
+      await expect(page.getByText('Plot 3 · 20.6 cent')).toBeVisible();
+      await expect(page.getByText('₹18.7L')).toBeVisible();
+    } else {
+      await rows.first().click();
+      await page.getByRole('button', { name: /^Available / }).click();
+      await expect(page.getByText('Plot 1 · 37 cent')).toBeVisible();
+      await expect(page.getByText('₹18.7L')).toBeVisible();
+    }
   });
 
   test('surveyed plan draws real polygons and reports real plot facts', async ({

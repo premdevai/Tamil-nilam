@@ -159,9 +159,7 @@ export default async function ProjectPage({
                   ? 'Directory only'
                   : `${estate.vacantTotal} vacant · ${estate.verifiedOn}`}
               </span>
-              <h3>
-                <Link href={`/estates/${estate.slug}`}>{estate.name}</Link>
-              </h3>
+              <h3>{estate.name}</h3>
               <p>
                 {estate.district}
                 {estate.block === null ? '' : ` · ${estate.block}`}

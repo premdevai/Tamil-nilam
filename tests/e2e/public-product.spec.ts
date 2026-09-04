@@ -65,7 +65,6 @@ test('Matcher restores, recomputes and shares its URL profile', async ({
 });
 
 test('land contract distinguishes verified PostGIS from safe fallback', async ({
-  page,
   request,
 }) => {
   const response = await request.get(
@@ -81,9 +80,6 @@ test('land contract distinguishes verified PostGIS from safe fallback', async ({
   };
   expect(body.type).toBe('FeatureCollection');
 
-  await page.goto('/land?district=Coimbatore');
-  await page.getByRole('button', { name: 'Apply filters' }).click();
-
   if (body.mode === 'fallback') {
     expect(
       body.features.every(
@@ -92,42 +88,40 @@ test('land contract distinguishes verified PostGIS from safe fallback', async ({
           properties.dataQuality === 'directory-only',
       ),
     ).toBe(true);
-    await expect(
-      page.getByText('Safe fallback · availability unknown'),
-    ).toBeVisible();
   } else {
     expect(
       body.features.every(
         ({ properties }) => properties.dataQuality === 'verified-plot',
       ),
     ).toBe(true);
-    await expect(page.getByText('PostGIS verified records')).toBeVisible();
   }
 });
 
-test('TANSIDCO estate pages cite the vacancy snapshot', async ({ page }) => {
-  await page.goto('/estates/guindy-industrial-estate');
-  await expect(
-    page.getByRole('heading', { name: 'Guindy', exact: true }),
-  ).toBeVisible();
-  await expect(page.getByText(/19 vacant on chart/)).toBeVisible();
-  await expect(page.getByText(/TANSIDCO vacancy snapshot/)).toBeVisible();
-});
-
-test('pending schemes and anonymous playbook progress are explicit', async ({
+test('removed and unknown browser routes redirect home', async ({
   page,
+  request,
 }) => {
-  await page.goto('/schemes/tn-capital-subsidy');
-  await expect(
-    page.getByText('Pending verification — not calculated'),
-  ).toBeVisible();
-  await expect(
-    page.getByText(/No eligibility decision or monetary benefit/),
-  ).toBeVisible();
+  const removedRoutes = [
+    '/land?district=Coimbatore',
+    '/estates/guindy-industrial-estate',
+    '/schemes/tn-capital-subsidy',
+    '/schemes/district/chennai',
+    '/schemes/sector/manufacturing',
+    '/playbooks/industrial-land-shortlist',
+    '/methodology',
+    '/sources',
+    '/changelog',
+    '/definitely-not-a-page',
+  ];
 
-  await page.goto('/playbooks/industrial-land-shortlist');
-  const firstStep = page.getByRole('checkbox').first();
-  await firstStep.check();
-  await page.reload();
-  await expect(page.getByRole('checkbox').first()).toBeChecked();
+  for (const route of removedRoutes) {
+    await page.goto(route);
+    await expect.poll(() => new URL(page.url()).pathname).toBe('/');
+    await expect(
+      page.getByRole('button', { name: 'Land Explorer', exact: true }).first(),
+    ).toBeVisible();
+  }
+
+  const unknownApi = await request.get('/api/definitely-not-an-endpoint');
+  expect(unknownApi.status()).toBe(404);
 });

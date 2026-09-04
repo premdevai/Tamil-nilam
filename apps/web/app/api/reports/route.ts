@@ -90,8 +90,7 @@ export async function POST(request: Request) {
       schemeSlug: scheme.schemeId,
       version: 1,
       verifiedOn: scheme.citations[0]?.verifiedOn ?? parsed.data.asOf,
-      sourceUrl:
-        scheme.citations[0]?.url ?? `${SITE_URL}/schemes/${scheme.schemeId}`,
+      sourceUrl: scheme.citations[0]?.url ?? SITE_URL,
     })),
     capturedAt,
   );

@@ -7,7 +7,6 @@ import {
   type MatcherInput,
   type RulesetVersion,
 } from '@nilam/engine';
-import Link from 'next/link';
 import {
   useEffect,
   useMemo,
@@ -549,9 +548,7 @@ export function Matcher({
                 </p>
                 <p className="computed-meta">
                   Directional pre-DPR estimate — never a sanction assurance ·{' '}
-                  <Link href="/changelog">
-                    ruleset {evaluation.result.rulesetVersion}
-                  </Link>
+                  ruleset {evaluation.result.rulesetVersion}
                 </p>
                 <p className="computed-explainer">
                   The total includes only amounts the verified engine can
@@ -565,12 +562,6 @@ export function Matcher({
                     ? shareNotice
                     : 'Share result'}
                 </button>
-                <Link
-                  className="matcher-secondary-button"
-                  href="/playbooks/industrial-land-shortlist"
-                >
-                  Open playbook
-                </Link>
               </div>
             </header>
 
@@ -658,9 +649,6 @@ export function Matcher({
                             {scheme.citations[0]?.title} · verified{' '}
                             {scheme.citations[0]?.verifiedOn}
                           </p>
-                          <Link href={`/schemes/${scheme.schemeId}`}>
-                            Full scheme page →
-                          </Link>
                         </div>
                       </div>
                     ) : null}
@@ -684,18 +672,9 @@ export function Matcher({
                     </span>
                     <h3>{estate.name}</h3>
                     <p>{estate.district}</p>
-                    <Link href={`/estates/${estate.slug}`}>
-                      Inspect evidence
-                    </Link>
                   </article>
                 ))}
               </div>
-              <Link
-                className="text-link"
-                href={`/land?district=${encodeURIComponent(input.district)}`}
-              >
-                Explore land map →
-              </Link>
             </section>
 
             <div className="matcher-utility-actions">

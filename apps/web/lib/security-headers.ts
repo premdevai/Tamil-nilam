@@ -3,7 +3,7 @@ export const SECURITY_HEADERS: ReadonlyArray<readonly [string, string]> = [
   ['x-content-type-options', 'nosniff'],
   ['x-frame-options', 'DENY'],
   ['x-dns-prefetch-control', 'off'],
-  ['permissions-policy', 'camera=(), microphone=(), geolocation=()'],
+  ['permissions-policy', 'camera=(), microphone=(), geolocation=(self)'],
   [
     'content-security-policy',
     [

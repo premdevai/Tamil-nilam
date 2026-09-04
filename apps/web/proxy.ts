@@ -12,6 +12,22 @@ import { originAllowed } from './lib/origin';
 import { clientKey, consumeRateLimit } from './lib/rate-limit';
 import { applySecurityHeaders } from './lib/security-headers';
 
+const PAGE_ROUTES = [
+  /^\/$/,
+  /^\/(?:robots\.txt|sitemap\.xml)$/,
+  /^\/account(?:\/(?:sign-in|workspace|dpr|billing|verify))?\/?$/,
+  /^\/account\/projects\/[^/]+(?:\/(?:readiness|execution|impact|outcomes))?\/?$/,
+  /^\/admin\/?$/,
+] as const;
+
+function isUnknownPageNavigation(request: NextRequest): boolean {
+  const { pathname } = request.nextUrl;
+  if (pathname.startsWith('/api/')) return false;
+  if (request.method !== 'GET') return false;
+  if (request.headers.get('sec-fetch-dest') !== 'document') return false;
+  return !PAGE_ROUTES.some((pattern) => pattern.test(pathname));
+}
+
 export function proxy(request: NextRequest) {
   const requestId = request.headers.get('x-request-id') ?? crypto.randomUUID();
   const ip =
@@ -57,6 +73,13 @@ export function proxy(request: NextRequest) {
       { error: 'origin_rejected' },
       { status: 403 },
     );
+    response.headers.set('x-request-id', requestId);
+    applySecurityHeaders(response.headers);
+    return response;
+  }
+
+  if (isUnknownPageNavigation(request)) {
+    const response = NextResponse.redirect(new URL('/', request.url), 308);
     response.headers.set('x-request-id', requestId);
     applySecurityHeaders(response.headers);
     return response;

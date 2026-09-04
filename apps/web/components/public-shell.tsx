@@ -20,13 +20,9 @@ export function PublicShell({ children }: { readonly children: ReactNode }) {
           </Link>
           <nav aria-label="Primary navigation">
             <Link className="nav-current" href="/">
-              Matcher
+              NILAM
             </Link>
-            <Link href="/land">Land Explorer</Link>
-            <Link href="/schemes">Schemes</Link>
-            <Link href="/playbooks/industrial-land-shortlist">Playbooks</Link>
             <Link href="/account">Saved</Link>
-            <Link href="/changelog">Changelog</Link>
           </nav>
           <span className="source-promise">
             {inventory.published}/{inventory.total} calculating ·{' '}
@@ -43,11 +39,6 @@ export function PublicShell({ children }: { readonly children: ReactNode }) {
           <p>
             NILAM <span lang="ta">நிலம்</span>
           </p>
-          <nav aria-label="Evidence and project information">
-            <Link href="/methodology">Methodology</Link>
-            <Link href="/sources">Sources</Link>
-            <Link href="/changelog">Changelog</Link>
-          </nav>
           <p>
             Directional guidance, not a sanction or legal opinion. Always
             confirm with the cited authority.

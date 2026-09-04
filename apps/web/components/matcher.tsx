@@ -7,7 +7,6 @@ import {
   type MatcherInput,
   type RulesetVersion,
 } from '@nilam/engine';
-import Link from 'next/link';
 import {
   useEffect,
   useMemo,
@@ -567,11 +566,7 @@ export function Matcher({
                   </div>
                   <div>
                     <p className="eyebrow">Eligible on supplied facts</p>
-                    <h3>
-                      <Link href={`/schemes/${scheme.schemeId}`}>
-                        {scheme.name}
-                      </Link>
-                    </h3>
+                    <h3>{scheme.name}</h3>
                     <p lang="ta">{scheme.nameTa}</p>
                     <p className="scheme-value">
                       {scheme.totalLakhs > 0
@@ -656,22 +651,20 @@ export function Matcher({
               <p>
                 <strong>{evaluation.result.pendingVerification.length}</strong>{' '}
                 records are pending verification and contribute{' '}
-                <strong>₹0</strong> to this result.{' '}
-                <Link href="/methodology">Why NILAM excludes them</Link>.
+                <strong>₹0</strong> to this result.
               </p>
               <details>
                 <summary>See pending and retired records</summary>
                 <ul>
                   {evaluation.result.pendingVerification.map((record) => (
                     <li key={record.id}>
-                      <Link href={`/schemes/${record.id}`}>{record.name}</Link>{' '}
-                      — Pending verification; not calculated
+                      <strong>{record.name}</strong> — Pending verification; not
+                      calculated
                     </li>
                   ))}
                   {evaluation.result.retired.map((record) => (
                     <li key={record.id}>
-                      <Link href={`/schemes/${record.id}`}>{record.name}</Link>{' '}
-                      — Retired; not available
+                      <strong>{record.name}</strong> — Retired; not available
                     </li>
                   ))}
                 </ul>
@@ -693,18 +686,9 @@ export function Matcher({
                     </span>
                     <h3>{estate.name}</h3>
                     <p>{estate.district}</p>
-                    <Link href={`/estates/${estate.slug}`}>
-                      Inspect evidence
-                    </Link>
                   </article>
                 ))}
               </div>
-              <Link
-                className="text-link"
-                href={`/land?district=${input.district}`}
-              >
-                Explore land map →
-              </Link>
             </section>
           </>
         )}

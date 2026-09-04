@@ -6,11 +6,7 @@ const statsPath = path.resolve(
 );
 
 // Uncompressed first-load budgets. Gzipped transfer is typically ~30% of this.
-const budgets = new Map([
-  ['/', 900_000],
-  ['/land', 900_000],
-  ['/schemes', 900_000],
-]);
+const budgets = new Map([['/', 900_000]]);
 
 if (!existsSync(statsPath)) {
   console.error(

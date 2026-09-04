@@ -6,7 +6,6 @@ import {
   type RulesetVersion,
 } from '@nilam/engine';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 /**
  * Port of the `NILAM App.dc.html` design prototype.
  *
@@ -708,10 +707,6 @@ export function NilamApp({
       location.assign('/account');
       return;
     }
-    if (v === 'changelog') {
-      location.assign('/changelog');
-      return;
-    }
     setView(v);
     setSchemeSel(null);
   };
@@ -1203,6 +1198,12 @@ export function NilamApp({
               )}
             >
               <span
+                {...press(() => goto('changelog'))}
+                style={css('cursor:pointer')}
+              >
+                {t.navChangelog}
+              </span>
+              <span
                 className="q-body-sm-caps"
                 {...press(() => setLang('en'))}
                 style={css(L === 'en' ? langPillOn : langPillOff)}
@@ -1665,10 +1666,7 @@ export function NilamApp({
                           'color:var(--color-silvergray);margin-top:8px',
                         )}
                       >
-                        {t.disclaimer} ·{' '}
-                        <Link href="/changelog">
-                          ruleset {truth.result.rulesetVersion}
-                        </Link>
+                        {t.disclaimer} · ruleset {truth.result.rulesetVersion}
                       </div>
                       <div
                         className="q-body-sm-default"
@@ -2118,13 +2116,7 @@ export function NilamApp({
                               'display:flex;justify-content:space-between;gap:12px',
                             )}
                           >
-                            <Link
-                              className="q-body-sm-bold"
-                              href={`/estates/${e.slug}`}
-                              onClick={(event) => event.stopPropagation()}
-                            >
-                              {e.name}
-                            </Link>
+                            <span className="q-body-sm-bold">{e.name}</span>
                             <span
                               className="q-body-sm-default"
                               style={css('color:var(--color-gray)')}
@@ -3169,12 +3161,6 @@ export function NilamApp({
                 'color:var(--color-mediumgray);display:flex;gap:24px;align-items:flex-start',
               )}
             >
-              <span
-                {...press(() => location.assign('/changelog'))}
-                style={css('cursor:pointer')}
-              >
-                {t.navChangelog}
-              </span>
               <span
                 {...press(() => goto('schemes'))}
                 style={css('cursor:pointer')}

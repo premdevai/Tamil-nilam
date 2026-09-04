@@ -12,10 +12,30 @@
  * allottable plots respond to the pointer.
  */
 
-import { Building2, LandPlot, Store, Warehouse, type LucideIcon } from 'lucide-react';
+import {
+  Building2,
+  LandPlot,
+  Store,
+  Warehouse,
+  type LucideIcon,
+} from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 
+import {
+  type AreaUnit,
+  formatArea,
+  perUnitTitle,
+  ratePerUnit,
+} from '../lib/land-area';
+import {
+  type PlotUnitKind,
+  inferPlotUnit,
+  plotUnitFromVacancyType,
+} from '../lib/plot-unit';
 import { Map as MapCanvas, MapControls, MapGeoJSON, MapPopup } from './ui/map';
+
+export type { PlotUnitKind };
+export { inferPlotUnit, plotUnitFromVacancyType };
 
 export type SourcePlot = {
   no: string;
@@ -35,18 +55,6 @@ export type AvailablePlot = {
   costBasis: 'outright' | 'unclear' | 'unpublished';
 };
 
-/**
- * TANSIDCO's vacancy chart only publishes these four unit kinds. The GIS
- * layer has no type field, so a hover without a vacancy match infers from
- * the plot label (CML/CMP, shed, module) and otherwise treats a numbered
- * parcel as an industrial plot.
- */
-export type PlotUnitKind =
-  | 'industrial-plot'
-  | 'commercial-plot'
-  | 'shed'
-  | 'module';
-
 const PLOT_UNITS: Record<
   PlotUnitKind,
   { readonly label: string; readonly Icon: LucideIcon }
@@ -56,23 +64,6 @@ const PLOT_UNITS: Record<
   shed: { label: 'Shed', Icon: Warehouse },
   module: { label: 'Module', Icon: Building2 },
 };
-
-export function plotUnitFromVacancyType(type: string): PlotUnitKind | null {
-  const key = type.trim().toLowerCase();
-  if (key === 'industrial plot') return 'industrial-plot';
-  if (key === 'commercial plot') return 'commercial-plot';
-  if (key === 'shed') return 'shed';
-  if (key === 'module') return 'module';
-  return null;
-}
-
-export function inferPlotUnit(no: string): PlotUnitKind {
-  const label = no.toLowerCase();
-  if (/\bshed\b/.test(label)) return 'shed';
-  if (/\b(module|plug)\b/.test(label)) return 'module';
-  if (/\b(cml|cmp|commercial)\b/.test(label)) return 'commercial-plot';
-  return 'industrial-plot';
-}
 
 export function plotUnitsForHover(
   plotNo: string,
@@ -289,6 +280,7 @@ type PlotMapProps = {
   readonly backward: boolean;
   /** Vacancy rows for this estate, merged into the popup by plot number. */
   readonly available: readonly AvailablePlot[];
+  readonly areaUnit: AreaUnit;
   readonly selected: string | null;
   readonly onSelect: (props: PlotFeatureProps | null) => void;
   readonly onHover: (props: PlotFeatureProps | null) => void;
@@ -305,6 +297,7 @@ function PlotMapEstate({
   basemap,
   backward,
   available,
+  areaUnit,
   selected,
   onSelect,
   onHover,
@@ -593,7 +586,7 @@ function PlotMapEstate({
                     label="Surveyed extent"
                     value={
                       numeric(active.acre)
-                        ? `${active.acre} ac`
+                        ? formatArea(active.acre, areaUnit)
                         : 'Not published'
                     }
                   />
@@ -614,8 +607,10 @@ function PlotMapEstate({
                         m.extent !== null &&
                         m.extent > 0 && (
                           <Row
-                            label="Per acre"
-                            value={rupees(m.costRs / m.extent)}
+                            label={perUnitTitle(areaUnit)}
+                            value={rupees(
+                              ratePerUnit(m.costRs / m.extent, areaUnit),
+                            )}
                           />
                         )}
                     </div>

@@ -106,8 +106,8 @@ export function prepareReportSource({
         ? citations
         : [
             {
-              title: 'NILAM methodology',
-              url: `${siteUrl}/methodology`,
+              title: 'NILAM',
+              url: siteUrl,
               verifiedOn: result.asOf,
             },
           ],
