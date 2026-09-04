@@ -203,6 +203,11 @@ function centroid(ring: readonly [number, number][]): [number, number] {
   return [lon / ring.length, lat / ring.length];
 }
 
+function googleMapsUrl([lon, lat]: [number, number]): string {
+  const query = `${lat.toFixed(6)},${lon.toFixed(6)}`;
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+}
+
 /**
  * One revolution of a ring — see scripts/fetch-tansidco.mjs. Duplicated as a
  * guard so a stale or hand-edited snapshot cannot silently kill hit-testing.
@@ -304,7 +309,7 @@ function PlotMapEstate({
 }: PlotMapProps) {
   const [geometry, setGeometry] = useState<Geometry | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [active, setActive] = useState<PlotFeatureProps | null>(null);
+  const [hovered, setHovered] = useState<PlotFeatureProps | null>(null);
 
   useEffect(() => {
     let live = true;
@@ -358,6 +363,11 @@ function PlotMapEstate({
     (geometry?.plots ?? []).forEach((p, index) => map.set(`${index}`, p.ring));
     return map;
   }, [geometry]);
+
+  const selectedFeature =
+    layers.plots.features.find((feature) => feature.properties.key === selected)
+      ?.properties ?? null;
+  const active = hovered ?? selectedFeature;
 
   if (error !== null) {
     return (
@@ -421,10 +431,12 @@ function PlotMapEstate({
       : available.filter((a) => a.no.trim() === active.no.trim());
 
   const anchor = active === null ? null : (ringByKey.get(active.key) ?? null);
+  const anchorCentre = anchor === null ? null : centroid(anchor);
 
   const clearHover = () => {
-    setActive(null);
+    setHovered(null);
     onHover(null);
+    onSelect(null);
   };
 
   return (
@@ -436,7 +448,20 @@ function PlotMapEstate({
         minHeight: 0,
       }}
     >
-      <div style={{ flex: 1, minHeight: 0 }} onMouseLeave={clearHover}>
+      <div
+        style={{ flex: 1, minHeight: 0 }}
+        onMouseLeave={clearHover}
+        onPointerDownCapture={(event) => {
+          const target = event.target;
+          if (
+            target instanceof Element &&
+            target.closest('.maplibregl-popup') !== null
+          ) {
+            return;
+          }
+          clearHover();
+        }}
+      >
         <MapCanvas
           className="h-full w-full border border-border"
           blank={!basemap}
@@ -507,7 +532,10 @@ function PlotMapEstate({
             fillHoverPaint={{ 'fill-opacity': 0.92 }}
             onHover={(e) => {
               const props = e?.feature.properties ?? null;
-              setActive(props);
+              // Keep the last plot popup mounted while the pointer travels
+              // from its polygon into the popup. The map wrapper clears it
+              // only when the pointer leaves the whole map.
+              if (props !== null) setHovered(props);
               onHover(props);
             }}
             onClick={(e) => onSelect(e?.feature.properties ?? null)}
@@ -515,8 +543,8 @@ function PlotMapEstate({
 
           {active !== null && anchor !== null && (
             <MapPopup
-              longitude={centroid(anchor)[0]}
-              latitude={centroid(anchor)[1]}
+              longitude={anchorCentre?.[0] ?? 0}
+              latitude={anchorCentre?.[1] ?? 0}
               closeOnClick={false}
             >
               <div style={{ minWidth: 216 }}>
@@ -634,6 +662,21 @@ function PlotMapEstate({
                     Backward block — 50% of stamp duty and registration charges
                     reimbursed.
                   </div>
+                )}
+                {anchorCentre !== null && (
+                  <a
+                    className="q-body-sm-caps"
+                    href={googleMapsUrl(anchorCentre)}
+                    target="_blank"
+                    rel="noreferrer noopener"
+                    style={{
+                      display: 'inline-block',
+                      marginTop: 10,
+                      color: 'var(--action)',
+                    }}
+                  >
+                    Open in Google Maps ↗
+                  </a>
                 )}
               </div>
             </MapPopup>
