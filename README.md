@@ -29,6 +29,10 @@ unchanged.
    Existing databases must apply `0007_printable_reports` before Pro reports.
 6. Run `pnpm dev`.
 
+Deploy one Vercel project from this repo. That ships `apps/web` — the Next.js
+UI and its API routes. `services/dataops` is a local Python ingest CLI, and
+`apps/worker` is an optional background process; neither belongs on Vercel.
+
 The web liveness endpoint is `/api/health`. Readiness (`/api/health/ready`)
 also pings the database. Run `pnpm lint`, `pnpm typecheck`, `pnpm test`,
 `pnpm build`, and `pnpm test:e2e` before opening a pull request.
