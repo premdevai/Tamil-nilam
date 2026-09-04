@@ -1,8 +1,6 @@
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
-
 import { canonicalizeDistrict, districtsMatch } from '@nilam/engine';
 
+import snapshot from '../data/tansidco.json';
 import { FALLBACK_ESTATES, type PublicEstate } from './public-data';
 
 const SNAPSHOT_SOURCE = 'https://tansidco.org/Home/vacant_chart';
@@ -62,19 +60,8 @@ export function estateSlug(name: string, district: string): string {
   return `${slugify(name)}-${slugify(district)}`;
 }
 
-function snapshotFilePath(): string {
-  const candidates = [
-    path.join(process.cwd(), 'data', 'tansidco.json'),
-    path.join(process.cwd(), 'apps/web/data', 'tansidco.json'),
-  ];
-  for (const candidate of candidates) {
-    if (existsSync(candidate)) return candidate;
-  }
-  throw new Error('TANSIDCO snapshot is not available');
-}
-
 function readSnapshot(): SnapshotFile {
-  return JSON.parse(readFileSync(snapshotFilePath(), 'utf8')) as SnapshotFile;
+  return snapshot as SnapshotFile;
 }
 
 function toLandEstate(

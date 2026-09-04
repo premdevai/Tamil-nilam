@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ['127.0.0.1'],
   devIndicators: false,
   distDir: process.env.NEXT_DIST_DIR ?? '.next',
-  output: 'standalone',
+  // ponytail: Vercel needs default output for *.nft.json; Docker uses next start
   poweredByHeader: false,
   reactStrictMode: true,
   transpilePackages: ['@nilam/db', '@nilam/engine', '@nilam/paid', '@nilam/ui'],
