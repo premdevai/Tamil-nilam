@@ -4,6 +4,9 @@ Tamil Nadu-first industrial land and scheme platform. The workspace now
 includes the verified public product, accounts/alerts, paid DPR/Pro paths, and
 the hardening gates. Live Razorpay stays locked.
 
+- **Live app:** [web-one-navy-20.vercel.app](https://web-one-navy-20.vercel.app)
+- **GitHub:** [premdevai/Tamil-nilam](https://github.com/premdevai/Tamil-nilam)
+
 ## Workspace
 
 - `apps/web` — Next.js App Router site and synchronous API routes
