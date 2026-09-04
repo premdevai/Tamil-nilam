@@ -1198,12 +1198,6 @@ export function NilamApp({
               )}
             >
               <span
-                {...press(() => goto('changelog'))}
-                style={css('cursor:pointer')}
-              >
-                {t.navChangelog}
-              </span>
-              <span
                 className="q-body-sm-caps"
                 {...press(() => setLang('en'))}
                 style={css(L === 'en' ? langPillOn : langPillOff)}

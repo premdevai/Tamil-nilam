@@ -125,6 +125,7 @@ test.describe('NILAM App — ported design', () => {
     page,
   }) => {
     await page.goto('/');
+    await expect(page.getByText('Changelog', { exact: true })).toHaveCount(1);
     const views: [string, string][] = [
       ['Land Explorer', 'Government industrial land, plot by plot.'],
       ['Schemes', 'Scheme encyclopedia'],
