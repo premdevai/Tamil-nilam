@@ -269,6 +269,7 @@ const DICT_EN = {
   navLand: 'Land Explorer',
   navSchemes: 'Schemes',
   navPlaybooks: 'Playbooks',
+  navNeeds: 'NEEDS path',
   navSaved: 'Saved',
   navChangelog: 'Changelog',
   eyebrow: 'GOVERNMENT LAND + SCHEME INTELLIGENCE · TAMIL NADU',
@@ -359,6 +360,7 @@ const DICT_TA: typeof DICT_EN = {
   navLand: 'நில வரைபடம்',
   navSchemes: 'திட்டங்கள்',
   navPlaybooks: 'வழிகாட்டிகள்',
+  navNeeds: 'NEEDS வழி',
   navSaved: 'சேமிப்பு',
   navChangelog: 'மாற்றப் பதிவு',
   eyebrow: 'அரசு நிலம் + திட்ட நுண்ணறிவு · தமிழ்நாடு',
@@ -696,6 +698,7 @@ export function NilamApp({
   const navDefs: readonly [string, string][] = [
     ['matcher', t.navMatcher],
     ['land', t.navLand],
+    ['needs', t.navNeeds],
     ['schemes', t.navSchemes],
     ['playbooks', t.navPlaybooks],
     ['saved', t.navSaved],
@@ -705,6 +708,10 @@ export function NilamApp({
   const goto = (v: string) => {
     if (v === 'saved') {
       location.assign('/account');
+      return;
+    }
+    if (v === 'needs') {
+      location.assign('/needs');
       return;
     }
     setView(v);

@@ -1,6 +1,7 @@
 import { MatcherInputSchema, getRuleset } from '@nilam/engine';
 
 import { DprWizard, type DprPrefill } from '../../../components/dpr-wizard';
+import { queryPrefill } from '../../../lib/dpr-query-prefill';
 import { BilingualHeading } from '../../../components/public-shell';
 import { requireSession } from '../../../lib/authz';
 import { evaluateMatcherSurface } from '../../../lib/matcher-surfaces';
@@ -15,12 +16,14 @@ export default async function DprPage({
   readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const session = await requireSession();
-  const projectId = first((await searchParams).project);
+  const params = await searchParams;
+  const projectId = first(params.project);
   const project =
     projectId !== undefined
       ? await loadOwnedProject(projectId, session.user.id)
       : null;
-  const initialProfile = project === null ? {} : dprPrefill(project);
+  const initialProfile =
+    project === null ? queryPrefill(params) : dprPrefill(project);
   return (
     <section className="content-page account-page">
       <BilingualHeading
