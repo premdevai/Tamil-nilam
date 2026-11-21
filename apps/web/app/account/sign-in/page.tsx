@@ -3,9 +3,16 @@ import { redirect } from 'next/navigation';
 import { SignInForm } from '../../../components/sign-in-form';
 import { BilingualHeading } from '../../../components/public-shell';
 import { getSession } from '../../../lib/auth';
+import { safeNextPath } from '../../../lib/authz';
 
-export default async function SignInPage() {
-  if ((await getSession())?.user !== undefined) redirect('/account');
+export default async function SignInPage({
+  searchParams,
+}: {
+  readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const raw = (await searchParams).next;
+  const next = safeNextPath(Array.isArray(raw) ? raw[0] : raw);
+  if ((await getSession())?.user !== undefined) redirect(next ?? '/account');
   const mailConfigured =
     process.env.NODE_ENV !== 'production' ||
     process.env.AUTH_SMTP_URL !== undefined;
@@ -23,7 +30,13 @@ export default async function SignInPage() {
             : 'Magic-link email is not configured on this deployment. Public matching and browsing stay available without an account.'}
         </p>
       </BilingualHeading>
-      {mailConfigured ? <SignInForm /> : null}
+      {next?.startsWith('/account/dpr') === true ? (
+        <p className="notice">
+          Sign in to build your DPR. Your numbers are kept and you will come
+          straight back to them.
+        </p>
+      ) : null}
+      {mailConfigured ? <SignInForm next={next ?? '/account'} /> : null}
     </section>
   );
 }

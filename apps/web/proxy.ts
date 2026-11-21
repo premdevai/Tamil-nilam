@@ -15,6 +15,7 @@ import { applySecurityHeaders } from './lib/security-headers';
 const PAGE_ROUTES = [
   /^\/$/,
   /^\/(?:robots\.txt|sitemap\.xml)$/,
+  /^\/needs\/?$/,
   /^\/account(?:\/(?:sign-in|workspace|dpr|billing|verify))?\/?$/,
   /^\/account\/projects\/[^/]+(?:\/(?:readiness|execution|impact|outcomes))?\/?$/,
   /^\/admin\/?$/,

@@ -22,6 +22,7 @@ export function PublicShell({ children }: { readonly children: ReactNode }) {
             <Link className="nav-current" href="/">
               NILAM
             </Link>
+            <Link href="/needs">NEEDS path</Link>
             <Link href="/account">Saved</Link>
           </nav>
           <span className="source-promise">

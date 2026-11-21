@@ -1,6 +1,8 @@
 import { MatcherInputSchema, getRuleset } from '@nilam/engine';
 
+import { DprList } from '../../../components/dpr-list';
 import { DprWizard, type DprPrefill } from '../../../components/dpr-wizard';
+import { queryPrefill } from '../../../lib/dpr-query-prefill';
 import { BilingualHeading } from '../../../components/public-shell';
 import { requireSession } from '../../../lib/authz';
 import { evaluateMatcherSurface } from '../../../lib/matcher-surfaces';
@@ -14,29 +16,44 @@ export default async function DprPage({
 }: {
   readonly searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const session = await requireSession();
-  const projectId = first((await searchParams).project);
+  const params = await searchParams;
+  const session = await requireSession(`/account/dpr${queryString(params)}`);
+  const projectId = first(params.project);
   const project =
     projectId !== undefined
       ? await loadOwnedProject(projectId, session.user.id)
       : null;
-  const initialProfile = project === null ? {} : dprPrefill(project);
+  const initialProfile =
+    project === null ? queryPrefill(params) : dprPrefill(project);
   return (
     <section className="content-page account-page">
       <BilingualHeading
         eyebrow="Detailed project report"
-        title="Guided financial inputs"
-        titleTa="வழிகாட்டப்பட்ட நிதி உள்ளீடுகள்"
+        title="Your DPR, ready for the bank"
+        titleTa="வங்கிக்கு தயாரான உங்கள் திட்ட அறிக்கை"
       >
         <p className="lede">
           {isPaidEnabled()
-            ? 'Cost and funding must balance. Generated files freeze the inputs and ruleset, then expire after a signed download window.'
+            ? 'A bank-style report in Word and PDF, built from your numbers. Download it or email it straight to your bank branch or DIC.'
             : 'Paid DPR generation is not offered on this deployment.'}
         </p>
       </BilingualHeading>
       {isPaidEnabled() ? <DprWizard initialProfile={initialProfile} /> : null}
+      <DprList userEmail={session.user.email ?? undefined} />
     </section>
   );
+}
+
+function queryString(
+  params: Record<string, string | string[] | undefined>,
+): string {
+  const search = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) {
+    const single = first(value);
+    if (single !== undefined) search.set(key, single);
+  }
+  const text = search.toString();
+  return text.length === 0 ? '' : `?${text}`;
 }
 
 function first(value: string | string[] | undefined): string | undefined {
