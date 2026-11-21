@@ -83,7 +83,7 @@ export function DprList({
                       row.district,
                       row.projectCost === null
                         ? null
-                        : `₹${(Number(row.projectCost) / 100_000).toLocaleString('en-IN', { maximumFractionDigits: 2 })} lakh`,
+                        : inrShort(Number(row.projectCost)),
                       new Date(row.createdAt).toLocaleString('en-IN', {
                         dateStyle: 'medium',
                         timeStyle: 'short',
@@ -163,6 +163,13 @@ export function DprList({
       )}
     </section>
   );
+}
+
+function inrShort(rupees: number): string {
+  const options = { maximumFractionDigits: 2 };
+  return rupees >= 10_000_000
+    ? `₹${(rupees / 10_000_000).toLocaleString('en-IN', options)} crore`
+    : `₹${(rupees / 100_000).toLocaleString('en-IN', options)} lakh`;
 }
 
 async function fetchRows(): Promise<DprRow[] | null> {

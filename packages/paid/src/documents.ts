@@ -45,11 +45,15 @@ export type DprDocumentModel = {
 export function resolveDocumentStorageDir(
   configured = process.env.DOCUMENT_STORAGE_DIR,
 ): string {
-  if (configured !== undefined) return path.resolve(configured);
   const cwd = process.cwd();
-  return path.basename(path.dirname(cwd)) === 'apps'
-    ? path.resolve(cwd, '..', '..', '.data', 'documents')
-    : path.resolve(cwd, '.data', 'documents');
+  // Inside apps/web or apps/worker, resolve against the monorepo root so the
+  // web app (which serves files) and the worker (which writes them) agree
+  // even when DOCUMENT_STORAGE_DIR is the relative `.data/documents`.
+  const base =
+    path.basename(path.dirname(cwd)) === 'apps'
+      ? path.resolve(cwd, '..', '..')
+      : cwd;
+  return path.resolve(base, configured ?? path.join('.data', 'documents'));
 }
 
 export function documentStorageKey(

@@ -3,6 +3,7 @@ import path from 'node:path';
 import { randomUUID } from 'node:crypto';
 
 import { buildDprFinancials, type DprFinancialInput } from '@nilam/paid';
+import { resolveDocumentStorageDir } from '@nilam/paid/documents';
 import nodemailer from 'nodemailer';
 import { z } from 'zod';
 
@@ -164,11 +165,10 @@ export async function sendDprMail(
 }
 
 export function outboxDir(env: NodeJS.ProcessEnv = process.env): string {
-  const root =
-    env.DOCUMENT_STORAGE_DIR === undefined
-      ? path.join(process.cwd(), '.data')
-      : path.dirname(path.resolve(env.DOCUMENT_STORAGE_DIR));
-  return path.join(root, 'outbox');
+  return path.join(
+    path.dirname(resolveDocumentStorageDir(env.DOCUMENT_STORAGE_DIR)),
+    'outbox',
+  );
 }
 
 function unique(addresses: readonly string[]): string[] {
