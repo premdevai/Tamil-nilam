@@ -10,6 +10,10 @@
 export const NEEDS_VERIFIED_ON = '2026-11-21';
 
 export const NEEDS_SOURCES = {
+  scheme: {
+    title: 'About NEEDS, MSME Online portal, Government of Tamil Nadu',
+    url: 'https://msmeonline.tn.gov.in/needs/needs_desc.php',
+  },
   dic: {
     title: 'NEEDS scheme page, Industries Commissionerate & DIC',
     url: 'https://icdic.tn.gov.in/schemes/needs',
@@ -19,19 +23,58 @@ export const NEEDS_SOURCES = {
     url: 'https://msmeonline.tn.gov.in/',
   },
   tiic: {
-    title: 'TIIC — NEEDS scheme',
+    title: 'TIIC — NEEDS scheme (older figures)',
     url: 'https://www.tiic.org/tn/need-scheme/',
   },
 } as const;
 
+/**
+ * Scheme limits as published on the MSME Online "About NEEDS" page
+ * (checked {@link NEEDS_VERIFIED_ON}): project cost ₹10 lakh to ₹5 crore,
+ * 25% capital subsidy capped at ₹75 lakh, 3% interest subvention for the
+ * whole repayment period, promoter share 10% general / 5% special.
+ * TIIC's page still shows the older ₹30 lakh cap and 21–35 general age limit.
+ */
 export const NEEDS_LIMITS = {
   minProjectLakhs: 10,
   maxProjectLakhs: 500,
   subsidyRate: 0.25,
   subsidyCapLakhs: 75,
   interestSubventionRate: 0.03,
+  /** Building may not exceed 25% of project cost (TIIC guideline). */
+  maxBuildingShare: 0.25,
   contributionRate: { general: 0.1, special: 0.05 },
+  age: { min: 21, general: 45, special: 55 },
 } as const;
+
+/** Capital cost at which the 25% subsidy reaches its ₹75 lakh cap (₹3 crore). */
+export const SUBSIDY_CAP_REACHED_AT_LAKHS =
+  NEEDS_LIMITS.subsidyCapLakhs / NEEDS_LIMITS.subsidyRate;
+
+const SLIDER_STEPS = 1000;
+const LOG_MIN = Math.log(NEEDS_LIMITS.minProjectLakhs);
+const LOG_SPAN = Math.log(NEEDS_LIMITS.maxProjectLakhs) - LOG_MIN;
+
+/** Slider resolution for the project-cost control (0..SLIDER_STEPS). */
+export const PROJECT_SLIDER_STEPS = SLIDER_STEPS;
+
+/**
+ * Position (0..1000) of a project cost on the log-scaled slider, so the
+ * ₹10–50 lakh band most first units fall in gets as much travel as
+ * ₹1–5 crore.
+ */
+export function projectSliderPosition(lakhs: number): number {
+  const clamped = clampProjectLakhs(lakhs);
+  return Math.round(((Math.log(clamped) - LOG_MIN) / LOG_SPAN) * SLIDER_STEPS);
+}
+
+/** Project cost for a slider position, snapped to ₹1 / ₹5 / ₹10 lakh steps. */
+export function projectFromSliderPosition(position: number): number {
+  const ratio = Math.min(1, Math.max(0, position / SLIDER_STEPS));
+  const raw = Math.exp(LOG_MIN + ratio * LOG_SPAN);
+  const step = raw < 50 ? 1 : raw < 200 ? 5 : 10;
+  return clampProjectLakhs(Math.round(raw / step) * step);
+}
 
 export type FounderCategory = 'general' | 'special';
 
@@ -416,22 +459,26 @@ export type EligibilityCheck = {
 export function needsEligibility(
   profile: FounderProfile,
 ): readonly EligibilityCheck[] {
-  const maxAge = profile.category === 'special' ? 55 : 45;
+  const maxAge = NEEDS_LIMITS.age[profile.category];
   const age = profile.age;
   return [
     {
       id: 'age',
       label: `Age 21–${maxAge} (${profile.category === 'special' ? 'special' : 'general'} category)`,
       status:
-        age === null ? 'check' : age >= 21 && age <= maxAge ? 'pass' : 'fail',
+        age === null
+          ? 'check'
+          : age >= NEEDS_LIMITS.age.min && age <= maxAge
+            ? 'pass'
+            : 'fail',
       note:
         profile.category === 'general'
-          ? 'The DIC page also shows 21–35 for general category. Confirm the limit with your DIC before applying.'
-          : 'Special category includes SC, ST, BC, MBC, minorities, women, ex-servicemen, differently-abled and transgender applicants.',
+          ? 'The MSME Online NEEDS page gives 21–45. TIIC’s older page still says 21–35, so confirm with your DIC before applying.'
+          : 'Special category: women, SC, ST, BC, MBC, ex-servicemen, transgender and differently-abled applicants (TIIC also lists minorities). Age relaxed up to 55.',
     },
     {
       id: 'education',
-      label: '12th pass, ITI, diploma or degree',
+      label: '12th (+2) pass, ITI, vocational training, diploma or degree',
       status: profile.education === 'below-12th' ? 'fail' : 'pass',
       note: 'Keep the original certificate ready for the DIC interview.',
     },

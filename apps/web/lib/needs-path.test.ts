@@ -6,12 +6,16 @@ import {
   NEEDS_BUSINESSES,
   NEEDS_LIMITS,
   NEEDS_ROADMAP,
+  PROJECT_SLIDER_STEPS,
+  SUBSIDY_CAP_REACHED_AT_LAKHS,
   clampProjectLakhs,
   dprPrefillQuery,
   formatLakhs,
   getNeedsBusiness,
   needsEligibility,
   needsFundingPlan,
+  projectFromSliderPosition,
+  projectSliderPosition,
 } from './needs-path';
 
 const evenSplit = {
@@ -196,5 +200,37 @@ describe('dprPrefillQuery', () => {
       ],
     });
     expect(parsed.success).toBe(true);
+  });
+});
+
+describe('project cost slider', () => {
+  it('spans the full NEEDS range, not the preset range', () => {
+    expect(projectFromSliderPosition(0)).toBe(NEEDS_LIMITS.minProjectLakhs);
+    expect(projectFromSliderPosition(PROJECT_SLIDER_STEPS)).toBe(
+      NEEDS_LIMITS.maxProjectLakhs,
+    );
+    expect(NEEDS_LIMITS.minProjectLakhs).toBe(10);
+    expect(NEEDS_LIMITS.maxProjectLakhs).toBe(500);
+  });
+
+  it('round-trips preset typical costs', () => {
+    for (const business of NEEDS_BUSINESSES) {
+      expect(
+        projectFromSliderPosition(projectSliderPosition(business.typicalLakhs)),
+      ).toBe(business.typicalLakhs);
+    }
+  });
+
+  it('is monotonic', () => {
+    let last = 0;
+    for (let pos = 0; pos <= PROJECT_SLIDER_STEPS; pos += 7) {
+      const value = projectFromSliderPosition(pos);
+      expect(value).toBeGreaterThanOrEqual(last);
+      last = value;
+    }
+  });
+
+  it('reaches the ₹75 lakh subsidy cap at ₹3 crore of fixed assets', () => {
+    expect(SUBSIDY_CAP_REACHED_AT_LAKHS).toBe(300);
   });
 });

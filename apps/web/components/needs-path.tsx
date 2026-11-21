@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { type CSSProperties, useEffect, useMemo, useState } from 'react';
 
 import {
   BUSINESS_GROUPS,
   DEFAULT_NEEDS_BUSINESS,
   DPR_READY_DOCUMENTS,
   NEEDS_BUSINESSES,
+  NEEDS_LIMITS,
+  PROJECT_SLIDER_STEPS,
+  SUBSIDY_CAP_REACHED_AT_LAKHS,
   NEEDS_ROADMAP,
   type BusinessGroup,
   type FounderCategory,
@@ -16,6 +19,8 @@ import {
   getNeedsBusiness,
   needsEligibility,
   needsFundingPlan,
+  projectFromSliderPosition,
+  projectSliderPosition,
 } from '../lib/needs-path';
 
 export type NeedsEstate = {
@@ -90,6 +95,7 @@ export function NeedsPath({
   const [projectLakhs, setProjectLakhs] = useState(
     DEFAULT_NEEDS_BUSINESS.typicalLakhs,
   );
+  const [costDraft, setCostDraft] = useState<string | null>(null);
   const [profile, setProfile] = useState<FounderProfile>(DEFAULT_PROFILE);
   const [stepsDone, setStepsDone] = useState<Record<string, boolean>>({});
   const [docsReady, setDocsReady] = useState<Record<string, boolean>>({});
@@ -257,7 +263,7 @@ export function NeedsPath({
                   [
                     'special',
                     'Special — 5%',
-                    'SC, ST, BC, MBC, women, minorities, ex-servicemen, differently-abled, transgender',
+                    'Women, SC, ST, BC, MBC, ex-servicemen, differently-abled, transgender',
                   ],
                   ['general', 'General — 10%', 'Everyone else'],
                 ] as const
@@ -279,31 +285,106 @@ export function NeedsPath({
                 </label>
               ))}
             </fieldset>
-            <label className="field">
+            <div className="field needs-cost">
               <span>
                 Project cost for {business.name.toLowerCase()}:{' '}
                 <strong>{formatLakhs(plan.projectLakhs)}</strong>
               </span>
               <input
                 type="range"
-                min={business.minLakhs}
-                max={business.maxLakhs}
+                min={0}
+                max={PROJECT_SLIDER_STEPS}
                 step={1}
-                value={Math.min(
-                  Math.max(projectLakhs, business.minLakhs),
-                  business.maxLakhs,
-                )}
+                value={projectSliderPosition(plan.projectLakhs)}
                 onChange={(event) =>
-                  setProjectLakhs(Number(event.target.value))
+                  setProjectLakhs(
+                    projectFromSliderPosition(Number(event.target.value)),
+                  )
                 }
+                aria-label="Project cost"
                 aria-valuetext={formatLakhs(plan.projectLakhs)}
+                style={
+                  {
+                    '--typical-from': `${(projectSliderPosition(business.minLakhs) / PROJECT_SLIDER_STEPS) * 100}%`,
+                    '--typical-to': `${(projectSliderPosition(business.maxLakhs) / PROJECT_SLIDER_STEPS) * 100}%`,
+                  } as CSSProperties
+                }
               />
-              <small>
-                Typical range {formatLakhs(business.minLakhs)} –{' '}
-                {formatLakhs(business.maxLakhs)}. NEEDS allows ₹10 lakh to ₹5
-                crore.
+              <div className="needs-cost-scale" aria-hidden="true">
+                {[
+                  NEEDS_LIMITS.minProjectLakhs,
+                  25,
+                  50,
+                  100,
+                  200,
+                  NEEDS_LIMITS.maxProjectLakhs,
+                ].map((mark) => (
+                  <span
+                    key={mark}
+                    style={{
+                      left: `${(projectSliderPosition(mark) / PROJECT_SLIDER_STEPS) * 100}%`,
+                    }}
+                  >
+                    {formatLakhs(mark)
+                      .replace(' lakh', 'L')
+                      .replace(' crore', 'Cr')}
+                  </span>
+                ))}
+              </div>
+              <div className="needs-cost-exact">
+                <label htmlFor="needs-cost-lakhs">Exact amount</label>
+                <span>₹</span>
+                <input
+                  id="needs-cost-lakhs"
+                  type="number"
+                  inputMode="numeric"
+                  min={NEEDS_LIMITS.minProjectLakhs}
+                  max={NEEDS_LIMITS.maxProjectLakhs}
+                  step={1}
+                  value={costDraft ?? String(plan.projectLakhs)}
+                  onChange={(event) => {
+                    const text = event.target.value;
+                    setCostDraft(text);
+                    const next = Number(text);
+                    if (
+                      text !== '' &&
+                      next >= NEEDS_LIMITS.minProjectLakhs &&
+                      next <= NEEDS_LIMITS.maxProjectLakhs
+                    ) {
+                      setProjectLakhs(next);
+                    }
+                  }}
+                  onBlur={() => {
+                    if (costDraft !== null && costDraft !== '') {
+                      setProjectLakhs(Number(costDraft));
+                    }
+                    setCostDraft(null);
+                  }}
+                  aria-describedby="needs-cost-hint"
+                />
+                <span>lakh</span>
+                <button
+                  type="button"
+                  className="needs-cost-reset"
+                  onClick={() => setProjectLakhs(business.typicalLakhs)}
+                >
+                  Use typical {formatLakhs(business.typicalLakhs)}
+                </button>
+              </div>
+              <small id="needs-cost-hint">
+                NEEDS covers projects from{' '}
+                {formatLakhs(NEEDS_LIMITS.minProjectLakhs)} to{' '}
+                {formatLakhs(NEEDS_LIMITS.maxProjectLakhs)}. The shaded band is
+                NILAM’s typical range for this business (
+                {formatLakhs(business.minLakhs)} –{' '}
+                {formatLakhs(business.maxLakhs)}); you can go above or below it.
+                {plan.projectLakhs > business.maxLakhs
+                  ? ' Above the typical range: the DIC and bank will want a stronger DPR and market proof.'
+                  : plan.projectLakhs < business.minLakhs
+                    ? ' Below the typical range: check that the machinery quote really fits this budget.'
+                    : ''}
               </small>
-            </label>
+            </div>
           </div>
 
           <div className="needs-money-result" aria-live="polite">
@@ -336,7 +417,11 @@ export function NeedsPath({
               </div>
               <div>
                 <dt>
-                  Capital subsidy (25%{plan.subsidyCapped ? ', capped' : ''})
+                  Capital subsidy (25%
+                  {plan.subsidyCapped
+                    ? `, capped at ${formatLakhs(NEEDS_LIMITS.subsidyCapLakhs)}`
+                    : ''}
+                  )
                 </dt>
                 <dd>{formatLakhs(plan.subsidyLakhs)}</dd>
               </div>
@@ -345,16 +430,19 @@ export function NeedsPath({
                 <dd>{formatLakhs(plan.loanAfterSubsidyLakhs)}</dd>
               </div>
               <div>
-                <dt>Interest saved in year 1 (3%)</dt>
+                <dt>Interest saved in year 1 (3% subvention)</dt>
                 <dd>≈ {formatLakhs(plan.firstYearInterestSavedLakhs)}</dd>
               </div>
             </dl>
             <p className="needs-note">
               The subsidy is credited to your loan after production starts, so
               plan to bring your {Math.round(plan.contributionRate * 100)}% on
-              day one. No collateral? Ask the bank for a CGTMSE guarantee. SC/ST
-              and differently-abled founders may get an extra 10% — confirm with
-              your DIC; it is not counted here.
+              day one. Subsidy is worked out here on fixed assets (working
+              capital excluded) and stops growing at{' '}
+              {formatLakhs(NEEDS_LIMITS.subsidyCapLakhs)} once fixed assets
+              reach {formatLakhs(SUBSIDY_CAP_REACHED_AT_LAKHS)}. The 3% interest
+              subvention runs for the whole repayment period. No collateral? Ask
+              the bank for a CGTMSE guarantee.
             </p>
           </div>
         </div>
@@ -362,7 +450,14 @@ export function NeedsPath({
           <caption>Where the {formatLakhs(plan.projectLakhs)} goes</caption>
           <tbody>
             <tr>
-              <th scope="row">Land & building</th>
+              <th scope="row">
+                Land & building{' '}
+                <small>
+                  (building alone at most{' '}
+                  {Math.round(NEEDS_LIMITS.maxBuildingShare * 100)}% of project
+                  cost)
+                </small>
+              </th>
               <td>{formatLakhs(plan.costs.landAndBuilding)}</td>
             </tr>
             <tr>

@@ -89,7 +89,11 @@ export default function NeedsPage() {
         tansidcoUrl={tansidcoApplyUrl()}
       />
       <p className="needs-sources">
-        Rules checked {NEEDS_VERIFIED_ON} against the{' '}
+        Rules checked {NEEDS_VERIFIED_ON} against{' '}
+        <a href={NEEDS_SOURCES.scheme.url} rel="noreferrer" target="_blank">
+          {NEEDS_SOURCES.scheme.title}
+        </a>
+        , the{' '}
         <a href={NEEDS_SOURCES.dic.url} rel="noreferrer" target="_blank">
           {NEEDS_SOURCES.dic.title}
         </a>{' '}
