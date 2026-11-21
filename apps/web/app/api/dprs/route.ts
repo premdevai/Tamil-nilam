@@ -24,6 +24,9 @@ export async function GET() {
   if (!authorization.ok) return authorization.response;
   const result = await getDatabase().pool.query(
     `select id::text, status, document_version as "documentVersion",
+       input_snapshot->'input'->>'businessName' as "businessName",
+       input_snapshot->'input'->>'district' as "district",
+       (input_snapshot->'input'->>'projectCost')::numeric as "projectCost",
        validation_warnings as "validationWarnings",
        expires_at as "expiresAt", error, created_at as "createdAt"
      from generated_dprs where user_id = $1::uuid

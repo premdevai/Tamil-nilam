@@ -2500,3 +2500,198 @@ body {
   font-size: 0.85rem;
   cursor: pointer;
 }
+
+/* DPR builder and reports */
+.dpr-steps button {
+  min-height: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+
+.dpr-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 17rem;
+  gap: 1.5rem;
+  align-items: start;
+  margin-top: 1.25rem;
+}
+
+.dpr-business,
+.dpr-finance {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.dpr-wide {
+  grid-column: 1 / -1;
+}
+
+.dpr-wizard label small,
+.dpr-email small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--color-mediumgray);
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.dpr-balance {
+  margin-top: 1rem;
+  border-radius: 6px;
+  background: var(--color-paperwhite);
+  padding: 0.75rem 1rem;
+}
+
+.dpr-balance p {
+  margin: 0 0 0.5rem;
+}
+
+.dpr-preview {
+  position: sticky;
+  top: 1rem;
+  border: 1px solid var(--color-lightgray);
+  border-radius: 8px;
+  background: var(--color-paperwhite);
+  padding: 1rem;
+}
+
+.dpr-preview h3 {
+  margin: 0 0 0.75rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.dpr-preview dl {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.dpr-preview dl div {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.dpr-preview dt {
+  color: var(--color-mediumgray);
+  font-size: 0.85rem;
+}
+
+.dpr-preview dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.dpr-good {
+  color: var(--color-green-100);
+}
+
+.dpr-weak {
+  color: var(--color-red-100);
+}
+
+.dpr-flags {
+  margin: 0.75rem 0 0;
+  padding-left: 1.1rem;
+  color: var(--color-red-100);
+  font-size: 0.8rem;
+}
+
+.dpr-ok {
+  margin: 0.75rem 0 0;
+  color: var(--color-green-100);
+  font-size: 0.8rem;
+}
+
+.dpr-list ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.dpr-list > ul > li {
+  border-top: 1px solid var(--color-lightgray);
+  padding: 1rem 0;
+}
+
+.dpr-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 0.6rem;
+}
+
+.dpr-row small {
+  display: block;
+  color: var(--color-mediumgray);
+}
+
+.dpr-status {
+  flex: none;
+  border-radius: 9999px;
+  background: var(--color-offwhite);
+  padding: 0.2rem 0.7rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.dpr-status-ready {
+  background: var(--color-green-10);
+  color: var(--color-green-100);
+}
+
+.dpr-status-failed {
+  background: var(--color-red-20);
+  color: var(--color-red-100);
+}
+
+.dpr-list details {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+}
+
+.dpr-list details ul {
+  padding-left: 1.1rem;
+  list-style: disc;
+}
+
+.dpr-email {
+  margin-top: 0.75rem;
+  border-radius: 8px;
+  background: var(--color-paperwhite);
+  padding: 1rem;
+}
+
+@media (max-width: 760px) {
+  .dpr-layout,
+  .dpr-business,
+  .dpr-finance {
+    grid-template-columns: 1fr;
+  }
+
+  .dpr-preview {
+    position: static;
+  }
+
+  .dpr-steps {
+    overflow-x: auto;
+  }
+
+  .dpr-steps li {
+    flex: none;
+    padding: 0.75rem 0.8rem;
+  }
+}

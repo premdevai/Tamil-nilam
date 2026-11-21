@@ -14,6 +14,29 @@ const QUERY_PREFILL_KEYS = [
   'termLoan',
   'otherFunding',
   'employment',
+  'implementationMonths',
+  'projectedAnnualRevenue',
+  'projectedAnnualOperatingCost',
+  'entityKind',
+  'location',
+  'promoterProfile',
+  'projectDescription',
+  'productsAndCapacity',
+  'marketAndSales',
+  'landCost',
+  'capitalSubsidy',
+  'subsidySchemeName',
+  'variableCostSharePct',
+  'startUtilisationPct',
+  'maxUtilisationPct',
+  'revenueGrowthPct',
+  'loanInterestRatePct',
+  'interestSubventionPct',
+  'loanTenureYears',
+  'moratoriumMonths',
+  'taxRatePct',
+  'assumptions',
+  'licences',
   'citationTitle',
   'citationUrl',
   'citationVerifiedOn',
@@ -31,7 +54,7 @@ export function queryPrefill(
   for (const key of QUERY_PREFILL_KEYS) {
     const raw = params[key];
     const value = (Array.isArray(raw) ? raw[0] : raw)?.trim();
-    if (value !== undefined && value.length > 0 && value.length <= 200) {
+    if (value !== undefined && value.length > 0 && value.length <= 2_000) {
       prefill[key] = value;
     }
   }

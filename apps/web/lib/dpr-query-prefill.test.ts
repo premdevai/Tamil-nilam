@@ -19,6 +19,8 @@ describe('queryPrefill', () => {
   });
 
   it('ignores empty and oversized values', () => {
-    expect(queryPrefill({ sector: '', district: 'x'.repeat(201) })).toEqual({});
+    expect(queryPrefill({ sector: '', district: 'x'.repeat(2_001) })).toEqual(
+      {},
+    );
   });
 });

@@ -2,12 +2,22 @@ import { redirect } from 'next/navigation';
 
 import { getSession } from './auth';
 import { can, type Capability } from './roles';
+import { safeNextPath } from './safe-next';
 
 export { can };
 
-export async function requireSession() {
+export { safeNextPath };
+
+export async function requireSession(next?: string) {
   const session = await getSession();
-  if (session?.user === undefined) redirect('/account/sign-in');
+  if (session?.user === undefined) {
+    const target = safeNextPath(next);
+    redirect(
+      target === undefined
+        ? '/account/sign-in'
+        : `/account/sign-in?next=${encodeURIComponent(target)}`,
+    );
+  }
   return session;
 }
 

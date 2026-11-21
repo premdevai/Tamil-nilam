@@ -663,7 +663,23 @@ export const DPR_READY_DOCUMENTS: readonly (readonly [string, string])[] = [
   ['site', 'Land/shed documents or allotment'],
 ];
 
-/** Rupee strings for the existing DPR wizard's query prefill. */
+/**
+ * First-year revenue and operating cost as multiples of project cost, by
+ * business group, at the 60% starting utilisation the DPR assumes. These are
+ * NILAM planning ratios for a first draft — the founder replaces them with
+ * their own quotations and price lists in the DPR builder.
+ */
+export const GROUP_ECONOMICS: Readonly<
+  Record<BusinessGroup, { revenueMultiple: number; operatingCostShare: number }>
+> = {
+  food: { revenueMultiple: 1.8, operatingCostShare: 0.82 },
+  agri: { revenueMultiple: 1.6, operatingCostShare: 0.82 },
+  textiles: { revenueMultiple: 1.5, operatingCostShare: 0.8 },
+  manufacturing: { revenueMultiple: 1.4, operatingCostShare: 0.78 },
+  services: { revenueMultiple: 0.9, operatingCostShare: 0.7 },
+};
+
+/** Rupee strings for the DPR builder's query prefill. */
 export function dprPrefillQuery(input: {
   readonly business: NeedsBusiness;
   readonly plan: FundingPlan;
@@ -671,6 +687,8 @@ export function dprPrefillQuery(input: {
   readonly district: string;
 }): string {
   const rupees = (lakhs: number) => String(Math.round(lakhs * 100_000));
+  const economics = GROUP_ECONOMICS[input.business.group];
+  const revenueLakhs = input.plan.projectLakhs * economics.revenueMultiple;
   const params = new URLSearchParams({
     businessName: input.business.name,
     promoterName: input.promoterName,
@@ -685,8 +703,27 @@ export function dprPrefillQuery(input: {
     termLoan: rupees(input.plan.bankLoanLakhs),
     otherFunding: '0',
     employment: String(input.business.jobs),
-    citationTitle: NEEDS_SOURCES.dic.title,
-    citationUrl: NEEDS_SOURCES.dic.url,
+    implementationMonths: '9',
+    projectedAnnualRevenue: rupees(revenueLakhs),
+    projectedAnnualOperatingCost: rupees(
+      revenueLakhs * economics.operatingCostShare,
+    ),
+    capitalSubsidy: rupees(input.plan.subsidyLakhs),
+    subsidySchemeName: 'NEEDS (Tamil Nadu)',
+    interestSubventionPct: String(NEEDS_LIMITS.interestSubventionRate * 100),
+    loanInterestRatePct: '10.5',
+    loanTenureYears: '7',
+    moratoriumMonths: '12',
+    productsAndCapacity: `${input.business.makes}. Space needed: ${input.business.space}.`,
+    location: `${input.district} district, Tamil Nadu`,
+    licences: input.business.licences.join('\n'),
+    assumptions: [
+      `First-year revenue is a NILAM planning estimate (${economics.revenueMultiple}× project cost at 60% utilisation); replace it with your own price list and volumes.`,
+      `NEEDS capital subsidy of 25% of fixed assets (capped at ₹${NEEDS_LIMITS.subsidyCapLakhs} lakh) is credited to the loan after commercial production.`,
+      'NEEDS 3% interest subvention applies throughout the repayment period.',
+    ].join('\n'),
+    citationTitle: NEEDS_SOURCES.scheme.title,
+    citationUrl: NEEDS_SOURCES.scheme.url,
     citationVerifiedOn: NEEDS_VERIFIED_ON,
   });
   return params.toString();

@@ -3,7 +3,7 @@
 import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 
-export function SignInForm() {
+export function SignInForm({ next = '/account' }: { readonly next?: string }) {
   const [email, setEmail] = useState('');
   const [consent, setConsent] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -14,11 +14,18 @@ export function SignInForm() {
     if (!consent) return;
     setBusy(true);
     setError(undefined);
-    const result = await signIn('email', {
-      email,
-      callbackUrl: '/account',
-      redirect: false,
-    });
+    let result: Awaited<ReturnType<typeof signIn>> | undefined;
+    try {
+      result = await signIn('email', {
+        email,
+        callbackUrl: next,
+        redirect: false,
+      });
+    } catch {
+      // A server error returns an empty body and next-auth throws while
+      // parsing it; without this the button stayed on "Sending…" forever.
+      result = { error: 'server_error', ok: false, status: 500, url: null };
+    }
     setBusy(false);
     // NextAuth returns `{ error: null }` on success. `!== undefined` treated
     // that as a send failure and never reached the verify page.

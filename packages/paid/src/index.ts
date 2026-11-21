@@ -2,7 +2,11 @@ import { createHash } from 'node:crypto';
 
 import { z } from 'zod';
 
+import { buildDprFinancials } from './financials';
+
 const money = z.number().finite().nonnegative().max(1_000_000_000_000);
+const text = (max: number) => z.string().trim().min(1).max(max);
+const percent = (max: number) => z.number().finite().min(0).max(max);
 
 export const citationSchema = z
   .object({
@@ -33,6 +37,28 @@ export const dprFinancialInputSchema = z
     implementationMonths: z.number().int().min(1).max(120),
     assumptions: z.array(z.string().trim().min(1).max(500)).max(30).default([]),
     citations: z.array(citationSchema).min(1).max(100),
+    // Optional narrative and projection inputs (nilam-dpr-input-v1 compatible:
+    // older snapshots omit them and the report falls back to DPR_DEFAULTS).
+    entityKind: text(80).optional(),
+    promoterProfile: text(2_000).optional(),
+    projectDescription: text(2_000).optional(),
+    productsAndCapacity: text(2_000).optional(),
+    marketAndSales: text(2_000).optional(),
+    location: text(500).optional(),
+    licences: z.array(text(200)).max(30).optional(),
+    landCost: money.optional(),
+    capitalSubsidy: money.optional(),
+    subsidySchemeName: text(200).optional(),
+    loanInterestRatePct: percent(30).optional(),
+    loanTenureYears: z.number().int().min(1).max(15).optional(),
+    moratoriumMonths: z.number().int().min(0).max(36).optional(),
+    interestSubventionPct: percent(10).optional(),
+    revenueGrowthPct: percent(30).optional(),
+    startUtilisationPct: z.number().finite().min(10).max(100).optional(),
+    maxUtilisationPct: z.number().finite().min(10).max(100).optional(),
+    variableCostSharePct: percent(100).optional(),
+    taxRatePct: percent(50).optional(),
+    discountRatePct: percent(30).optional(),
   })
   .strict()
   .superRefine((value, context) => {
@@ -56,6 +82,27 @@ export const dprFinancialInputSchema = z
         code: 'custom',
         path: ['promoterContribution'],
         message: 'Funding sources must equal the project cost.',
+      });
+    }
+    if (
+      value.landCost !== undefined &&
+      value.landCost > value.landAndBuildingCost + tolerance
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['landCost'],
+        message: 'Land cost cannot exceed land and building cost.',
+      });
+    }
+    if (
+      value.capitalSubsidy !== undefined &&
+      value.capitalSubsidy > value.termLoan + tolerance
+    ) {
+      context.addIssue({
+        code: 'custom',
+        path: ['capitalSubsidy'],
+        message:
+          'Capital subsidy cannot exceed the term loan it is credited to.',
       });
     }
     if (value.projectedAnnualOperatingCost > value.projectedAnnualRevenue) {
@@ -139,14 +186,20 @@ export function financialWarnings(input: DprFinancialInput): string[] {
       'Projected operating margin is below 10%; stress-test the assumptions.',
     );
   }
-  if (input.promoterContribution / input.projectCost < 0.15) {
+  const margin_ = input.promoterContribution / input.projectCost;
+  if (input.subsidySchemeName === undefined && margin_ < 0.15) {
     warnings.push(
       'Promoter contribution is below 15%; a lender may require a higher margin.',
+    );
+  } else if (input.subsidySchemeName !== undefined && margin_ < 0.05) {
+    warnings.push(
+      `Promoter contribution is below 5%; ${input.subsidySchemeName} normally needs at least 5%.`,
     );
   }
   if (input.assumptions.length === 0) {
     warnings.push('No supporting assumptions were supplied.');
   }
+  warnings.push(...buildDprFinancials(input).warnings);
   return warnings;
 }
 
@@ -333,6 +386,15 @@ function parseCsvLine(line: string): string[] {
   return cells;
 }
 
+export {
+  DPR_DEFAULTS,
+  buildDprFinancials,
+  internalRateOfReturn,
+  netPresentValue,
+  resolveAssumptions,
+  type DprFinancials,
+  type ProjectionYear,
+} from './financials';
 export {
   createDownloadSignature,
   verifyDownloadSignature,
